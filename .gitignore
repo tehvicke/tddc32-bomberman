@@ -7,3 +7,4 @@
 
 # settings folder #
 .settings/*
+.classpath
