@@ -8,3 +8,7 @@
 # settings folder #
 .settings/*
 .classpath
+
+
+src/bman/mainn.java
+.DS_Store
