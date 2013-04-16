@@ -8,3 +8,6 @@
 # settings folder #
 .settings/*
 .classpath
+
+#testfolder "
+.src/testingPetter/
