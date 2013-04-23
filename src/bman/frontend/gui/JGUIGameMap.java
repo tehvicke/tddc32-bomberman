@@ -26,10 +26,10 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	JGUIMapObject[][] gameMap;
 	static int gridsize = 15;
 	protected int gridXSize = JGUIScreen.w_width/gridsize;
-	protected int gridYSize = JGUIScreen.w_heigth/gridsize;
+	protected int gridYSize = JGUIScreen.w_height/gridsize;
 
 	public JGUIGameMap() {
-		setSize(JGUIScreen.w_width, JGUIScreen.w_heigth);
+		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		setVisible(true);
 		this.setBackground(Color.green);
 		String sprite = "./sprites/white_front.png";
@@ -57,12 +57,12 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D)g;
 	
-		for (int i = 0; i <= JGUIScreen.w_heigth; i +=30) {
+		for (int i = 0; i <= JGUIScreen.w_height; i +=30) {
 			g2d.setColor(Color.black);
 			g2d.drawLine(0, i, JGUIScreen.w_width,i );
 		}
 		for (int i = 0; i <= JGUIScreen.w_width; i +=30) {
-			g2d.drawLine(i, 0,i,JGUIScreen.w_heigth);
+			g2d.drawLine(i, 0,i,JGUIScreen.w_height);
 		}
 		
 		g2d.drawImage(player.getImage(),player.getX(),player.getY(),this);

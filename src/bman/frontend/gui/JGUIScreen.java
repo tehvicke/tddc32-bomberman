@@ -22,7 +22,7 @@ public class JGUIScreen extends JFrame {
 	 * Variables
 	 */
 	protected static int w_width = 450;
-	protected static int w_heigth = 450;
+	protected static int w_height = 450;
 	private static final long serialVersionUID = 7135568752644883047L;
 	
 	/**
@@ -31,7 +31,7 @@ public class JGUIScreen extends JFrame {
 	JGUIGameMap game;
 
 	public JGUIScreen() {
-		this.setSize(new Dimension(w_width+6,w_heigth+28));
+		this.setSize(new Dimension(w_width+2,w_height+28));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		game = new JGUIGameMap();
 		add(game);
