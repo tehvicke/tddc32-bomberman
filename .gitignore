@@ -9,5 +9,9 @@
 .settings/*
 .classpath
 
-#testfolder "
+# Viktor
+src/bman/mainn.java
+.DS_Store
+
+# Petter 
 .src/testingPetter/
