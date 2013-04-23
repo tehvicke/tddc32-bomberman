@@ -1,5 +1,6 @@
 package bman.networking;
 
+import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -77,29 +78,32 @@ public class UDPServer implements UDPServerInterface {
 	public void testServer() {
 		try {
 			DatagramSocket serverSocket = new DatagramSocket(Integer.parseInt(port));
-	        byte[] receiveData = new byte[1024];
-	        byte[] sendData = new byte[1024];
-	        UDPEventInterface event;
-	        while(true)
-	           {
-	              DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-	              serverSocket.receive(receivePacket);
-	              String sentence = new String( receivePacket.getData());
-	              
+			byte[] receiveData = new byte[1024];
+			byte[] sendData = new byte[1024];
+			int count = 0;
+			while(true) {
+				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+				serverSocket.receive(receivePacket);
+//	              String sentence = new String( receivePacket.getData());
 //	              ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(recBytes));
 //	              Message messageClass = (Message) iStream.readObject();
 //	              iStream.close();
 //	              
 //	              event = receivePacket.getData();
-	              
-	              System.out.println("RECEIVED: " + sentence);
-	              InetAddress IPAddress = receivePacket.getAddress();
-	              int port = receivePacket.getPort();
-	              String capitalizedSentence = sentence.toUpperCase();
-	              sendData = capitalizedSentence.getBytes();
-	              DatagramPacket sendPacket =
-	              new DatagramPacket(sendData, sendData.length, IPAddress, port);
-	              serverSocket.send(sendPacket);
+				
+				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
+				ObjectInputStream oosi = new ObjectInputStream(baosi);
+				UDPEvent eventi = (UDPEvent) oosi.readObject();
+				System.out.println(eventi.name + " recieved. Type: " + eventi.type);
+	            
+//	              InetAddress IPAddress = receivePacket.getAddress();
+//	              int port = receivePacket.getPort();
+////	              String capitalizedSentence = sentence.toUpperCase();
+////	              sendData = capitalizedSentence.getBytes();
+//	              sendData = receivePacket.getData();
+//	              DatagramPacket sendPacket =
+//	              new DatagramPacket(sendData, sendData.length, IPAddress, port);
+//	              serverSocket.send(sendPacket);
 	           }
 		} catch (Exception e) {
 			System.err.println("Couldn't create server.");
