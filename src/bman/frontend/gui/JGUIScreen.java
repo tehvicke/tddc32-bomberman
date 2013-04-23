@@ -1,14 +1,10 @@
 package bman.frontend.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class JGUIScreen extends JFrame {
 
@@ -25,37 +21,31 @@ public class JGUIScreen extends JFrame {
 	/**
 	 * Variables
 	 */
-	protected static int w_width = 800;
-	protected static int w_heigth = 600;
+	protected static int w_width = 450;
+	protected static int w_heigth = 450;
 	private static final long serialVersionUID = 7135568752644883047L;
 	
 	/**
 	 * Members
 	 */
-	JButton exitButton;
+	JGUIGameMap game;
 
 	public JGUIScreen() {
-		this.setSize(new Dimension(w_width,w_heigth));
+		this.setSize(new Dimension(w_width+6,w_heigth+28));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		getContentPane().setLayout(new BorderLayout(0, 0));
-
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.DARK_GRAY);
-		getContentPane().add(panel, BorderLayout.WEST);
-
-		exitButton = new JButton("Exit");
-		panel.add(exitButton);
-		exitButton.addActionListener(new exitListener());
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.CYAN);
-		getContentPane().add(panel_1, BorderLayout.CENTER);
+		game = new JGUIGameMap();
+		add(game);
 		this.setVisible(true);
+		setResizable(false);
 	}
 
 
 	public void setActive() {
 
+	}
+	
+	public static void main(String args[]) {
+		JGUIScreen test = new JGUIScreen();
 	}
 
 }
