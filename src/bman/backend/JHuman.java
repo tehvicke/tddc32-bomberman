@@ -17,7 +17,7 @@ public class JHuman extends JPlayer{
 	public JHuman(JGUIMapObject obj, int x, int y) {
 		super(obj, x, y);
 	}
-	
+
 	/**
 	 * Sent from listener in JGUIGAMEMAP, tells the player to move
 	 * @param e
@@ -35,11 +35,12 @@ public class JHuman extends JPlayer{
 		} else if (key == KeyEvent.VK_DOWN) {
 			dy = 10;
 		}
-		super.move(dx, dy);
-		
+		if (dx != 0 || dy != 0)
+			super.move(dx, dy);
+
 	}
 
-	
+
 
 
 }

@@ -37,7 +37,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	private static String p2_right = "";
 	
 	private static String solidBlock = "./sprites/solid_block.png"; 
-	private static String destroyableBlock = "";
+	private static String destroyableBlock = "./sprites/destroyable_block.png";
 	
 	private static String bomb_fire = "";
 	private static String bomb_nofire = "";
@@ -72,7 +72,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		timer.start();
 		gameMap = new JMapObject[15][15];
 		//Test layout
-		JGUIMapObject block = new JGUIMapObject(solidBlock); 
+		JGUIMapObject block = new JGUIMapObject(destroyableBlock); 
 		for (int i = 0; i < 15; i++) {
 			gameMap[0][i] = new JMapObject(block,i*30,0);
 			gameMap[14][i]= new JMapObject(block,i*30,14*30);
