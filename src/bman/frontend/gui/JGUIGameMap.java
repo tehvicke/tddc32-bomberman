@@ -12,18 +12,50 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import bman.backend.JHuman;
+import bman.backend.JMapObject;
+
 public class JGUIGameMap extends JPanel implements ActionListener {
 
 	/**
 	 * VARIABLES
 	 */
 	private static final long serialVersionUID = -5735185698246996895L;
-
+	
+	/******************************************************************************************************
+	 * CONSTANTS
+	 *****************************************************************************************************/
+	 
+	private static String player_front = "./sprites/white_front.png";
+	private static String player_back = "./sprites/white_back.png";
+	private static String player_left = "";
+	private static String player_right = "";
+	
+	private static String p2_front = "";
+	private static String p2_back= "";
+	private static String p2_left = "";
+	private static String p2_right = "";
+	
+	private static String solidBlock = "./sprites/solid_block.png"; 
+	private static String destroyableBlock = "";
+	
+	private static String bomb_fire = "";
+	private static String bomb_nofire = "";
+	
+	private static String explosion = "";
+	
+	private static String superman = "./sprites/superman.png";
+	
+	/****************************************************************************************************/
+	
+	
+	
+	
 	/**
 	 * Contents
 	 */
-	JGUIPlayer player;
-	JGUIMapObject[][] gameMap;
+	JHuman player;
+	JMapObject[][] gameMap;
 	static int gridsize = 15;
 	protected int gridXSize = JGUIScreen.w_width/gridsize;
 	protected int gridYSize = JGUIScreen.w_height/gridsize;
@@ -32,25 +64,24 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		setVisible(true);
 		this.setBackground(Color.green);
-		String sprite = "./sprites/white_front.png";
-		player = new JGUIPlayer(sprite,"./sprites/white_back.png","./sprites/superman.png",sprite,10,10,gameMap);
+		player = new JHuman(new JGUIMapObject(player_front,player_back,superman,player_front),50,50);
 		addKeyListener(new KAdapter());
 		setFocusable(true);
 		setDoubleBuffered(true);
 		Timer timer = new Timer(6, this);
 		timer.start();
-		gameMap = new JGUIMapObject[15][15];
+		gameMap = new JMapObject[15][15];
 		//Test layout
-		String block = "./sprites/solid_block.png"; 
+		JGUIMapObject block = new JGUIMapObject(solidBlock); 
 		for (int i = 0; i < 15; i++) {
-			gameMap[0][i] = new JGUIMapObject(block,i*30,0);
-			gameMap[14][i]= new JGUIMapObject(block,i*30,14*30);
+			gameMap[0][i] = new JMapObject(block,i*30,0);
+			gameMap[14][i]= new JMapObject(block,i*30,14*30);
 		}
 		for (int i = 1; i < 15; i++) {
-			gameMap[i][0] = new JGUIMapObject(block,0,i*30);
-			gameMap[i][14] = new JGUIMapObject(block,14*30,i*30);
+			gameMap[i][0] = new JMapObject(block,0,i*30);
+			gameMap[i][14] = new JMapObject(block,14*30,i*30);
 		}
-		gameMap[5][5] = new JGUIMapObject("./sprites/superman.png",5*30,5*30);
+		gameMap[5][5] = new JMapObject(new JGUIMapObject(superman),5*30,5*30);
 	}
 
 	public void paint(Graphics g) {
@@ -84,7 +115,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		player.move();
+		//player.move();
 		repaint();
 
 	}
@@ -95,10 +126,6 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 			player.keypress(e);
 		}
 
-		@Override
-		public void keyReleased(KeyEvent e) {
-			player.keyrelease(e);
-		}
 	}
 
 }
