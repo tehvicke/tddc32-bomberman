@@ -4,13 +4,11 @@ public interface UDPServerInterface {
 	public static String IPAddress = "127.0.0.1";
 	public static String port = "3456";
 	
-	public boolean waitForClients(int number);
+	public void waitForClients(int number);
 	
-	public boolean broadcastEvent(UDPEventInterface event);
+	public void broadcastEvent(UDPEvent event);
 	
-//	public boolean sendEvent(clientThread client);
-	
-	public void createEvent();
+	public void sendEvent(UDPEvent event, int client);
 	
 	public void eventListener();
 	

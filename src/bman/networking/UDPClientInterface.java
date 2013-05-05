@@ -15,7 +15,7 @@ public interface UDPClientInterface {
 	 */
 	public boolean establishConnection(String ip);
 	
-	public boolean sendEvent(UDPEventInterface event);
+	public boolean sendEvent(UDPEvent event);
 	
 	public void eventListener();
 	
