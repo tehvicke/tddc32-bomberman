@@ -17,12 +17,15 @@ import java.net.InetAddress;
  */
 public class UDPServer implements UDPServerInterface, Runnable {
 
+	/**
+	 * Whether the listener shall be active or not. Default: Always active.
+	 */
 	private boolean listen = true;
 	
 	/**
 	 * The number of clients to accept.
 	 */
-	private int numberOfClients = 1;
+	private int numberOfClients;
 
 	/**
 	 * The server port.
@@ -180,6 +183,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			ObjectInputStream oosi = new ObjectInputStream(baosi);
 			baosi.close();
 			UDPEvent event = (UDPEvent) oosi.readObject();
+			
 			oosi.close();
 			
 			System.out.println(event.type + " recieved from " + event.player_id);
