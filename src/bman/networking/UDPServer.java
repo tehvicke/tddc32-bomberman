@@ -255,13 +255,12 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			byte[] sendData = new byte[1024];
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, addr, port);
 
-			
 			try {
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ObjectOutputStream oos = new ObjectOutputStream(baos);
-				oos.writeObject(event);
-				
+				oos.writeObject(event);	
 				oos.flush();
+
 				sendData = baos.toByteArray(); // Serialize
 				
 				serverSocket.send(sendPacket);
