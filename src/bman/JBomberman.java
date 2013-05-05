@@ -12,7 +12,9 @@ public class JBomberman {
 	
 	public static void connect() {
 		System.out.print("Ange Ip: ");
-		
+		Scanner scan = new Scanner(System.in);
+		String ip = scan.nextLine();
+		System.out.println(ip);
 	}
 
 	/**

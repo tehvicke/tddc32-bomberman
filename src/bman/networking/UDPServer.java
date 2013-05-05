@@ -1,8 +1,10 @@
 package bman.networking;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -211,8 +213,15 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		 */
 		private void sendEvent(UDPEvent event, InetAddress addr) {
 			byte[] sendData = new byte[1024];
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, addr, port);
+	
 			try {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);
+				oos.writeObject(event);
+				oos.flush();
+				DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, addr, port);
+				sendData = baos.toByteArray(); // Serialize
+				
 				serverSocket.send(sendPacket);
 				System.out.println("Event skickat. " + event.type + " Address: " + addr);
 			} catch (IOException e) {
