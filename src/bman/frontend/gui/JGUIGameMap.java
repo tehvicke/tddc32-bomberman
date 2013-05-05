@@ -65,9 +65,10 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	 */
 	JGameMap gameMap;
 	JHuman player;
+	
 
 
-	public JGUIGameMap() {
+	public JGUIGameMap(JGameMap gameMap, JHuman player) {
 		//Window properties
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		setVisible(true);
@@ -78,19 +79,9 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		//Timer which triggers actionlistener in this class
 		Timer timer = new Timer(6, this);
 		timer.start();
+		this.gameMap = gameMap;
+		this.player = player;
 
-
-
-		gameMap = new JGameMap();
-		player = new JHuman(new JGUIMapObject(player_front,player_back,superman,player_front),gameMap);
-		gameMap.addObject(player, 3,3);
-		//Test layout
-
-		//		for (int i = 1; i < 15; i++) {
-		//			gameMap[i][0] = new JMapObject(block,0,i*30);
-		//			gameMap[i][14] = new JMapObject(block,14*30,i*30);
-		//		}
-		//		gameMap[5][5] = new JMapObject(new JGUIMapObject(superman),5*30,5*30);
 	}
 
 	public void paint(Graphics g) {

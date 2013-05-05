@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
+import bman.backend.JGameMap;
+import bman.backend.JHuman;
+
 public class JGUIScreen extends JFrame {
 
 	private class exitListener implements ActionListener {
@@ -30,14 +33,20 @@ public class JGUIScreen extends JFrame {
 	 */
 	JGUIGameMap game;
 
-	public JGUIScreen() {
+	public JGUIScreen(JGameMap gmap, JHuman player) {
 		this.setSize(new Dimension(w_width+2,w_height+28));
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		game = new JGUIGameMap();
-		add(game);
 		this.setVisible(true);
 		setResizable(false);
 		setTitle("Bomberman");
+		//JGUISplashScreen splash = new JGUISplashScreen();
+		//add(splash);
+		//repaint();
+		//remove(splash);
+		
+		game = new JGUIGameMap(gmap,player);
+		add(game);
+	
 		
 	}
 
@@ -46,9 +55,6 @@ public class JGUIScreen extends JFrame {
 
 	}
 	
-	public static void main(String args[]) {
-		JGUIScreen test = new JGUIScreen();
-	}
 
 }
 

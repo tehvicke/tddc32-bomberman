@@ -13,7 +13,7 @@ import bman.networking.UDPEvent.Type;
 public class UDPClient implements UDPClientInterface {
 
 	InetAddress serverip;
-	int playerHash;
+	public int playerHash;
 	int port = 3456;
 	DatagramSocket clientSocket;
 

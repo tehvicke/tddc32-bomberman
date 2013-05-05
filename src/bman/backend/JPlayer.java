@@ -7,7 +7,7 @@ import bman.frontend.gui.JGUIScreen;
 import bman.frontend.gui.JGUIMapObject.Direction;
 
 public class JPlayer extends JMapObject {
-	private String playerName;
+	private int playerid = 0;
 	JGameMap map;
 	int active_bombs = 0;
 	int max_bombs = 2;
@@ -18,9 +18,13 @@ public class JPlayer extends JMapObject {
 		this.map = map;
 	}
 
-	public void setName(String playerName){
-		this.playerName=playerName;
+	public void setID(int playerid){
+		this.playerid = playerid;
 
+	}
+	
+	public int getID() {
+		return playerid;
 	}
 	
 	public void putBomb() {

@@ -12,10 +12,13 @@ import bman.frontend.gui.JGUIScreen;
 public class JGameMap {
 	public static final int mapsize =15;
 	private JMapObject[][] gameMap;
+	private JPlayer[] players;
+	int[] playerIDs = {-1,-1};
 
 	public JGameMap() {
 		gameMap = new JMapObject[mapsize][mapsize];
-
+		players = new JPlayer[2];
+		
 		//Creates default layout
 		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
 		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
@@ -28,8 +31,21 @@ public class JGameMap {
 			addObject(new JMapObject(block),i,mapsize-1);
 		}
 	}
+	
+	public void addPlayer(JPlayer player, int id, int x, int y) {
+		addObject(player, x, y);
+		if (playerIDs[0] == -1) {
+			playerIDs[0] = id;
+			players[0] = player;
+		}
+		else {
+			players[1] = player;
+			playerIDs[1] = id;
+		}
+	}
+	
 
-
+	
 	/**
 	 * Adds an JMapObject at the specified location in the gameMap
 	 * @param obj object to be added
@@ -87,6 +103,14 @@ public class JGameMap {
 		int [] loc = find(obj.hashCode());
 		if (loc[0] != -1)
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
+	}
+	
+	public void move(int dx, int dy, int id) {
+		if (playerIDs[0] == id) {
+			move(dx,dy,players[0]);
+		} else {
+			move(dx,dy,players[1]);
+		}
 	}
 
 	public void remove(JMapObject obj) {
@@ -159,6 +183,15 @@ public class JGameMap {
 				removeObject(x-i,y);
 			if (gameMap[x][y-i] instanceof JDestroyableBlock || gameMap[x][y-i] instanceof JFire)
 				removeObject(x, y-i);
+			
+			if (gameMap[x+i][y] instanceof JBomb)
+				((JBomb)gameMap[x+i][y]).explode();
+			if (gameMap[x][y+i] instanceof JBomb)
+				((JBomb)gameMap[x][y+i]).explode();
+			if (gameMap[x-i][y] instanceof JBomb)
+				((JBomb)gameMap[x-i][y]).explode();
+			if (gameMap[x][y-i] instanceof JBomb)
+				((JBomb)gameMap[x][y-i]).explode();
 
 			try {
 				Thread.sleep(300);
