@@ -16,4 +16,9 @@ public class JClient implements Runnable{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public static void main(String[] args) {
+	 System.out.println("==========BOMBERMAN==========");
+	}
 }

@@ -31,20 +31,27 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	public static final String player_back = "./sprites/white_back.png";
 	public static final String player_left = "";
 	public static final String player_right = "";
-    
+
 	public static final String p2_front = "";
 	public static final String p2_back= "";
 	public static final String p2_left = "";
 	public static final String p2_right = "";
-    
+
 	public static final String solidBlock = "./sprites/solid_block.png"; 
 	public static final String destroyableBlock = "./sprites/destroyable_block.png";
 
 	public static final String bomb_fire = "./sprites/solid_block.png";
 	public static final String bomb_nofire = "./sprites/solid_block.png";;
-    
-	public static final String explosion = "";
-    
+
+	public static final String explosion = "./sprites/destroyable_block.png";
+	public static final String fireCenter = "./sprites/ugly_fire_center.png";
+	public static final String fireUp = "./sprites/ugly_fire_up.png";
+	public static final String fireDown = "./sprites/ugly_fire_down.png";
+	public static final String fireLeft = "./sprites/ugly_fire_left.png";
+	public static final String fireRight = "./sprites/ugly_fire_right.png";
+	public static final String fireHoriz = "./sprites/ugly_fire_center_horiz.png";
+	public static final String fireVert = "./sprites/ugly_fire_center_vert.png";
+
 	public static final String superman = "./sprites/superman.png";
 
 	/****************************************************************************************************/
@@ -72,7 +79,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		Timer timer = new Timer(6, this);
 		timer.start();
 
-		
+
 
 		gameMap = new JGameMap();
 		player = new JHuman(new JGUIMapObject(player_front,player_back,superman,player_front),gameMap);
@@ -106,7 +113,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 				try {
 					g2d.drawImage(gameMap.at(i,j).getImage(),i*JGUIScreen.w_height/JGameMap.mapsize,j*JGUIScreen.w_width/JGameMap.mapsize,this);
 				} catch (Exception e) {
-					
+
 				}
 			}
 		}

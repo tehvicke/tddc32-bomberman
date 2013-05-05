@@ -9,6 +9,8 @@ import bman.frontend.gui.JGUIMapObject.Direction;
 public class JPlayer extends JMapObject {
 	private String playerName;
 	JGameMap map;
+	int active_bombs = 0;
+	int max_bombs = 2;
 	int [] lastMove = {0,0};
 
 	public JPlayer(JGUIMapObject sprite,JGameMap map) {
@@ -22,16 +24,24 @@ public class JPlayer extends JMapObject {
 	}
 	
 	public void putBomb() {
+		if (active_bombs >= max_bombs)
+			return;
 		int[] loc = map.find(this.hashCode());
-		System.out.println("x: " + loc[0] + " | y: " +loc[1]);
-		map.addObject(new JMapObject(new JGUIMapObject(JGUIGameMap.bomb_nofire)), loc[0]+lastMove[0], loc[1]+lastMove[1]);
-		System.out.println("kördes");
+		JBomb bomb = new JBomb(new JGUIMapObject(JGUIGameMap.bomb_nofire),map,this);
+		Thread t = new Thread(bomb, "t2");
+		map.addObject(bomb,loc[0]+lastMove[0], loc[1]+lastMove[1]);
+		t.start();
+		active_bombs++;
+	}
+	
+	public void detonated() {
+		active_bombs--;
 	}
 
 
 
 	/**
-	 * Moves the object and changes the sprite with appropriate direction
+	 * Moves the object and changes the sprite with appropriate direction, Lastmove så bomben kan läggas
 	 * @param dx
 	 * @param dy
 	 */

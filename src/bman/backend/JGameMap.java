@@ -10,7 +10,7 @@ import bman.frontend.gui.JGUIScreen;
  * Removed setsize as this does not need to be changed and can be done in the constructor
  */
 public class JGameMap {
-	public static int mapsize =15;
+	public static final int mapsize =15;
 	private JMapObject[][] gameMap;
 
 	public JGameMap() {
@@ -18,9 +18,10 @@ public class JGameMap {
 
 		//Creates default layout
 		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
+		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
 		for (int i = 0; i < 15; i++) {
-			addObject(new JMapObject(block),0,i);
-			addObject(new JMapObject(block),mapsize-1,i);
+			addObject(new JDestroyableBlock(dblock),0,i);
+			addObject(new JDestroyableBlock(dblock),mapsize-1,i);
 		}
 		for (int i = 0; i < 15; i++) {
 			addObject(new JMapObject(block),i,0);
@@ -87,7 +88,7 @@ public class JGameMap {
 		if (loc[0] != -1)
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
 	}
-	
+
 	public void remove(JMapObject obj) {
 		int [] loc = find(obj.hashCode());
 		if (loc[0] != -1)
@@ -103,5 +104,69 @@ public class JGameMap {
 	 */
 	public JMapObject at(int x, int y) {
 		return gameMap[x][y];
+	}
+
+
+	/**
+	 * Create an explosion centered at given coordinates and with specified radius
+	 * @param x center x coord
+	 * @param y center y coord
+	 * @param radius radius of the explosion
+	 */
+	public void explosion(int x, int y, int radius) {
+		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireCenter)), x, y);
+
+
+
+
+
+		for (int i = 1; i < radius ; i++) {
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			if (gameMap[x+i][y] instanceof JDestroyableBlock) {
+				removeObject(x+i,y);
+			}
+			if (gameMap[x][y+i] instanceof JDestroyableBlock) {
+				removeObject(x, y+i);
+			}
+
+			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireHoriz)), x+i, y);
+			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireVert)), x, y+i);
+			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireHoriz)), x-i, y);
+			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireVert)), x, y-i);
+		}
+		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireRight)),x+radius,y);
+		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireLeft)),x-radius,y);
+		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireUp)),x,y-radius);
+		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireDown)),x,y+radius);
+		try {
+			Thread.sleep(800);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		for (int i = radius; i >0 ; i--) {
+			if (gameMap[x+i][y] instanceof JDestroyableBlock || gameMap[x+i][y] instanceof JFire)
+				removeObject(x+i, y);
+			if (gameMap[x][y+i] instanceof JDestroyableBlock || gameMap[x][y+i] instanceof JFire)
+				removeObject(x, y+i);
+			if (gameMap[x-i][y] instanceof JDestroyableBlock || gameMap[x-i][y] instanceof JFire)
+				removeObject(x-i,y);
+			if (gameMap[x][y-i] instanceof JDestroyableBlock || gameMap[x][y-i] instanceof JFire)
+				removeObject(x, y-i);
+
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		removeObject(x, y);
 	}
 }
