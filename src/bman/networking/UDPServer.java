@@ -1,8 +1,10 @@
 package bman.networking;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -15,10 +17,12 @@ import java.net.InetAddress;
  */
 public class UDPServer implements UDPServerInterface, Runnable {
 
+	private boolean listen = true;
+	
 	/**
 	 * The number of clients to accept.
 	 */
-	private int numberOfClients = 2;
+	private int numberOfClients = 1;
 
 	/**
 	 * The server port.
@@ -40,7 +44,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 * @author viktordahl
 	 *
 	 */
-	private class Client {
+	public class Client {
 		public InetAddress addr;
 		public int hash;
 		public Client(int hash, InetAddress addr) {
@@ -101,9 +105,14 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	@Override
 	public void broadcastEvent(UDPEvent event) {
+		if (clients[0] == null) {
+			System.err.println("No clients are connected.");
+			return;
+		}
 		for (Client cli : clients) {
 			if (true || event.player_id != cli.hash) { // Ta bort true om det inte ska skickas till origin.
 				sendEvent(event, cli.hash);
+				System.out.println(event.type + " " + cli.hash);
 			}
 		}
 	}
@@ -114,7 +123,29 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 * @param client The client to send to.
 	 */
 	public void sendEvent(UDPEvent event, int client) {
-		(new Thread (new EventSender(event, getClient(client)))).start();
+		if (getClient(client) == null) {
+			System.err.println("Klient " + client + " finns inte. Skickar ej event.");
+			return;
+		}
+		try {
+			byte[] sendData = new byte[1024];
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(event);
+			oos.flush();
+			
+			sendData = baos.toByteArray(); // Serialize
+			DatagramPacket sendPacket = 
+					new DatagramPacket(sendData, sendData.length, getClient(client).addr, this.port + 1);
+			this.serverSocket.send(sendPacket);
+			
+			System.out.println("Sent event of type: " + event.type + ". Hash code: " + event.hashCode());				
+//			return true;
+		} catch (Exception e) {
+			System.err.println("Couldn't send event of type: " + event.type + ". Hash code: " + event.hashCode());
+		}
+		
 		
 	}
 
@@ -137,7 +168,28 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	@Override
 	public void eventListener() {
-		// TODO Auto-generated method stub
+		int count = 0;
+		while(listen) {
+			try {
+			byte[] receiveData = new byte[1024];
+			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			serverSocket.receive(receivePacket); // The server locks here until it recieves something.
+//			UDPEvent event = decode(receivePacket);
+			
+			ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
+			ObjectInputStream oosi = new ObjectInputStream(baosi);
+			baosi.close();
+			UDPEvent event = (UDPEvent) oosi.readObject();
+			oosi.close();
+			
+			System.out.println(event.type + " recieved from " + event.player_id);
+			broadcastEvent(event);
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println(count++);
+		}
 	}
 
 	/**
@@ -147,23 +199,10 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		try {
 			DatagramSocket serverSocket = new DatagramSocket(port);
 			byte[] receiveData = new byte[1024];
-			//			byte[] sendData = new byte[1024];
-			//			int count = 0;
 			while(true) {
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				serverSocket.receive(receivePacket);
 				UDPEvent event = decode(receivePacket);
-
-				System.out.println(event.name + " recieved. Type: " + event.type);
-
-				//	              InetAddress IPAddress = receivePacket.getAddress();
-				//	              int port = receivePacket.getPort();
-				////	              String capitalizedSentence = sentence.toUpperCase();
-				////	              sendData = capitalizedSentence.getBytes();
-				//	              sendData = receivePacket.getData();
-				//	              DatagramPacket sendPacket =
-				//	              new DatagramPacket(sendData, sendData.length, IPAddress, port);
-				//	              serverSocket.send(sendPacket);
 			}
 		} catch (Exception e) {
 			System.err.println("Couldn't create server.");
@@ -181,7 +220,10 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	private UDPEvent decode(DatagramPacket receivePacket) throws IOException, ClassNotFoundException {
 		ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
 		ObjectInputStream oosi = new ObjectInputStream(baosi);
-		return (UDPEvent) oosi.readObject();
+		baosi.close();
+		UDPEvent event = (UDPEvent) oosi.readObject();
+		oosi.close();
+		return event;
 	}
 
 
@@ -212,7 +254,16 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		private void sendEvent(UDPEvent event, InetAddress addr) {
 			byte[] sendData = new byte[1024];
 			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, addr, port);
+
+			
 			try {
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ObjectOutputStream oos = new ObjectOutputStream(baos);
+				oos.writeObject(event);
+				
+				oos.flush();
+				sendData = baos.toByteArray(); // Serialize
+				
 				serverSocket.send(sendPacket);
 				System.out.println("Event skickat. " + event.type + " Address: " + addr);
 			} catch (IOException e) {
