@@ -17,7 +17,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 
 
 	String serverip;
-	int playerHash;
+	public int playerHash;
 
 	int port = 3456;
 	public DatagramSocket clientSocket;

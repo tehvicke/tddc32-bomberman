@@ -9,6 +9,8 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import bman.backend.JGameMap;
+
 /**
  * The UDP Server class. Handles everything that has to do with connection
  * and such.
@@ -18,6 +20,7 @@ import java.net.InetAddress;
 public class UDPServer implements UDPServerInterface, Runnable {
 
 	private boolean listen = true;
+	private JGameMap gmap;
 	
 	/**
 	 * The number of clients to accept.
@@ -59,8 +62,9 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 * @param numberOfClients The number of clients the server shall wait for,
 	 * including the server itself.
 	 */
-	public UDPServer(int numberOfClients) {
+	public UDPServer(int numberOfClients, JGameMap gmap) {
 		this.numberOfClients = numberOfClients;
+		this.gmap = gmap;
 		this.clients = new Client[numberOfClients];
 		try {
 			serverSocket = new DatagramSocket(this.port);
@@ -96,6 +100,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			/* Adds the client hash if the eventtype is correct */
 			if (event.type == UDPEvent.Type.establish_connection) {
 				clients[clientsConnected++] = new Client(event.player_id, receivePacket.getAddress());
+				gmap.handleEvent(event);
 			}
 		}
 	}
@@ -183,6 +188,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			oosi.close();
 			
 			System.out.println(event.type + " recieved from " + event.player_id);
+			gmap.handleEvent(event);
 			broadcastEvent(event);
 			
 			} catch (Exception e) {
@@ -281,7 +287,9 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	@Override
 	public void run() {
+		System.out.println("innan");
 		waitForClients(numberOfClients);
+		System.out.println("apa");
 		eventListener();
 	}
 }
