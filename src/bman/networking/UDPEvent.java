@@ -1,7 +1,6 @@
 package bman.networking;
 
 import java.io.Serializable;
-import java.util.Random;
 
 public class UDPEvent implements UDPEventInterface, Serializable {
 	

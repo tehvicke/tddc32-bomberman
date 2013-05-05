@@ -1,6 +1,7 @@
 package bman.backend;
 
 import bman.backend.JMapObject;
+import bman.frontend.gui.JGUIMapObject;
 
 public class JBlock extends JMapObject{
 	private boolean isDestroyable=true;
@@ -10,5 +11,13 @@ public class JBlock extends JMapObject{
 	
 	public void destroy(){
 		
+	}
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public JBlock(JGUIMapObject sprite) {
+		super(sprite);
 	}
 }

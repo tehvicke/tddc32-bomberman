@@ -8,7 +8,7 @@ import bman.backend.JMapObject;
 
 
 /**
- * Underliggande behöver länkas in för verifiering av move, kan även behöva en ref till underliggande objekt
+ * 
  * @author petter
  *
  */
@@ -24,13 +24,7 @@ public class JGUIMapObject {
 	Image[] sprites;
 	Image active;
 
-	/**
-	 * 
-	 * @param obj
-	 */
-	public JGUIMapObject() {
-		
-	}
+
 	
 	public JGUIMapObject(String sprite) {
 		

@@ -37,6 +37,8 @@ public class JGUIScreen extends JFrame {
 		add(game);
 		this.setVisible(true);
 		setResizable(false);
+		setTitle("Bomberman");
+		
 	}
 
 

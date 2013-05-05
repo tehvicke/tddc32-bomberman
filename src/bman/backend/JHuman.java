@@ -11,11 +11,12 @@ import bman.frontend.gui.JGUIMapObject;
  */
 public class JHuman extends JPlayer{
 	//private enum keyMapping{};
-	int dx =  0;
-	int dy =  0;
 
-	public JHuman(JGUIMapObject obj, int x, int y) {
-		super(obj, x, y);
+
+
+	public JHuman(JGUIMapObject obj, JGameMap map) {
+		super(obj,map);
+		
 	}
 
 	/**
@@ -24,16 +25,20 @@ public class JHuman extends JPlayer{
 	 */
 	public void keypress(KeyEvent e) {
 		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_L) {
+			putBomb();
+			return;
+		}
 		int dx = 0;
 		int dy = 0;
 		if (key == KeyEvent.VK_LEFT) {
-			dx = -10;
+			dx = -1;
 		} else if (key == KeyEvent.VK_RIGHT) {
-			dx = 10;
+			dx = 1;
 		} else if (key == KeyEvent.VK_UP) {
-			dy = -10;
+			dy = -1;
 		} else if (key == KeyEvent.VK_DOWN) {
-			dy = 10;
+			dy = 1;
 		}
 		if (dx != 0 || dy != 0)
 			super.move(dx, dy);
