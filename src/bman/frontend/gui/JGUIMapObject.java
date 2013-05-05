@@ -4,69 +4,57 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
+import bman.backend.JMapObject;
+
 
 /**
- * Underliggande behöver länkas in för verifiering av move, kan även behöva en ref till underliggande objekt
+ * 
  * @author petter
  *
  */
 public class JGUIMapObject {
+	
+	public enum Direction {
+		DOWN,UP,LEFT,RIGHT;
+	}
 
 	/**
 	 * Members
 	 */
-
-	Image front;
-	Image back;
-	Image left;
-	Image right;
+	Image[] sprites;
 	Image active;
-	int x_pos;
-	int y_pos;
 
-	/**
-	 * 
-	 * @param frontsp
-	 * @param backsp
-	 * @param leftsp
-	 * @param rightsp
-	 * @param xpos
-	 * @param ypos
-	 */
-	public JGUIMapObject() {
-		
-	}
+
 	
-	public JGUIMapObject(String sprite, int xpos, int ypos) {
-		x_pos = xpos;
-		y_pos = ypos;
+	public JGUIMapObject(String sprite) {
+		
 		active = Toolkit.getDefaultToolkit().getImage(sprite);
 	}
-	public JGUIMapObject(String frontsp, String backsp, String leftsp, String rightsp, int xpos, int ypos) {
-		front = Toolkit.getDefaultToolkit().getImage(frontsp);
-		back = Toolkit.getDefaultToolkit().getImage(backsp);
-		left = Toolkit.getDefaultToolkit().getImage(leftsp);
-		right = Toolkit.getDefaultToolkit().getImage(rightsp);
-		active = front;
-		x_pos = xpos;
-		y_pos = ypos;
+	public JGUIMapObject(String frontsp, String backsp, String leftsp, String rightsp) {
+		sprites = new Image[4];
+		
+		sprites[0] = Toolkit.getDefaultToolkit().getImage(frontsp);
+		sprites[1] = Toolkit.getDefaultToolkit().getImage(backsp);
+		sprites[2]= Toolkit.getDefaultToolkit().getImage(leftsp);
+		sprites[3]= Toolkit.getDefaultToolkit().getImage(rightsp);
+		active = sprites[0];
+		
 
+	}
+	/**
+	 * Changes the MapObject to use appropriate sprite;
+	 * @param dir Enum containing move direction
+	 */
+	public void move(Direction dir) {
+		if (sprites != null) {
+		active = sprites[dir.ordinal()];
+		}
 	}
 
 
-	protected Image getImage() {
+	public Image getImage() {
 		return active;
 	}
-
-	protected int getX() {
-		return x_pos;
-	}
-	protected int getY() {
-		return y_pos;
-	}
-
-
-
 
 }
 

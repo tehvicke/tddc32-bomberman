@@ -234,10 +234,4 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		waitForClients(numberOfClients);
 		eventListener();
 	}
-	
-	
-	
-//	public int getClient(int hash) {
-		
-	}
 }
