@@ -7,7 +7,7 @@ public class UDPEvent implements UDPEventInterface, Serializable {
 
 	private static final long serialVersionUID = -7484069135812975169L;
 	public String name = "Event";
-	int player_id;
+	public int player_id;
 	String[] things;
 	public enum Type {
 		// Administrative
@@ -32,7 +32,7 @@ public class UDPEvent implements UDPEventInterface, Serializable {
 		bomb_explode,
 		misc
 	};
-	Type type;
+	public Type type;
 
 	public UDPEvent(Type type, int player_id) {
 		this.type = type;

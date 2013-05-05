@@ -6,6 +6,7 @@ import bman.backend.JPlayer;
 import bman.frontend.gui.JGUIGameMap;
 import bman.frontend.gui.JGUIMapObject;
 import bman.frontend.gui.JGUIScreen;
+import bman.networking.UDPServer;
 
 public class JBombermanUDPtesting {
 
@@ -17,6 +18,8 @@ public class JBombermanUDPtesting {
 		JGUIScreen guigamemap = new JGUIScreen(gameMap, player);
 		JPlayer player2 = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), gameMap);
 		
-		
+		UDPServer serv = new UDPServer(1,gameMap);
+		Thread t = new Thread(serv);
+		t.start();
 	}
 }
