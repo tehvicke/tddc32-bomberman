@@ -15,7 +15,11 @@ public class JGameMap {
 	private JMapObject[][] gameMap;
 	private JPlayer[] players;
 	int[] playerIDs = {-1,-1};
-
+	
+	
+	/**
+	 * Defaults constructor, creates JGameMap with default layout.
+	 */
 	public JGameMap() {
 		gameMap = new JMapObject[mapsize][mapsize];
 		players = new JPlayer[2];
@@ -33,6 +37,13 @@ public class JGameMap {
 		}
 	}
 	
+	/**
+	 * Adds a player to gameMap
+	 * @param player player mapobject to be added
+	 * @param id id of the player
+	 * @param x start x position
+	 * @param y start y position
+	 */
 	public void addPlayer(JPlayer player, int id, int x, int y) {
 		addObject(player, x, y);
 		if (playerIDs[0] == -1) {
@@ -61,7 +72,14 @@ public class JGameMap {
 			gameMap[x][y] = obj;
 		}
 	}
-
+	
+	/** Moves an object in the gameMap.
+	 * 
+	 * @param fromx x coord to move from
+	 * @param fromy y coord to move from
+	 * @param tox   x coord to move to
+	 * @param toy   y coord to move to
+	 */
 	public void moveObject(int fromx, int fromy, int tox, int toy) {
 		if (tox > mapsize-1 || toy > mapsize-1 || tox < 0 || toy < 0) {
 			return;
@@ -71,10 +89,15 @@ public class JGameMap {
 			gameMap[fromx][fromy] = null;
 		}
 	}
-
+	/**
+	 * Removes an object at a given coord
+	 * @param x x coord
+	 * @param y y coord
+	 */
 	public void removeObject(int x, int y) {
 		gameMap[x][y] = null;
 	}
+	
 	/**
 	 * Returns the position of a MapObject, if not found returns -1,-1
 	 * @param key hashcode of object, used as search key
@@ -95,9 +118,9 @@ public class JGameMap {
 	}
 
 	/**
-	 * Moves a player object 
-	 * @param dx 
-	 * @param dy
+	 * Relative move for a JMapObject in the gamemap
+	 * @param dx relative movement in x
+	 * @param dy relative movement in x
 	 * @param obj object to be moved
 	 */
 	public void move(int dx, int dy, JMapObject obj) {
@@ -106,6 +129,12 @@ public class JGameMap {
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
 	}
 	
+	/**
+	 * Relative move for player with id
+	 * @param dx relative movement in x
+	 * @param dy relative movement in y
+	 * @param id id of the player to move
+	 */
 	public void move(int dx, int dy, int id) {
 		if (playerIDs[0] == id) {
 			move(dx,dy,players[0]);
@@ -113,7 +142,10 @@ public class JGameMap {
 			move(dx,dy,players[1]);
 		}
 	}
-
+	/**
+	 * Removes specified object from gamemap
+	 * @param obj JMapObject to be removed
+	 */
 	public void remove(JMapObject obj) {
 		int [] loc = find(obj.hashCode());
 		if (loc[0] != -1)
@@ -140,10 +172,6 @@ public class JGameMap {
 	 */
 	public void explosion(int x, int y, int radius) {
 		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireCenter)), x, y);
-
-
-
-
 
 		for (int i = 1; i < radius ; i++) {
 			try {
@@ -204,6 +232,10 @@ public class JGameMap {
 		removeObject(x, y);
 	}
 	
+	/**
+	 * Method for handling event
+	 * @param event udpevent to be handled
+	 */
 	public void handleEvent(UDPEvent event) {
 		if (event.type == UDPEvent.Type.establish_connection) {
 			JPlayer player = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), this);
