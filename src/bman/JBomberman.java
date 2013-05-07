@@ -29,9 +29,9 @@ public class JBomberman {
 		clientThread.start();
 	}
 
-	public static void hostGame() {
+	public static void hostGame(int players) {
 //		JServer server = new JServer(); //fix
-		UDPServer server = new UDPServer(2, null); // Ska vara interfacet?
+		UDPServer server = new UDPServer(players, null); // Ska vara interfacet?
 		
 		
 		
@@ -52,14 +52,16 @@ public class JBomberman {
 		System.out.println("1) Join Game");
 		System.out.println("2) Host Game");
 		System.out.println("3) Exit Game");
+		System.out.println("4) Play alone (for testing)");
 		Scanner scan = new Scanner(System.in);
 		int x = Integer.parseInt(scan.nextLine());
 		scan.close();
 		
 		switch(x) {
 		case 1: joinGame(); break;
-		case 2: hostGame(); break;
-		case 3: System.exit(0); 
+		case 2: hostGame(2); break;
+		case 3: System.exit(0);
+		case 4: hostGame(1); break;
 		}
 
 
