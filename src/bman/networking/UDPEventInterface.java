@@ -19,6 +19,7 @@ public interface UDPEventInterface {
 		game_start,
 		player_join,
 		game_end,
+		game_map,
 		kick,
 		win,
 

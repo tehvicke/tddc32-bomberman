@@ -35,7 +35,7 @@ public class JClient implements Runnable{
 			startGame();
 
 			/* Positionen */
-			String[] args = {Integer.toString(3), Integer.toString(4)};		
+			String[] args = {Integer.toString(2), Integer.toString(10)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 			
 			
