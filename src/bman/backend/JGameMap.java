@@ -15,15 +15,15 @@ public class JGameMap {
 	private JMapObject[][] gameMap;
 	private JPlayer[] players;
 	int[] playerIDs = {-1,-1};
-	
-	
+
+
 	/**
 	 * Defaults constructor, creates JGameMap with default layout.
 	 */
 	public JGameMap() {
 		gameMap = new JMapObject[mapsize][mapsize];
 		players = new JPlayer[2];
-		
+
 		//Creates default layout
 		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
 		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
@@ -36,7 +36,7 @@ public class JGameMap {
 			addObject(new JMapObject(block),i,mapsize-1);
 		}
 	}
-	
+
 	/**
 	 * Adds a player to gameMap
 	 * @param player player mapobject to be added
@@ -55,9 +55,9 @@ public class JGameMap {
 			playerIDs[1] = id;
 		}
 	}
-	
 
-	
+
+
 	/**
 	 * Adds an JMapObject at the specified location in the gameMap
 	 * @param obj object to be added
@@ -72,7 +72,7 @@ public class JGameMap {
 			gameMap[x][y] = obj;
 		}
 	}
-	
+
 	/** Moves an object in the gameMap.
 	 * 
 	 * @param fromx x coord to move from
@@ -97,7 +97,7 @@ public class JGameMap {
 	public void removeObject(int x, int y) {
 		gameMap[x][y] = null;
 	}
-	
+
 	/**
 	 * Returns the position of a MapObject, if not found returns -1,-1
 	 * @param key hashcode of object, used as search key
@@ -128,7 +128,7 @@ public class JGameMap {
 		if (loc[0] != -1)
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
 	}
-	
+
 	/**
 	 * Relative move for player with id
 	 * @param dx relative movement in x
@@ -212,7 +212,7 @@ public class JGameMap {
 				removeObject(x-i,y);
 			if (gameMap[x][y-i] instanceof JDestroyableBlock || gameMap[x][y-i] instanceof JFire)
 				removeObject(x, y-i);
-			
+
 			if (gameMap[x+i][y] instanceof JBomb)
 				((JBomb)gameMap[x+i][y]).explode();
 			if (gameMap[x][y+i] instanceof JBomb)
@@ -231,7 +231,27 @@ public class JGameMap {
 		}
 		removeObject(x, y);
 	}
-	
+	/**
+	 * Check if a move is valid
+	 * @param id id of the moving player
+	 * @return true if empty
+	 */
+	public boolean validMove(int id, int dx, int dy) {
+		int[] loc;
+		if (id == playerIDs[0]) {
+			loc = find(players[0].hashCode());
+		} else {
+			loc = find(players[1].hashCode());
+		}
+		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
+		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
+		if (loc[0] != -1 && gameMap[loc[0]+dx][loc[1]+dy] == null) {
+			return true;
+		}
+		System.out.println("returnar false");
+		return false;
+	}
+
 	/**
 	 * Method for handling event
 	 * @param event udpevent to be handled
@@ -242,7 +262,7 @@ public class JGameMap {
 			player.setID(event.getOriginID());
 			addPlayer(player, player.getID(), 4, 4);
 		}
-		
+
 		if (event.type == UDPEvent.Type.player_move_up) {
 			move(0, -1, event.getOriginID());
 		}
@@ -256,9 +276,9 @@ public class JGameMap {
 			move(-1,0,event.getOriginID());
 		}
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }
