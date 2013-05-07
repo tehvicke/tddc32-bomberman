@@ -49,7 +49,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				new UDPEvent(
 						UDPEvent.Type.establish_connection, 
 						this.playerHash));
-		System.out.println("Connection request sent. Player ID: " + this.playerHash);
+		System.out.println("Klient: Connection request sent. Player ID: " + this.playerHash);
 	}
 
 	public void sendEvent(UDPEvent event) {
@@ -72,15 +72,15 @@ public class UDPClient implements UDPClientInterface, Runnable {
 							UDPClientInterface.port);
 			this.clientSocket.send(sendPacket);
 
-			System.out.println("Sent event of type: " + event.type + ". Hash code: " + event.hashCode());				
+			System.out.println("Klient: Sent event of type: " + event.type + ". Hash code: " + event.hashCode());				
 		} catch (Exception e) {
-			System.err.println("Couldn't send event of type: " + event.type + ". Hash code: " + event.hashCode());
+			System.err.println("Klient: Couldn't send event of type: " + event.type + ". Hash code: " + event.hashCode());
 		}
 	}
 
 	@Override
 	public void eventListener() {
-		System.out.println("Client eventlistener startad.");
+		System.out.println("Klient: Client eventlistener startad.");
 		while(true) {
 			try {
 				byte[] receiveData = new byte[1024];
@@ -91,7 +91,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
 				ObjectInputStream oosi = new ObjectInputStream(baosi);
 				UDPEvent event = (UDPEvent) oosi.readObject();
-				System.out.println(event.type + " recieved from " + event.getOriginID());
+				System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
 				
 				/* Updates the clients current event */
 				this.currentEvent = event;
@@ -122,7 +122,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 			this.eventFetched = true;
 			return this.currentEvent;
 		}
-		System.err.println("Skumt fel.");
+		System.err.println("Klient: Skumt fel.");
 		return null;
 	}
 }

@@ -33,21 +33,22 @@ public class JClient implements Runnable{
 	public void UDPEventHandler(UDPEvent event) {
 		if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
-			
-			
-			String[] args = {Integer.toString(1), Integer.toString(1)};
-			
+			/* Positionen */
+			String[] args = {Integer.toString(3), Integer.toString(4)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
-		
-		
-		
+			
+			
+
+			
 		}
 		if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
 		}
 		if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
+
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
+
 		}
 		if (event.type == UDPEventInterface.Type.player_move_up) {
 			movePlayer(event.getOriginID(), 0, -1);

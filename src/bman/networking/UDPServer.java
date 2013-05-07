@@ -99,20 +99,20 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	@Override
 	public void broadcastEvent(UDPEventInterface event) {
 		if (clients == null && clients[0] == null) {
-			System.err.println("No clients are connected.");
+			System.err.println("Server: No clients are connected.");
 			return;
 		}
 		for (Client cli : clients) {
 			if (true || event.getOriginID() != cli.hash) { // Ta bort true om det inte ska skickas till origin.
 				sendEvent(event, cli.hash);
-				System.out.println(event.getType() + " " + cli.hash);
+				System.out.println("Server: " + event.getType() + " sent to " + cli.hash);
 			}
 		}
 	}
 
 	public void sendEvent(UDPEventInterface event, int client) {
 		if (getClient(client) == null) {
-			System.err.println("Klient " + client + " finns inte. Skickar ej event.");
+			System.err.println("Server: Klient " + client + " finns inte. Skickar ej event.");
 			return;
 		}
 		try {
@@ -135,7 +135,11 @@ public class UDPServer implements UDPServerInterface, Runnable {
 															* client computer.
 														    */
 			this.serverSocket.send(sendPacket);
-			System.out.println("Sent event of type: " + event.getType() + ". Hash code: " + event.hashCode());				
+			System.out.println(
+					"Server: Sent event of type: " + 
+					event.getType() + 
+					". Hash code: " + event.hashCode() + 
+					"Origin: " + event.getOriginID());				
 		} catch (Exception e) {
 			System.err.println("Couldn't send event of type: " + event.getType() + ". Hash code: " + event.hashCode());
 		}
@@ -170,7 +174,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 				baosi.close(); /* May or may not be required to close the streams... */
 				oosi.close();
 				UDPEvent event = (UDPEvent) oosi.readObject();
-				System.out.println(event.getType() + " recieved from " + event.getOriginID());
+				System.out.println("Server: " + event.getType() + " recieved from " + event.getOriginID());
 
 				/* Sends the event to the game map to update it and make calculations etc. */
 //				gmap.handleEvent(event);
@@ -189,9 +193,9 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	@Override
 	public void run() {
-		System.out.println("Server thread started.");
+		System.out.println("Server: Thread started.");
 		waitForClients(); /* Wait for all clients to join */
-		System.out.println("after");
+		System.out.println("Server: Game starts");
 		
 		/* Broadcast start game event */
 		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));
@@ -213,7 +217,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		 * @param addr The IP address of the client.
 		 */
 		public Client(int hash, InetAddress addr) {
-			System.out.println("Klient skapad. Hash: " + hash + " Addr: " + addr.getHostAddress());
+			System.out.println("Server: Klient skapad. Hash: " + hash + " Addr: " + addr.getHostAddress());
 			this.hash = hash;
 			this.addr = addr;
 		}
