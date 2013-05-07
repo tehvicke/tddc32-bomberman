@@ -45,9 +45,7 @@ public class JClient implements Runnable{
 		}
 		if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
-
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
-
 		}
 		if (event.type == UDPEventInterface.Type.player_move_up) {
 			movePlayer(event.getOriginID(), 0, -1);

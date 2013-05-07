@@ -37,6 +37,13 @@ public class JGameMap {
 		}
 	}
 	
+	private void gameMapRow(int[] row) {
+		for (int i : row) {
+			if (i == 0) {
+			}
+		}
+	}
+	
 	/**
 	 * Adds a player to gameMap
 	 * @param player player mapobject to be added
