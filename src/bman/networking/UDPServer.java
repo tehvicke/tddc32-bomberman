@@ -203,7 +203,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		
 		String[] mapLayout = {
 				"sssssssssssssss",
-				"s             s",
+				"s             d",
 				"s             s",
 				"s             s",
 		        "s             s",
@@ -219,7 +219,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		        "sssssssssssssss"
 			};
 		
-//		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout));
+		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout));
 		
 		eventListener(); /* Start the event listener */
 	}
