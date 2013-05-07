@@ -9,13 +9,15 @@ import bman.frontend.gui.JGUIMapObject.Direction;
 public class JPlayer extends JMapObject {
 	private int playerid = 0;
 	JGameMap map;
+	JClient client;
 	int active_bombs = 0;
 	int max_bombs = 2;
 	int [] lastMove = {0,0};
 
-	public JPlayer(JGUIMapObject sprite,JGameMap map) {
+	public JPlayer(JGUIMapObject sprite,JGameMap map, JClient client) {
 		super(sprite);
 		this.map = map;
+		this.client = client;
 	}
 
 	public void setID(int playerid){
@@ -68,6 +70,6 @@ public class JPlayer extends JMapObject {
 			lastMove[1] = -1;
 		}
 
-		map.move(dx, dy, this);
+		client.sendMove(dx, dy);
 	}
 }

@@ -34,7 +34,7 @@ public class JClient implements Runnable{
 		if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
 			/* Positionen */
-			String[] args = {Integer.toString(3), Integer.toString(4)};		
+			String[] args = {Integer.toString(1), Integer.toString(1)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 			
 			
@@ -74,9 +74,24 @@ public class JClient implements Runnable{
 		if (id == this.id) {
 			gameMap.addPlayer(player, id, x, y);
 		} else {
-			gameMap.addPlayer(new JPlayer(JGUIGameMap.player2,gameMap), id, x, y);
+			gameMap.addPlayer(new JPlayer(JGUIGameMap.player2,gameMap,this), id, x, y);
 		}
 		
+	}
+	
+	protected void sendMove(int dx, int dy) {
+		if (dx > 0) {
+			client.sendEvent(new UDPEvent(Type.player_move_right, this.id));
+		}
+		if (dx < 0) {
+			client.sendEvent(new UDPEvent(Type.player_move_left, this.id));
+		}
+		if (dy > 0) {
+			client.sendEvent(new UDPEvent(Type.player_move_down, this.id));
+		}
+		if (dy < 0) {
+			client.sendEvent(new UDPEvent(Type.player_move_up, this.id));
+		}
 	}
 
 
@@ -88,7 +103,7 @@ public class JClient implements Runnable{
 	 */
 	private void startGame() {
 		gameMap = new JGameMap();
-		player = new JHuman(JGUIGameMap.player1, gameMap);
+		player = new JHuman(JGUIGameMap.player1, gameMap,this);
 		guiScreen = new JGUIScreen(gameMap, player);
 		
 	}

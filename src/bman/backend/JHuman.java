@@ -14,8 +14,8 @@ public class JHuman extends JPlayer{
 
 
 
-	public JHuman(JGUIMapObject obj, JGameMap map) {
-		super(obj,map);
+	public JHuman(JGUIMapObject obj, JGameMap map,JClient cclient) {
+		super(obj,map,cclient);
 		
 	}
 
