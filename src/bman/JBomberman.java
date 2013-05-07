@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import bman.backend.JClient;
 import bman.backend.JServer;
+import bman.networking.*;
 
 /**
  * The main application class. This is where the main function is and where
@@ -26,7 +27,8 @@ public class JBomberman {
 	}
 
 	public static void hostGame() {
-		JServer server = new JServer(); //fix
+//		JServer server = new JServer(); //fix
+		UDPServer server = new UDPServer(1, null); // Ska vara interfacet?
 		JClient client = new JClient("127.0.0.1","server");
 		Thread serverThread = new Thread(server);
 		Thread clientThread = new Thread(client);
