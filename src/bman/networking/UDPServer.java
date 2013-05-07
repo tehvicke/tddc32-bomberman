@@ -200,6 +200,27 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		/* Broadcast start game event */
 		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));
 		
+		
+		String[] mapLayout = {
+				"sssssssssssssss",
+				"s             d",
+				"s             s",
+				"s             s",
+		        "s             s",
+		        "s             s",
+		        "s             s",
+		        "s             s",
+		        "s ddd    d d  s",
+		        "s d d    d d  s",
+		        "s d d    ddd  s",
+		        "s             s",
+		        "s             s",
+		        "s             s",
+		        "sssssssssssssss"
+			};
+		
+		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout));
+		
 		eventListener(); /* Start the event listener */
 	}
 	

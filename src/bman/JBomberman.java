@@ -32,7 +32,12 @@ public class JBomberman {
 
 	public static void hostGame() {
 //		JServer server = new JServer(); //fix
-		UDPServer server = new UDPServer(2, null); // Ska vara interfacet?
+		UDPServer server = new UDPServer(1, null); // Ska vara interfacet?
+		
+		
+		
+		
+		
 		JClient client = new JClient("127.0.0.1","server");
 		Thread serverThread = new Thread(server);
 		Thread clientThread = new Thread(client);

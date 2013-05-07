@@ -42,7 +42,7 @@ public class JClient implements Runnable{
 			startGame();
 
 			/* Positionen */
-			String[] args = {Integer.toString(3), Integer.toString(4)};		
+			String[] args = {Integer.toString(2), Integer.toString(10)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 
 
@@ -80,7 +80,10 @@ public class JClient implements Runnable{
 		if (event.type == UDPEventInterface.Type.player_move_right) {
 			movePlayerRelative(event.getOriginID(), 1, 0);
 		}
-
+		switch (event.type){
+		case game_map:
+			
+		}
 	}
 	/**
 	 * Creates a player with id at specified location
