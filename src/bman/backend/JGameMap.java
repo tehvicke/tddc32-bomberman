@@ -104,7 +104,7 @@ public class JGameMap {
 
 	/** Moves an object in the gameMap.
 	 * 
-	 * @param fromx x coord to move from
+	 * @param fromx x coord to move from2
 	 * @param fromy y coord to move from
 	 * @param tox   x coord to move to
 	 * @param toy   y coord to move to
@@ -156,6 +156,16 @@ public class JGameMap {
 		int [] loc = find(obj.hashCode());
 		if (loc[0] != -1)
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
+	}
+	
+	public void absoluteMove(int dx, int dy, int id) {
+		int [] loc;
+		if (id == playerIDs[0]) {
+			loc = find(players[0].hashCode());
+		} else {
+			loc = find(players[1].hashCode());
+		}
+		moveObject(loc[0], loc[1],loc[0]+dx,loc[1]+dx);
 	}
 
 	/**
