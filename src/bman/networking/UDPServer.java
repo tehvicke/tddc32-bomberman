@@ -97,7 +97,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	}
 
 	@Override
-	public void broadcastEvent(UDPEvent event) {
+	public void broadcastEvent(UDPEventInterface event) {
 		if (clients[0] == null) {
 			System.err.println("No clients are connected.");
 			return;
@@ -105,12 +105,12 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		for (Client cli : clients) {
 			if (true || event.getOriginID() != cli.hash) { // Ta bort true om det inte ska skickas till origin.
 				sendEvent(event, cli.hash);
-				System.out.println(event.type + " " + cli.hash);
+				System.out.println(event.getType() + " " + cli.hash);
 			}
 		}
 	}
 
-	public void sendEvent(UDPEvent event, int client) {
+	public void sendEvent(UDPEventInterface event, int client) {
 		if (getClient(client) == null) {
 			System.err.println("Klient " + client + " finns inte. Skickar ej event.");
 			return;
@@ -118,6 +118,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		try {
 			byte[] sendData = new byte[1024];
 
+			/* Serialize event */
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(event);
@@ -134,14 +135,10 @@ public class UDPServer implements UDPServerInterface, Runnable {
 															* client computer.
 														    */
 			this.serverSocket.send(sendPacket);
-			
-			System.out.println("Sent event of type: " + event.type + ". Hash code: " + event.hashCode());				
-//			return true;
+			System.out.println("Sent event of type: " + event.getType() + ". Hash code: " + event.hashCode());				
 		} catch (Exception e) {
-			System.err.println("Couldn't send event of type: " + event.type + ". Hash code: " + event.hashCode());
+			System.err.println("Couldn't send event of type: " + event.getType() + ". Hash code: " + event.hashCode());
 		}
-		
-		
 	}
 
 	/**
@@ -192,12 +189,12 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	@Override
 	public void run() {
-		System.out.println("Server thread.");
-		System.out.println("before");
+		System.out.println("Server thread started.");
 		waitForClients(); /* Wait for all clients to join */
 		System.out.println("after");
 		
-//		UDPEvent game_start = new UDPEvent
+		/* Broadcast start game event */
+		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));
 		
 		eventListener(); /* Start the event listener */
 	}

@@ -1,5 +1,10 @@
 package bman.backend;
 
+/**
+ * Not used.
+ * @author viktordahl
+ *
+ */
 public class JGameClock implements Runnable{
 	private float count = 0;
 	
