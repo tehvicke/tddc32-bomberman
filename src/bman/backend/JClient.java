@@ -98,7 +98,8 @@ public class JClient implements Runnable{
 	}
 
 	protected void putBomb(int x, int y) {
-		client.sendEvent(new UDPEvent(Type.bomb_set, this.id));
+		String[] arg = {Integer.toString(x),Integer.toString(y)};
+		client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
 	}
 
 	protected void sendMove(int dx, int dy) {
