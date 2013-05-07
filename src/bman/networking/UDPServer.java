@@ -118,6 +118,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		try {
 			byte[] sendData = new byte[1024];
 
+			/* Serialize event */
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(event);
@@ -134,14 +135,10 @@ public class UDPServer implements UDPServerInterface, Runnable {
 															* client computer.
 														    */
 			this.serverSocket.send(sendPacket);
-			
 			System.out.println("Sent event of type: " + event.getType() + ". Hash code: " + event.hashCode());				
-//			return true;
 		} catch (Exception e) {
 			System.err.println("Couldn't send event of type: " + event.getType() + ". Hash code: " + event.hashCode());
 		}
-		
-		
 	}
 
 	/**

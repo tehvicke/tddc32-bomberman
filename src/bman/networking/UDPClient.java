@@ -14,7 +14,6 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	private UDPEvent currentEvent;
 	private boolean eventFetched = true;
 	
-	
 	/**
 	 * The server IP
 	 */
@@ -44,7 +43,6 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		}
 	}
 
-	@Override
 	public void establishConnection(String ip) {
 		this.serverip = ip;
 		sendEvent(
@@ -54,7 +52,6 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		System.out.println("Connection request sent. Player ID: " + this.playerHash);
 	}
 
-	@Override
 	public void sendEvent(UDPEvent event) {
 		try {
 			byte[] sendData = new byte[1024];
@@ -101,7 +98,6 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				this.eventFetched = false;
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -116,6 +112,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		eventListener();
 	}
 	
+	@Override
 	public boolean eventExists() {
 		return !eventFetched;
 	}
