@@ -20,7 +20,11 @@ public class JBomberman {
 	
 
 		System.out.println("Please give server IP: ");
+<<<<<<< HEAD
+		String ip = "192.168.0.197";
+=======
 		String ip = "192.168.0.101";
+>>>>>>> 84fdf0fd63443e4c8aa5e9fda8d2dbba9b9e0d0b
 		JClient client = new JClient(ip, "client");
 		Thread clientThread = new Thread(client);
 		clientThread.start();
