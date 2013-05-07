@@ -80,10 +80,12 @@ public class JClient implements Runnable{
 		if (event.type == UDPEventInterface.Type.player_move_right) {
 			movePlayerRelative(event.getOriginID(), 1, 0);
 		}
-//		switch (event.type){
-//		case game_map:
-//			
-//		}
+		if (event.type == UDPEventInterface.Type.game_map) {
+			String[] args = event.getArguments();
+			for (int i = 0; i < 15; i++) {
+				gameMap.addMapRow(args[i], i);
+			}
+		}
 	}
 	/**
 	 * Creates a player with id at specified location

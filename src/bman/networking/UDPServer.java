@@ -112,7 +112,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		for (Client cli : clients) {
 			if (true || event.getOriginID() != cli.hash) { // Ta bort true om det inte ska skickas till origin.
 				sendEvent(event, cli.hash);
-				System.out.println("Server: " + event.getType() + " sent to " + cli.hash);
+//				System.out.println("Server: " + event.getType() + " sent to " + cli.hash);
 			}
 		}
 		broadcasts_sent++;

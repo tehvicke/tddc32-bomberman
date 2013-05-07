@@ -53,7 +53,7 @@ public class JGameMap {
 //		gameMapRow("sssssssssssssss", 14);
 	}
 
-	private void gameMapRow(String row, int rowIndex) {
+	public void addMapRow(String row, int rowIndex) {
 		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
 		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
 		
@@ -282,12 +282,12 @@ public class JGameMap {
 		} else {
 			loc = find(players[1].hashCode());
 		}
-		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
-		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
+//		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
+//		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
 		if (loc[0] != -1 && gameMap[loc[0]+dx][loc[1]+dy] == null) {
 			return true;
 		}
-		System.out.println("returnar false");
+//		System.out.println("returnar false");
 		return false;
 	}
 
