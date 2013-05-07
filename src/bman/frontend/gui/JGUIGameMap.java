@@ -57,6 +57,9 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	/****************************************************************************************************/
 	public static JGUIMapObject solidBlockGUI = new JGUIMapObject(solidBlock);
 	public static JGUIMapObject destroyableBlockGUI = new JGUIMapObject(destroyableBlock);
+	public static JGUIMapObject bomb = new JGUIMapObject(bomb_fire);
+	public static JGUIMapObject player1 = new JGUIMapObject(superman);
+	public static JGUIMapObject player2 = new JGUIMapObject(player_front);
 
 
 

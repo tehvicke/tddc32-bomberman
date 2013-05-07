@@ -1,13 +1,10 @@
 package bman.backend;
 
-import java.util.Scanner;
-
 import bman.frontend.gui.JGUIGameMap;
-import bman.frontend.gui.JGUIMapObject;
 import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPClient;
 import bman.networking.UDPEvent;
-import bman.networking.UDPEvent.Type;
+import bman.networking.UDPEventInterface;
 
 public class JClient implements Runnable{
 	private String playername;
@@ -33,22 +30,61 @@ public class JClient implements Runnable{
 	}
 
 	public void UDPEventHandler(UDPEvent event) {
-		if (event.type == Type.game_start) {
+		if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
 		}
-		if (event.type == Type.game_end) {
+		if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
 		}
+		if (event.type == UDPEventInterface.Type.player_join) {
+			String[] arg = event.getArguments();
+			addPlayer(id,Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
+		}
+		if (event.type == UDPEventInterface.Type.player_move_up) {
+			movePlayer(event.getOriginID(), 0, -1);
+		}
+		if (event.type == UDPEventInterface.Type.player_move_down) {
+			movePlayer(event.getOriginID(), 0, 1);
+		}
+		if (event.type == UDPEventInterface.Type.player_move_left) {
+			movePlayer(event.getOriginID(), -1, 0);
+		}
+		if (event.type == UDPEventInterface.Type.player_move_right) {
+			movePlayer(event.getOriginID(), 1, 0);
+		}
+		
+	}
+	/**
+	 * Creates a player with id at specified location
+	 * @param id2
+	 * @param x
+	 * @param y
+	 */
+	private void addPlayer(int id, int x, int y) {
+		if (id == this.id) {
+			gameMap.addPlayer(player, id, x, y);
+		} else {
+			gameMap.addPlayer(new JPlayer(JGUIGameMap.player2,gameMap), id, x, y);
+		}
+		
 	}
 
+
+
+	/**
+	 * Creates a game
+	 * @param x Starting x position
+	 * @param y Starting y position
+	 */
 	private void startGame() {
 		gameMap = new JGameMap();
-		player = new JHuman(new JGUIMapObject(JGUIGameMap.superman), gameMap);
+		player = new JHuman(JGUIGameMap.player1, gameMap);
 		guiScreen = new JGUIScreen(gameMap, player);
-		guiScreen.toFront();
-		guiScreen.repaint();
-		gameMap.addPlayer(player, id, 1, 1);
-
+		
+	}
+	
+	private void movePlayer(int id, int dx, int dy) {
+		gameMap.move(dx, dy, id);
 	}
 
 
@@ -56,12 +92,25 @@ public class JClient implements Runnable{
 	@Override
 	public void run() {
 		client.establishConnection(serverIP);
-		startGame();
-		//		while(true) {
-		//			if (client.eventExists()) {
-		//				UDPEventHandler(client.getEvent());
-		//			}
-		//		}
+		//Test code
+//		UDPEventHandler(new UDPEvent(UDPEventInterface.Type.game_start, 0));
+//		String [] apa = {"1","1"};
+//		UDPEventHandler(new UDPEvent(UDPEventInterface.Type.player_join,this.id,apa));
+//		for (int i = 0; i < 3 ; i++) {
+//			UDPEventHandler(new UDPEvent(UDPEventInterface.Type.player_move_right, this.id));
+//		}
+				while(true) {
+					if (client.eventExists()) {
+						UDPEventHandler(client.getEvent());
+					}
+					try {
+						Thread.sleep(2);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
 
 
 	}

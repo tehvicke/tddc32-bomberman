@@ -17,6 +17,7 @@ public interface UDPEventInterface {
 //		scan_for_open_connections,
 		establish_connection,
 		game_start,
+		player_join,
 		game_end,
 		kick,
 		win,

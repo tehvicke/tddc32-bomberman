@@ -239,21 +239,21 @@ public class JGameMap {
 	public void handleEvent(UDPEvent event) {
 		if (event.type == UDPEvent.Type.establish_connection) {
 			JPlayer player = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), this);
-			player.setID(event.player_id);
+			player.setID(event.getOriginID());
 			addPlayer(player, player.getID(), 4, 4);
 		}
 		
 		if (event.type == UDPEvent.Type.player_move_up) {
-			move(0, -1, event.player_id);
+			move(0, -1, event.getOriginID());
 		}
 		if (event.type == UDPEvent.Type.player_move_down) {
-			move(0, 1, event.player_id);
+			move(0, 1, event.getOriginID());
 		}
 		if (event.type == UDPEvent.Type.player_move_right) {
-			move(1, 0, event.player_id);
+			move(1, 0, event.getOriginID());
 		}
 		if (event.type == UDPEvent.Type.player_move_left) {
-			move(-1,0,event.player_id);
+			move(-1,0,event.getOriginID());
 		}
 	}
 	

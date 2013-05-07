@@ -4,9 +4,6 @@ import java.util.Scanner;
 
 import bman.backend.JClient;
 import bman.backend.JServer;
-import bman.networking.UDPClient;
-import bman.networking.UDPEvent;
-import bman.networking.UDPEvent.Type;
 
 /**
  * The main application class. This is where the main function is and where
