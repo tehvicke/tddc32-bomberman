@@ -8,12 +8,14 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 public class UDPClient implements UDPClientInterface, Runnable {
 
 	// Testing
 	int events_sent = 0;
 	int events_received = 0;
+	ArrayList<UDPEvent> eventQueue;
 	
 	
 	private UDPEvent currentEvent;
@@ -41,6 +43,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	public UDPClient(String addr) {
 		this.playerHash = this.hashCode();
 		this.serverip = addr;
+		this.eventQueue = new ArrayList<UDPEvent>();
 		try {
 			clientSocket = new DatagramSocket(3457);
 		} catch (SocketException e) {
@@ -97,12 +100,20 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
 				ObjectInputStream oosi = new ObjectInputStream(baosi);
 				UDPEvent event = (UDPEvent) oosi.readObject();
-//				System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
+				System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
 				
 				/* Updates the clients current event */
-				this.currentEvent = event;
+//				this.currentEvent = event;
+//				this.eventFetched = false;
+				
+				
+				this.eventQueue.add(event);
 				this.eventFetched = false;
-				System.out.println("Klient: Skickade: " + events_sent + " Mottaget: " + events_received++);
+				System.out.println(eventQueue.toString());
+				
+				
+				
+				System.out.println("Klient: Skickade: " + events_sent + " Mottaget: " + events_received++ + " EQ: " + eventQueue.size());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -120,15 +131,21 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	
 	@Override
 	public boolean eventExists() {
-		return !eventFetched;
+		return !eventQueue.isEmpty();
 	}
 	
 	public UDPEvent getEvent() {
-		if (!eventFetched) {
-			this.eventFetched = true;
-			return this.currentEvent;
+//		if (!eventFetched) {
+//			this.eventFetched = true;
+//			return this.currentEvent;
+//		}
+//		System.err.println("Klient: Skumt fel.");
+//		return null;
+		
+		if (!eventQueue.isEmpty()) {
+			System.err.println("Removed " + this.eventQueue.get(0).toString());
+			return this.eventQueue.remove(0);
 		}
-		System.err.println("Klient: Skumt fel.");
 		return null;
 	}
 }

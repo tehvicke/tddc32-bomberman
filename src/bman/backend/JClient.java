@@ -1,5 +1,7 @@
 package bman.backend;
 
+import com.sun.tools.javac.util.Log;
+
 import bman.frontend.gui.JGUIGameMap;
 import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPClient;
@@ -33,6 +35,7 @@ public class JClient implements Runnable{
 	}
 
 	public void UDPEventHandler(UDPEvent event) {
+		System.err.println("Event handled: " + event.toString());
 		
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
@@ -42,7 +45,7 @@ public class JClient implements Runnable{
 			startGame();
 
 			/* Positionen */
-			String[] args = {Integer.toString(2), Integer.toString(10)};		
+			String[] args = {Integer.toString(3), Integer.toString(3)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 
 
@@ -81,9 +84,11 @@ public class JClient implements Runnable{
 			movePlayerRelative(event.getOriginID(), 1, 0);
 		}
 		if (event.type == UDPEventInterface.Type.game_map) {
+			System.out.println("LOL");
 			String[] args = event.getArguments();
 			for (int i = 0; i < 15; i++) {
 				gameMap.addMapRow(args[i], i);
+				System.out.println(args[i] + ", " + i);
 			}
 		}
 	}
@@ -196,7 +201,7 @@ public class JClient implements Runnable{
 				UDPEventHandler(client.getEvent());
 			}
 			try {
-				Thread.sleep(2);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
