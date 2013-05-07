@@ -13,7 +13,14 @@ public class JBombermanUDPtesting {
 	public static void main(String[] args) {
 
 		JGameMap gameMap = new JGameMap();
-		JHuman player = new JHuman(new JGUIMapObject(JGUIGameMap.player_front,JGUIGameMap.player_back,JGUIGameMap.superman,JGUIGameMap.player_front),gameMap);
+		JHuman player = 
+				new JHuman(
+						new JGUIMapObject(
+								JGUIGameMap.player_front,
+								JGUIGameMap.player_back,
+								JGUIGameMap.superman,
+								JGUIGameMap.player_front),
+								gameMap);
 		gameMap.addPlayer(player, 5,1,1);
 		JGUIScreen guigamemap = new JGUIScreen(gameMap, player);
 		JPlayer player2 = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), gameMap);

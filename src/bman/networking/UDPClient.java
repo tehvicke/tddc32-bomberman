@@ -9,18 +9,27 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-
-import bman.networking.UDPEvent.Type;
 
 public class UDPClient implements UDPClientInterface, Runnable {
 
+	private UDPEvent currentEvent;
+	private boolean eventFetched = true;
+	
+	
+	/**
+	 * The server IP
+	 */
+	private String serverip;
 
-	String serverip;
-	public int playerHash;
+	/**
+	 * The unique player identifier hash
+	 */
+	private int playerHash;
 
-	int port = 3456;
-	public DatagramSocket clientSocket;
+	/**
+	 * The client socket
+	 */
+	private DatagramSocket clientSocket;
 
 	/**
 	 * Constructor for the UDP Client. Creates a unique hash for the player and
@@ -28,97 +37,73 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	 */
 	public UDPClient(String addr) {
 		this.playerHash = this.hashCode();
+		this.serverip = addr;
 		try {
 			clientSocket = new DatagramSocket(3457);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * Skipped.
-	 */
+
 	@Override
-	public void listActiveServers() {
-		// TODO Auto-generated method stub
+	public void establishConnection(String ip) {
+		this.serverip = ip;
+		sendEvent(
+				new UDPEvent(
+						UDPEvent.Type.establish_connection, 
+						this.playerHash));
+		System.out.println("Connection request sent. Player ID: " + this.playerHash);
 	}
 
-	/**
-	 * "Joins" the server. 
-	 * @return True if connection was established.
-	 */
 	@Override
-	public boolean establishConnection(String ip) {
-		try {
-			this.serverip = ip;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		if (sendEvent(new UDPEvent(UDPEvent.Type.establish_connection, this.playerHash))) {
-			System.out.println("Anslutning etablerad. Hash: " + this.playerHash);
-			return true;
-		} else {
-			System.err.println("Couldn't establish connection.");
-			return false;
-		}
-	}
-
-	/**
-	 * Sends an event.
-	 */
-	@Override
-	public boolean sendEvent(UDPEvent event) {
+	public void sendEvent(UDPEvent event) {
 		try {
 			byte[] sendData = new byte[1024];
 
+			/* Serializes object */
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(event);
 			oos.flush();
-			
 			sendData = baos.toByteArray(); // Serialize
-			DatagramPacket sendPacket = 
-					new DatagramPacket(sendData, sendData.length, InetAddress.getByName(this.serverip), this.port);
-			this.clientSocket.send(sendPacket);
 			
+			/* Send packet */
+			DatagramPacket sendPacket = 
+					new DatagramPacket(
+							sendData, 
+							sendData.length, 
+							InetAddress.getByName(this.serverip), 
+							UDPClientInterface.port);
+			this.clientSocket.send(sendPacket);
+
 			System.out.println("Sent event of type: " + event.type + ". Hash code: " + event.hashCode());				
-			return true;
 		} catch (Exception e) {
 			System.err.println("Couldn't send event of type: " + event.type + ". Hash code: " + event.hashCode());
 		}
-		return false;
 	}
 
-	/**
-	 * Implement later.
-	 */
 	@Override
 	public void eventListener() {
-		System.out.println("Eventlistener startad.");
-		int count = 0;
+		System.out.println("Client eventlistener startad.");
 		while(true) {
 			try {
-			byte[] receiveData = new byte[1024];
-			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			clientSocket.receive(receivePacket); // The server locks here until it recieves something.
-			UDPEvent event = decode(receivePacket);
-			System.out.println(event.type + " recieved from " + event.player_id);
-			
+				byte[] receiveData = new byte[1024];
+				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+				clientSocket.receive(receivePacket); // The server locks here until it receives something.
+				UDPEvent event = decode(receivePacket);
+				System.out.println(event.type + " recieved from " + event.getOriginID());
+				
+				/* Updates the clients current event */
+				this.currentEvent = event;
+				this.eventFetched = false;
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(count++);
 		}
-
-	}
-	@Override
-	public void testClient() {
-		// TODO Auto-generated method stub
-		
 	}
 
-	
 	/** 
 	 * Privat funktion som dekodar en serialiserad byte-array och returnerar ett UDPEvent.
 	 * @param receivePacket Mottaget paket.
@@ -136,6 +121,17 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		establishConnection(this.serverip);
 		eventListener();
 	}
-
 	
+	public boolean eventExists() {
+		return !eventFetched;
+	}
+	
+	public UDPEvent getEvent() {
+		if (!eventFetched) {
+			this.eventFetched = true;
+			return this.currentEvent;
+		}
+		System.err.println("Skumt fel.");
+		return null;
+	}
 }

@@ -23,6 +23,10 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 * Whether the listener shall be active or not. Default: Always active.
 	 */
 	private boolean listen = true;
+	
+	/**
+	 * The JGameMap object
+	 */
 	private JGameMap gmap;
 	
 	/**
@@ -31,21 +35,14 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	private int numberOfClients;
 
 	/**
-	 * The server port.
-	 */
-	private int port = 3456;
-
-	/**
 	 * The server socket.
 	 */
-	public DatagramSocket serverSocket;
+	private DatagramSocket serverSocket;
 
 	/**
 	 * An array with all the clients.
 	 */
-	public Client[] clients;
-
-
+	private Client[] clients;
 
 	/**
 	 * Constructor for the server.
@@ -57,28 +54,30 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		this.gmap = gmap;
 		this.clients = new Client[numberOfClients];
 		try {
-			serverSocket = new DatagramSocket(this.port);
+			serverSocket = new DatagramSocket(UDPServerInterface.port);
 		} catch (Exception e) {
-			System.err.println("Problem konstruktor.");
+			System.err.println("Problem UDPServer constructor.");
 		}
 	}
 
-	/**
-	 * Waits for events of the type "establish_connection". Creates a Client-object
-	 * that stores the client hash and ip address.
-	 * @param The number of clients to wait for.
-	 */
 	@Override
-	public void waitForClients(int number) {
+	public void waitForClients() {
 		int clientsConnected = 0;
-		/* Loops until all clients is connected. */
+		/* Loops until all clients are connected. */
 		while(clientsConnected < this.numberOfClients) {
 			byte[] receiveData = new byte[1024];
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			UDPEvent event;
 			try {
+				/* Waits for packet */
 				serverSocket.receive(receivePacket);
-				event = decode(receivePacket);
+				
+				/* Decodes string of bytes to an object */
+				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
+				ObjectInputStream oosi = new ObjectInputStream(baosi);
+				baosi.close();
+				oosi.close();
+				event = (UDPEvent) oosi.readObject();
 			} catch (IOException e) {
 				e.printStackTrace();
 				continue;
@@ -89,15 +88,14 @@ public class UDPServer implements UDPServerInterface, Runnable {
 
 			/* Adds the client hash if the eventtype is correct */
 			if (event.type == UDPEvent.Type.establish_connection) {
-				clients[clientsConnected++] = new Client(event.player_id, receivePacket.getAddress());
+				clients[clientsConnected++] = new Client(event.getOriginID(), receivePacket.getAddress());
 				gmap.handleEvent(event);
+			} else {
+				System.err.println("Wrong type of event. " + event.type);
 			}
 		}
 	}
 
-	/**
-	 * Sends an event to all active clients, threaded.
-	 */
 	@Override
 	public void broadcastEvent(UDPEvent event) {
 		if (clients[0] == null) {
@@ -105,18 +103,13 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			return;
 		}
 		for (Client cli : clients) {
-			if (true || event.player_id != cli.hash) { // Ta bort true om det inte ska skickas till origin.
+			if (true || event.getOriginID() != cli.hash) { // Ta bort true om det inte ska skickas till origin.
 				sendEvent(event, cli.hash);
 				System.out.println(event.type + " " + cli.hash);
 			}
 		}
 	}
 
-	/**
-	 * Sends an event to a specific client.
-	 * @param event The event to send.
-	 * @param client The client to send to.
-	 */
 	public void sendEvent(UDPEvent event, int client) {
 		if (getClient(client) == null) {
 			System.err.println("Klient " + client + " finns inte. Skickar ej event.");
@@ -132,7 +125,14 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			
 			sendData = baos.toByteArray(); // Serialize
 			DatagramPacket sendPacket = 
-					new DatagramPacket(sendData, sendData.length, getClient(client).addr, this.port + 1);
+					new DatagramPacket(
+							sendData, 
+							sendData.length, 
+							getClient(client).addr, 
+							UDPServerInterface.port + 1);  /* Sends to 3457 as is where the clients listens.
+															* This for allowing a server to be run on a 
+															* client computer.
+														    */
 			this.serverSocket.send(sendPacket);
 			
 			System.out.println("Sent event of type: " + event.type + ". Hash code: " + event.hashCode());				
@@ -145,10 +145,10 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	}
 
 	/**
-	 * Privat funktion fšr att fŒ ut klienten frŒn en hash.
-	 * @return
+	 * Private function for getting a client hash.
+	 * @return The client object.
 	 */
-	public Client getClient(int hash) {
+	private Client getClient(int hash) {
 		for (Client cli : clients) {
 			if (cli.hash == hash) {
 				return cli;
@@ -157,70 +157,34 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		return null;
 	}
 
-	/**
-	 * Denna lyssnar efter events och loopar genom en if-sats fšr att veta vad som ska hŠnda.
-	 * Denna ska kšras hela tiden nŠr gamet Šr startat.
-	 */
 	@Override
 	public void eventListener() {
-		int count = 0;
 		while(listen) {
 			try {
-			byte[] receiveData = new byte[1024];
-			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			serverSocket.receive(receivePacket); // The server locks here until it recieves something.
-//			UDPEvent event = decode(receivePacket);
-			
-			ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
-			ObjectInputStream oosi = new ObjectInputStream(baosi);
-			baosi.close();
-			UDPEvent event = (UDPEvent) oosi.readObject();
-			
-			oosi.close();
-			
-			System.out.println(event.type + " recieved from " + event.player_id);
-			gmap.handleEvent(event);
-			broadcastEvent(event);
-			
+				byte[] receiveData = new byte[1024];
+				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+				
+				/* The server locks here until it recieves something. */
+				serverSocket.receive(receivePacket); 
+
+				/* Here the stream of bytes are decoded into an event object. */
+				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData());
+				ObjectInputStream oosi = new ObjectInputStream(baosi);
+				baosi.close(); /* May or may not be required to close the streams... */
+				oosi.close();
+				UDPEvent event = (UDPEvent) oosi.readObject();
+				System.out.println(event.getType() + " recieved from " + event.getOriginID());
+
+				/* Sends the event to the game map to update it and make calculations etc. */
+				gmap.handleEvent(event);
+
+				/* Send the event to all clients. It shall not send all events so some critera will be added */
+				broadcastEvent(event);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println(count++);
 		}
-	}
-
-	/**
-	 * Testserver. Ska tas bort.
-	 */
-	public void testServer() {
-		try {
-			DatagramSocket serverSocket = new DatagramSocket(port);
-			byte[] receiveData = new byte[1024];
-			while(true) {
-				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-				serverSocket.receive(receivePacket);
-				UDPEvent event = decode(receivePacket);
-			}
-		} catch (Exception e) {
-			System.err.println("Couldn't create server.");
-			System.exit(1);
-		}
-	}
-
-	/**
-	 * Privat funktion som dekodar en serialiserad byte-array och returnerar ett UDPEvent.
-	 * @param receivePacket Mottaget paket.
-	 * @return Det mottagna eventet.
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 */
-	private UDPEvent decode(DatagramPacket receivePacket) throws IOException, ClassNotFoundException {
-		ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
-		ObjectInputStream oosi = new ObjectInputStream(baosi);
-		baosi.close();
-		UDPEvent event = (UDPEvent) oosi.readObject();
-		oosi.close();
-		return event;
 	}
 
 	/**
@@ -228,12 +192,15 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	@Override
 	public void run() {
+		System.out.println("Server thread.");
 		System.out.println("before");
-		waitForClients(numberOfClients); /* Wait for all clients to join */
+		waitForClients(); /* Wait for all clients to join */
 		System.out.println("after");
+		
+//		UDPEvent game_start = new UDPEvent
+		
 		eventListener(); /* Start the event listener */
 	}
-
 	
 	/**
 	 * Private class that stores hash and ip address
