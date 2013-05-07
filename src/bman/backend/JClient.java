@@ -35,7 +35,7 @@ public class JClient implements Runnable{
 			startGame();
 
 			/* Positionen */
-			String[] args = {Integer.toString(1), Integer.toString(1)};		
+			String[] args = {Integer.toString(3), Integer.toString(4)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 			
 			
@@ -77,6 +77,10 @@ public class JClient implements Runnable{
 	}
 	
 	protected void sendMove(int dx, int dy) {
+		if (!gameMap.validMove(this.id,dx,dy)) {
+			System.out.println("klient har id: " + this.id);
+			return;
+		}
 		if (dx > 0) {
 			client.sendEvent(new UDPEvent(Type.player_move_right, this.id));
 		}
