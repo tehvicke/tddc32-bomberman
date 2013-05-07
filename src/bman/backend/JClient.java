@@ -33,6 +33,11 @@ public class JClient implements Runnable{
 	}
 
 	public void UDPEventHandler(UDPEvent event) {
+		
+		if (event.type == UDPEventInterface.Type.player_move) {
+			String [] args = event.getArguments();
+			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+		}
 		if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
 
@@ -64,16 +69,16 @@ public class JClient implements Runnable{
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
 		}
 		if (event.type == UDPEventInterface.Type.player_move_up) {
-			movePlayer(event.getOriginID(), 0, -1);
+			movePlayerRelative(event.getOriginID(), 0, -1);
 		}
 		if (event.type == UDPEventInterface.Type.player_move_down) {
-			movePlayer(event.getOriginID(), 0, 1);
+			movePlayerRelative(event.getOriginID(), 0, 1);
 		}
 		if (event.type == UDPEventInterface.Type.player_move_left) {
-			movePlayer(event.getOriginID(), -1, 0);
+			movePlayerRelative(event.getOriginID(), -1, 0);
 		}
 		if (event.type == UDPEventInterface.Type.player_move_right) {
-			movePlayer(event.getOriginID(), 1, 0);
+			movePlayerRelative(event.getOriginID(), 1, 0);
 		}
 //		switch (event.type){
 //		case game_map:
@@ -102,7 +107,7 @@ public class JClient implements Runnable{
 		client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
 	}
 
-	protected void sendMove(int dx, int dy) {
+	protected void sendMoveRelative(int dx, int dy) {
 		if (!gameMap.validMove(this.id,dx,dy)) {
 			System.out.println("klient har id: " + this.id);
 			return;
@@ -120,6 +125,18 @@ public class JClient implements Runnable{
 			client.sendEvent(new UDPEvent(Type.player_move_up, this.id));
 		}
 	}
+	
+	protected void sendMove(int dx, int dy) {
+		if (!gameMap.validMove(this.id, dx, dy)) {
+			return;
+		}
+		int [] loc = gameMap.find(player.hashCode());
+		String[] arg = {Integer.toString(loc[0]+dx),Integer.toString(loc[1]+dy)};
+		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_move, this.id,arg));
+		
+	}
+	
+	
 
 
 
@@ -135,8 +152,23 @@ public class JClient implements Runnable{
 
 	}
 
-	private void movePlayer(int id, int dx, int dy) {
+	private void movePlayerRelative(int id, int dx, int dy) {
 		gameMap.move(dx, dy, id);
+	}
+	
+	private void movePlayer(int id, int x, int y) {
+		
+		if (gameMap.at(x, y) != null) {
+			return;
+		}
+		
+		if (id == this.id) {
+			gameMap.remove(player);
+			gameMap.addObject(player, x, y);
+		} else {
+			gameMap.remove(player_2);
+			gameMap.addObject(player_2, x, y);
+		}
 	}
 
 
