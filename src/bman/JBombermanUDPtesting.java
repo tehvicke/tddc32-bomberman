@@ -20,10 +20,10 @@ public class JBombermanUDPtesting {
 								JGUIGameMap.player_back,
 								JGUIGameMap.superman,
 								JGUIGameMap.player_front),
-								gameMap);
+								gameMap, null);
 		gameMap.addPlayer(player, 5,1,1);
 		JGUIScreen guigamemap = new JGUIScreen(gameMap, player);
-		JPlayer player2 = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), gameMap);
+		JPlayer player2 = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), gameMap, null);
 		
 		UDPServer serv = new UDPServer(1,gameMap);
 		Thread t = new Thread(serv);
