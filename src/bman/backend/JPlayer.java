@@ -70,6 +70,6 @@ public class JPlayer extends JMapObject {
 			lastMove[0] = 0;
 			lastMove[1] = -1;
 		}
-		client.sendMove(dx, dy);
+		client.sendMoveRelative(dx, dy);
 	}
 }
