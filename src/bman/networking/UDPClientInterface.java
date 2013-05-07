@@ -2,23 +2,26 @@ package bman.networking;
 
 public interface UDPClientInterface {
 	
-	
 	/**
-	 * Scans the subnet for active servers
+	 * The port of the server
 	 */
-	public void listActiveServers();
+	public static int port = 3456;
 	
 	/**
 	 * Connects to a server
-	 * @params ip The IP address to connect to.
-	 * @return True when connection is established.
+	 * @param ip The IP address to connect to.
 	 */
-	public boolean establishConnection(String ip);
+	public void establishConnection(String ip);
 	
-	public boolean sendEvent(UDPEvent event);
+	/**
+	 * Sends an event.
+	 */
+	public void sendEvent(UDPEvent event);
 	
+	/**
+	 * Listens for incoming packets and decodes it to events and reads them and acts accordingly
+	 */
 	public void eventListener();
 	
-	public void testClient();
-	
+
 }
