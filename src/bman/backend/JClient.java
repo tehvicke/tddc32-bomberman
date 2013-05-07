@@ -53,7 +53,7 @@ public class JClient implements Runnable{
 				bomb = new JBomb(JGUIGameMap.bomb, gameMap, player);
 				gameMap.addObject(bomb, Integer.parseInt(args[0]),Integer.parseInt(args[1]));
 			} else {
-				new JBomb(JGUIGameMap.bomb, gameMap, player_2);
+				bomb = new JBomb(JGUIGameMap.bomb, gameMap, player_2);
 				gameMap.addObject(bomb, Integer.parseInt(args[0]),Integer.parseInt(args[1]));
 			}
 			Thread bombThread = new Thread(bomb);

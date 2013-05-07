@@ -33,10 +33,11 @@ public class JPlayer extends JMapObject {
 		if (active_bombs >= max_bombs)
 			return;
 		int[] loc = map.find(this.hashCode());
-		JBomb bomb = new JBomb(new JGUIMapObject(JGUIGameMap.bomb_nofire),map,this);
-		Thread t = new Thread(bomb, "t2");
-		map.addObject(bomb,loc[0]+lastMove[0], loc[1]+lastMove[1]);
-		t.start();
+		//JBomb bomb = new JBomb(new JGUIMapObject(JGUIGameMap.bomb_nofire),map,this);
+		//Thread t = new Thread(bomb, "t2");
+		//map.addObject(bomb,loc[0]+lastMove[0], loc[1]+lastMove[1]);
+		client.putBomb(loc[0]+lastMove[0], loc[1]+lastMove[1]);
+		//t.start();
 		active_bombs++;
 	}
 	
