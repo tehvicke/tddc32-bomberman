@@ -81,7 +81,7 @@ public class JClient implements Runnable{
 			movePlayerRelative(event.getOriginID(), 1, 0);
 		}
 		switch (event.type){
-		case game_map:
+		//case game_map:
 			
 		}
 	}

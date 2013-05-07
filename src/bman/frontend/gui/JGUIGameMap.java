@@ -40,7 +40,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	public static final String solidBlock = "./sprites/solid_block.png"; 
 	public static final String destroyableBlock = "./sprites/destroyable_block.png";
 
-	public static final String bomb_fire = "./sprites/solid_block.png";
+	public static final String bomb_fire = "./sprites/bomb_fire.png";
 	public static final String bomb_nofire = "./sprites/solid_block.png";;
 
 	public static final String explosion = "./sprites/destroyable_block.png";
