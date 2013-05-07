@@ -29,7 +29,7 @@ public class JBomb extends JMapObject implements Runnable {
 	public void run() {
 		System.out.println("kördes igång");
 		try {
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
