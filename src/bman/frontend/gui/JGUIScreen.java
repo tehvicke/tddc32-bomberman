@@ -15,6 +15,7 @@ public class JGUIScreen extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			System.out.println("TROLOLOLOLLOLOLOLO");
 			System.exit(0);
 			
 		}

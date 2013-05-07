@@ -181,6 +181,7 @@ public class JGameMap {
 			move(dx,dy,players[1]);
 		}
 	}
+	
 	/**
 	 * Removes specified object from gamemap
 	 * @param obj JMapObject to be removed
@@ -190,7 +191,6 @@ public class JGameMap {
 		if (loc[0] != -1)
 			removeObject(loc[0],loc[1]);
 	}
-
 
 	/**
 	 * Returns the object at the specified location in the gameMap
@@ -289,31 +289,6 @@ public class JGameMap {
 		}
 //		System.out.println("returnar false");
 		return false;
-	}
-
-	/**
-	 * Method for handling event
-	 * @param event udpevent to be handled
-	 */
-	public void handleEvent(UDPEvent event) {
-		if (event.type == UDPEvent.Type.establish_connection) {
-			JPlayer player = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), this);
-			player.setID(event.getOriginID());
-			addPlayer(player, player.getID(), 4, 4);
-		}
-
-		if (event.type == UDPEvent.Type.player_move_up) {
-			move(0, -1, event.getOriginID());
-		}
-		if (event.type == UDPEvent.Type.player_move_down) {
-			move(0, 1, event.getOriginID());
-		}
-		if (event.type == UDPEvent.Type.player_move_right) {
-			move(1, 0, event.getOriginID());
-		}
-		if (event.type == UDPEvent.Type.player_move_left) {
-			move(-1,0,event.getOriginID());
-		}
 	}
 
 

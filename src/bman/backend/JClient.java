@@ -1,7 +1,5 @@
 package bman.backend;
 
-import com.sun.tools.javac.util.Log;
-
 import bman.frontend.gui.JGUIGameMap;
 import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPClient;
@@ -28,9 +26,7 @@ public class JClient implements Runnable{
 
 	}
 
-
-
-	public String getName(){
+	public String getName() {
 		return playername;
 	}
 
