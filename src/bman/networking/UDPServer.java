@@ -45,20 +45,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	public Client[] clients;
 
-	/**
-	 * Private class that stores hash and ip address
-	 * @author viktordahl
-	 *
-	 */
-	public class Client {
-		public InetAddress addr;
-		public int hash;
-		public Client(int hash, InetAddress addr) {
-			System.out.println("Klient skapad. Hash: " + hash + " Addr: " + addr.getHostAddress());
-			this.hash = hash;
-			this.addr = addr;
-		}
-	}
+
 
 	/**
 	 * Constructor for the server.
@@ -236,64 +223,35 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		return event;
 	}
 
-
-	/**
-	 * A private class necessary to pass variables to a new thread.
-	 * @author viktordahl
-	 *
-	 */
-	private class EventSender implements Runnable {
-		private UDPEvent event;
-		private Client client;
-		
-		/**
-		 * Constructor for EventSender
-		 * @param event Event to be sent.
-		 * @param client Client to send to.
-		 */
-		public EventSender(UDPEvent event, Client client) {
-			this.event = event;
-			this.client = client;
-		}
-		
-		/**
-		 * Sends events to a client.
-		 * @param event Event to send
-		 * @param addr IP to the receiver.
-		 */
-		private void sendEvent(UDPEvent event, InetAddress addr) {
-			byte[] sendData = new byte[1024];
-			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, addr, port);
-
-			try {
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ObjectOutputStream oos = new ObjectOutputStream(baos);
-				oos.writeObject(event);	
-				oos.flush();
-
-				sendData = baos.toByteArray(); // Serialize
-				
-				serverSocket.send(sendPacket);
-				System.out.println("Event skickat. " + event.type + " Address: " + addr);
-			} catch (IOException e) {
-				System.err.println("Fel vid sändning av " + event.type + " " + event.hashCode());
-			}
-		}
-		
-		@Override
-		public void run() {
-			this.sendEvent(event, client.addr);
-		}
-	}
-
 	/**
 	 * Runs the server in a separate thread.
 	 */
 	@Override
 	public void run() {
-		System.out.println("innan");
-		waitForClients(numberOfClients);
-		System.out.println("apa");
-		eventListener();
+		System.out.println("before");
+		waitForClients(numberOfClients); /* Wait for all clients to join */
+		System.out.println("after");
+		eventListener(); /* Start the event listener */
+	}
+
+	
+	/**
+	 * Private class that stores hash and ip address
+	 * @author viktordahl
+	 */
+	private class Client {
+		private InetAddress addr;
+		private int hash;
+		
+		/**
+		 * Constructor for the client class.
+		 * @param hash The client hash.
+		 * @param addr The IP address of the client.
+		 */
+		public Client(int hash, InetAddress addr) {
+			System.out.println("Klient skapad. Hash: " + hash + " Addr: " + addr.getHostAddress());
+			this.hash = hash;
+			this.addr = addr;
+		}
 	}
 }
