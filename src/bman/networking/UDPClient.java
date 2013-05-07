@@ -2,7 +2,6 @@ package bman.networking;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -90,7 +89,11 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 				clientSocket.receive(receivePacket); // The server locks here until it receives something.
-				UDPEvent event = decode(receivePacket);
+				
+				/* Deserializes stream */
+				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
+				ObjectInputStream oosi = new ObjectInputStream(baosi);
+				UDPEvent event = (UDPEvent) oosi.readObject();
 				System.out.println(event.type + " recieved from " + event.getOriginID());
 				
 				/* Updates the clients current event */
@@ -103,19 +106,10 @@ public class UDPClient implements UDPClientInterface, Runnable {
 			}
 		}
 	}
-
-	/** 
-	 * Privat funktion som dekodar en serialiserad byte-array och returnerar ett UDPEvent.
-	 * @param receivePacket Mottaget paket.
-	 * @return Det mottagna eventet.
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	
+	/**
+	 * The run function.
 	 */
-	private UDPEvent decode(DatagramPacket receivePacket) throws IOException, ClassNotFoundException {
-		ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
-		ObjectInputStream oosi = new ObjectInputStream(baosi);
-		return (UDPEvent) oosi.readObject();
-	}
 	@Override
 	public void run() {
 		establishConnection(this.serverip);
