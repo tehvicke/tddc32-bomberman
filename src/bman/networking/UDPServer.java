@@ -139,7 +139,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 					"Server: Sent event of type: " + 
 					event.getType() + 
 					". Hash code: " + event.hashCode() + 
-					"Origin: " + event.getOriginID());				
+					". Origin: " + event.getOriginID());				
 		} catch (Exception e) {
 			System.err.println("Couldn't send event of type: " + event.getType() + ". Hash code: " + event.hashCode());
 		}

@@ -37,6 +37,21 @@ public class JGameMap {
 		}
 	}
 
+	private void gameMapRow(String row, int rowIndex) {
+		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
+		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
+		
+		for (int i = 0; i < row.length(); i++) {
+			if (row.charAt(i) == ' ') {
+				
+			} else if (row.charAt(i) == 'd') {
+				addObject(new JDestroyableBlock(dblock),i,rowIndex);
+			} else if (row.charAt(i) == 's') {
+				addObject(new JMapObject(block),i,rowIndex);
+			}
+		}
+	}
+	
 	/**
 	 * Adds a player to gameMap
 	 * @param player player mapobject to be added
