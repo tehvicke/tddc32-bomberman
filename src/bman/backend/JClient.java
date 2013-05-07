@@ -5,6 +5,7 @@ import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPClient;
 import bman.networking.UDPEvent;
 import bman.networking.UDPEventInterface;
+import bman.networking.UDPEventInterface.Type;
 
 public class JClient implements Runnable{
 	private String playername;
@@ -32,6 +33,14 @@ public class JClient implements Runnable{
 	public void UDPEventHandler(UDPEvent event) {
 		if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
+			
+			
+			String[] args = {Integer.toString(3), Integer.toString(4)};
+			
+			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
+		
+		
+		
 		}
 		if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
@@ -91,7 +100,13 @@ public class JClient implements Runnable{
 
 	@Override
 	public void run() {
-		client.establishConnection(serverIP);
+//		client.establishConnection(serverIP);
+		
+		
+		Thread clientThread = new Thread(client);
+		clientThread.start();
+		
+		
 		//Test code
 //		UDPEventHandler(new UDPEvent(UDPEventInterface.Type.game_start, 0));
 //		String [] apa = {"1","1"};

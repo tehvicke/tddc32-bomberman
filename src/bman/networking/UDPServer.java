@@ -89,7 +89,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			/* Adds the client hash if the eventtype is correct */
 			if (event.type == UDPEvent.Type.establish_connection) {
 				clients[clientsConnected++] = new Client(event.getOriginID(), receivePacket.getAddress());
-				gmap.handleEvent(event);
+//				gmap.handleEvent(event);
 			} else {
 				System.err.println("Wrong type of event. " + event.type);
 			}
@@ -98,7 +98,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 
 	@Override
 	public void broadcastEvent(UDPEventInterface event) {
-		if (clients[0] == null) {
+		if (clients == null && clients[0] == null) {
 			System.err.println("No clients are connected.");
 			return;
 		}
@@ -130,7 +130,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 							sendData, 
 							sendData.length, 
 							getClient(client).addr, 
-							UDPServerInterface.port + 1);  /* Sends to 3457 as is where the clients listens.
+							3457);  					   /* Sends to 3457 as is where the clients listens.
 															* This for allowing a server to be run on a 
 															* client computer.
 														    */
@@ -173,7 +173,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 				System.out.println(event.getType() + " recieved from " + event.getOriginID());
 
 				/* Sends the event to the game map to update it and make calculations etc. */
-				gmap.handleEvent(event);
+//				gmap.handleEvent(event);
 
 				/* Send the event to all clients. It shall not send all events so some critera will be added */
 				broadcastEvent(event);
