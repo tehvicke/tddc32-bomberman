@@ -19,6 +19,13 @@ import bman.backend.JGameMap;
  */
 public class UDPServer implements UDPServerInterface, Runnable {
 
+	// Testing
+	int events_sent = 0;
+	int events_received = 0;
+	int broadcasts_sent = 0;
+	
+	
+	
 	/**
 	 * Whether the listener shall be active or not. Default: Always active.
 	 */
@@ -108,6 +115,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 				System.out.println("Server: " + event.getType() + " sent to " + cli.hash);
 			}
 		}
+		broadcasts_sent++;
 	}
 
 	public void sendEvent(UDPEventInterface event, int client) {
@@ -135,11 +143,12 @@ public class UDPServer implements UDPServerInterface, Runnable {
 															* client computer.
 														    */
 			this.serverSocket.send(sendPacket);
-			System.out.println(
-					"Server: Sent event of type: " + 
-					event.getType() + 
-					". Hash code: " + event.hashCode() + 
-					". Origin: " + event.getOriginID());				
+//			System.out.println(
+//					"Server: Sent event of type: " + 
+//					event.getType() + 
+//					". Hash code: " + event.hashCode() + 
+//					". Origin: " + event.getOriginID());	
+			events_sent++;
 		} catch (Exception e) {
 			System.err.println("Couldn't send event of type: " + event.getType() + ". Hash code: " + event.hashCode());
 		}
@@ -160,6 +169,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 
 	@Override
 	public void eventListener() {
+//		int count = 0;
 		while(listen) {
 			try {
 				byte[] receiveData = new byte[1024];
@@ -174,14 +184,15 @@ public class UDPServer implements UDPServerInterface, Runnable {
 				baosi.close(); /* May or may not be required to close the streams... */
 				oosi.close();
 				UDPEvent event = (UDPEvent) oosi.readObject();
-				System.out.println("Server: " + event.getType() + " recieved from " + event.getOriginID());
+//				System.out.println("Server: " + event.getType() + " recieved from " + event.getOriginID());
 
 				/* Sends the event to the game map to update it and make calculations etc. */
 //				gmap.handleEvent(event);
 
 				/* Send the event to all clients. It shall not send all events so some critera will be added */
 				broadcastEvent(event);
-
+				System.out.println("Server: Skickade: " + events_sent + " Mottagna: " + events_received++  + " BC: " + broadcasts_sent);
+//				System.out.println("Server: " + count++);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -219,7 +230,7 @@ public class UDPServer implements UDPServerInterface, Runnable {
 		        "sssssssssssssss"
 			};
 		
-		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout));
+//		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout));
 		
 		eventListener(); /* Start the event listener */
 	}

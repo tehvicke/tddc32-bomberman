@@ -11,6 +11,11 @@ import java.net.SocketException;
 
 public class UDPClient implements UDPClientInterface, Runnable {
 
+	// Testing
+	int events_sent = 0;
+	int events_received = 0;
+	
+	
 	private UDPEvent currentEvent;
 	private boolean eventFetched = true;
 	
@@ -72,7 +77,8 @@ public class UDPClient implements UDPClientInterface, Runnable {
 							UDPClientInterface.port);
 			this.clientSocket.send(sendPacket);
 
-			System.out.println("Klient: Sent event of type: " + event.type + ". Hash code: " + event.hashCode());				
+//			System.out.println("Klient: Sent event of type: " + event.type + ". Hash code: " + event.hashCode());
+			events_sent++;
 		} catch (Exception e) {
 			System.err.println("Klient: Couldn't send event of type: " + event.type + ". Hash code: " + event.hashCode());
 		}
@@ -91,12 +97,12 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
 				ObjectInputStream oosi = new ObjectInputStream(baosi);
 				UDPEvent event = (UDPEvent) oosi.readObject();
-				System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
+//				System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
 				
 				/* Updates the clients current event */
 				this.currentEvent = event;
 				this.eventFetched = false;
-
+				System.out.println("Klient: Skickade: " + events_sent + " Mottaget: " + events_received++);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

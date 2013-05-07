@@ -25,16 +25,16 @@ public class JGameMap {
 		players = new JPlayer[2];
 
 		//Creates default layout
-//		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
-//		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
-//		for (int i = 0; i < 15; i++) {
-//			addObject(new JDestroyableBlock(dblock),0,i);
-//			addObject(new JDestroyableBlock(dblock),mapsize-1,i);
-//		}
-//		for (int i = 0; i < 15; i++) {
-//			addObject(new JMapObject(block),i,0);
-//			addObject(new JMapObject(block),i,mapsize-1);
-//		}
+		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
+		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
+		for (int i = 0; i < 15; i++) {
+			addObject(new JDestroyableBlock(dblock),0,i);
+			addObject(new JDestroyableBlock(dblock),mapsize-1,i);
+		}
+		for (int i = 0; i < 15; i++) {
+			addObject(new JMapObject(block),i,0);
+			addObject(new JMapObject(block),i,mapsize-1);
+		}
 
 //		gameMapRow("sssssssssssssss", 0);
 //		gameMapRow("s             s", 1);
