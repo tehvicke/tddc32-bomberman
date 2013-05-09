@@ -61,6 +61,42 @@ public class JHuman extends JPlayer{
 	}
 
 
+	public void moveKey(int key) {
+		if (key == KeyEvent.VK_SPACE) {
+			putBomb();
+			return;
+		}
+		int dx = 0;
+		int dy = 0;
+		if (key == KeyEvent.VK_LEFT) {
+			dx = -1;
+		} else if (key == KeyEvent.VK_RIGHT) {
+			dx = 1;
+		} else if (key == KeyEvent.VK_UP) {
+			dy = -1;
+		} else if (key == KeyEvent.VK_DOWN) {
+			dy = 1;
+		}
+		if (dx != 0 || dy != 0) {
+				super.move(dx, dy);
+		}
+	}
+	public void turnKey(int key) {
+		int dx = 0;
+		int dy = 0;
+		if (key == KeyEvent.VK_LEFT) {
+			dx = -1;
+		} else if (key == KeyEvent.VK_RIGHT) {
+			dx = 1;
+		} else if (key == KeyEvent.VK_UP) {
+			dy = -1;
+		} else if (key == KeyEvent.VK_DOWN) {
+			dy = 1;
+		}
+		if (dx != 0 || dy != 0) {
+				super.turn(dx, dy);
+		}
+	}
 
 
 }
