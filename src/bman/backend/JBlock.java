@@ -1,7 +1,7 @@
 package bman.backend;
 
-import bman.backend.JMapObject;
-import bman.frontend.gui.JGUIMapObject;
+import bman.frontend.gui.JGUIGameMap;
+
 
 public class JBlock extends JMapObject{
 	private int durability;
@@ -14,7 +14,7 @@ public class JBlock extends JMapObject{
 	 * @param x
 	 * @param y
 	 */
-	public JBlock(JGUIMapObject sprite) {
-		super(sprite);
+	public JBlock() {
+		super(JGUIGameMap.solidBlockGUI);
 	}
 }

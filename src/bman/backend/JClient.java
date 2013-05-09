@@ -29,7 +29,10 @@ public class JClient implements Runnable{
 	public String getName() {
 		return playername;
 	}
-
+	/**
+	 * Function which handles Events broadcasted from the server
+	 * @param event event to be handled
+	 */
 	public void UDPEventHandler(UDPEvent event) {
 		System.err.println("Event handled: " + event.toString());
 		
