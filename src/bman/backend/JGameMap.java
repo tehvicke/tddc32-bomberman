@@ -174,12 +174,22 @@ public class JGameMap {
 
 	/**
 	 * Returns the object at the specified location in the gameMap
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param x x coord of object
+	 * @param y y coord of object
+	 * @return object at specified location
+	 * @throws ArrayIndexOutOfBoundsException
 	 */
-	public JMapObject at(int x, int y) {
+	public JMapObject at(int x, int y) throws ArrayIndexOutOfBoundsException {
 		return gameMap[x][y];
+	}
+	
+	/**
+	 * Removes object at specified position
+	 * @param x x coord of the object
+	 * @param y y coord of the object
+	 */
+	public void remove(int x, int y) {
+		gameMap[x][y] = null;
 	}
 
 
@@ -271,6 +281,7 @@ public class JGameMap {
 		}
 		return false;
 	}
+	
 
 
 }

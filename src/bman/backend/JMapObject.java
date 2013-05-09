@@ -10,7 +10,6 @@ import bman.frontend.gui.JGUIMapObject;
  */
 public abstract class JMapObject {
 	protected JGUIMapObject sprite;
-	protected boolean destroyable = true;
 	
 	protected boolean destroyable = true;
 	

@@ -4,11 +4,13 @@ import bman.backend.JMapObject;
 import bman.frontend.gui.JGUIMapObject;
 
 public class JBomb extends JMapObject implements Runnable {
-	private int explosionRaidus = 2;
+	private int explosionRaidus = 3;
 	private JGameMap map;
 	private JPlayer owner;
 	public static int timer = 1000;
-	
+
+	//STATICS WITH FIRE PARTS
+	public static JGUIMapObject JExplosion = new JGUIMapObject("./sprites/explosion.png");
 	/**
 	 * JBomb constructor without an owner
 	 * @param sprite JGUIMapobject for visual representation of the bomb
@@ -19,7 +21,7 @@ public class JBomb extends JMapObject implements Runnable {
 		this.map = map;
 		lightFuse();
 	}
-	
+
 	/**
 	 * Donstructor for an own bomb, which is not used for 2 players but added for possible scalability in the future
 	 * @param sprite JGUIMapObject to be associated with the JBomb (the visual representation)
@@ -40,29 +42,113 @@ public class JBomb extends JMapObject implements Runnable {
 		bomb.start();
 	}
 	public void explode(){
+		if (owner != null) {
+			owner.detonated();
+		}
+		// Fire Array: {up,down,left,right}{+/- 1, +/- 2, ..} etc.
+		Boolean[][] fire = new Boolean[4][explosionRaidus];
 		int [] loc = map.find(this.hashCode());
-		if (loc[0] != -1) {
-		//owner.detonated();
-		map.remove(this);
-		map.explosion(loc[0],loc[1],explosionRaidus);
+
+		int x = loc[0];
+		int y = loc[1];
+		JMapObject temp;
+
+		// Initiating fire array
+		for (int i = 0; i < explosionRaidus; i++) {
+			fire[0][i] = true;
+			fire[1][i] = true;
+			fire[2][i] = true;
+			fire[3][i] = true;
+		}
+		//Up check
+		for (int i = 0; i< explosionRaidus ; i++) {
+			try {
+				temp = map.at(x,y-i);
+				if (temp != null && !temp.isDestroyable()) {
+					fire[0][i] = false;
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				fire[0][i] = false;
+				break;
+			}
+		}
+		//Down check
+		for (int i = 0; i< explosionRaidus ; i++) {
+			try {
+				temp = map.at(x,y+i);
+				if (temp != null && !temp.isDestroyable()) {
+					fire[1][i] = false;
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				fire[1][i] = false;
+				break;
+			}
+		}
+		//Left check
+		for (int i = 0; i< explosionRaidus ; i++) {
+			try {
+				temp = map.at(x-i,y);
+				if (temp != null && !temp.isDestroyable()) {
+					fire[2][i] = false;
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				fire[2][i] = false;
+				break;
+			}
+		}
+		//Right check
+		for (int i = 0; i< explosionRaidus ; i++) {
+			try {
+				temp = map.at(x+i,y);
+				if (temp != null && !temp.isDestroyable()) {
+					fire[3][i] = false;
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				fire[3][i] = false;
+				break;
+			}
+		}
+		//Place Fire
+		//Up & Left
+		JFire fireob = new JFire(JBomb.JExplosion);
+		for (int i = 0; i < explosionRaidus; i++) {
+			if (fire[0][i] == true) {
+				map.remove(x,y-i);
+				map.addObject(fireob, x, y-i);
+			}
+			if (fire[2][i] == true) {
+				map.remove(x-i,y);
+				map.addObject(fireob, x-i, y);
+			}
+			if (fire[1][i] == true) {
+				map.remove(x,y+i);
+				map.addObject(fireob, x, y+i);
+			}
+			if (fire[3][i] == true) {
+				map.remove(x+i,y);
+				map.addObject(fireob, x+i, y);
+			}
 		}
 
-
 	}
+
+
+
+
 	@Override
 	public void run() {
-		
+
 		try {
 			Thread.sleep(timer);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		explode();
 
 	}
 
-	@Override
+
 	public void destroy() {
 		this.explode();
 	}
