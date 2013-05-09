@@ -8,9 +8,7 @@ public class JBlock extends JMapObject{
 	private enum type{};
 	private boolean blocksPath=true;
 	
-	public void destroy(){
-		
-	}
+
 	/**
 	 * 
 	 * @param x

@@ -8,8 +8,10 @@ import bman.frontend.gui.JGUIMapObject;
  * @author Petter
  *
  */
-public class JMapObject {
+public abstract class JMapObject {
 	protected JGUIMapObject sprite;
+	
+	protected boolean destroyable = true;
 	
 	/**
 	 * Constructor, may be subject to change
@@ -30,5 +32,10 @@ public class JMapObject {
 		return sprite.getImage();
 	}
 	
-	
+	/**
+	 * Returns whether the object is destroyable or not.
+	 */
+	public boolean isDestroyable() {
+		return destroyable;
+	}
 }

@@ -8,5 +8,4 @@ public class JFire extends JMapObject {
 		super(sprite);
 		// TODO Auto-generated constructor stub
 	}
-
 }
