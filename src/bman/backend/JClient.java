@@ -26,9 +26,7 @@ public class JClient implements Runnable{
 
 	}
 
-
-
-	public String getName(){
+	public String getName() {
 		return playername;
 	}
 

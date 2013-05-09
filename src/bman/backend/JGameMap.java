@@ -25,38 +25,38 @@ public class JGameMap {
 		players = new JPlayer[2];
 
 		//Creates default layout
-//		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
-//		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
-//		for (int i = 0; i < 15; i++) {
-//			addObject(new JDestroyableBlock(dblock),0,i);
-//			addObject(new JDestroyableBlock(dblock),mapsize-1,i);
-//		}
-//		for (int i = 0; i < 15; i++) {
-//			addObject(new JMapObject(block),i,0);
-//			addObject(new JMapObject(block),i,mapsize-1);
-//		}
+		//		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
+		//		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
+		//		for (int i = 0; i < 15; i++) {
+		//			addObject(new JDestroyableBlock(dblock),0,i);
+		//			addObject(new JDestroyableBlock(dblock),mapsize-1,i);
+		//		}
+		//		for (int i = 0; i < 15; i++) {
+		//			addObject(new JMapObject(block),i,0);
+		//			addObject(new JMapObject(block),i,mapsize-1);
+		//		}
 
-//		gameMapRow("sssssssssssssss", 0);
-//		gameMapRow("s             s", 1);
-//		gameMapRow("s             s", 2);
-//		gameMapRow("s             s", 3);
-//		gameMapRow("s             s", 4);
-//		gameMapRow("s             s", 5);
-//		gameMapRow("s             s", 6);
-//		gameMapRow("s             s", 7);
-//		gameMapRow("s ddd    d d  s", 8);
-//		gameMapRow("s d d    d d  s", 9);
-//		gameMapRow("s d d    ddd  s", 10);
-//		gameMapRow("s             s", 11);
-//		gameMapRow("s             s", 12);
-//		gameMapRow("s             s", 13);
-//		gameMapRow("sssssssssssssss", 14);
+		//		gameMapRow("sssssssssssssss", 0);
+		//		gameMapRow("s             s", 1);
+		//		gameMapRow("s             s", 2);
+		//		gameMapRow("s             s", 3);
+		//		gameMapRow("s             s", 4);
+		//		gameMapRow("s             s", 5);
+		//		gameMapRow("s             s", 6);
+		//		gameMapRow("s             s", 7);
+		//		gameMapRow("s ddd    d d  s", 8);
+		//		gameMapRow("s d d    d d  s", 9);
+		//		gameMapRow("s d d    ddd  s", 10);
+		//		gameMapRow("s             s", 11);
+		//		gameMapRow("s             s", 12);
+		//		gameMapRow("s             s", 13);
+		//		gameMapRow("sssssssssssssss", 14);
 	}
 
 	public void addMapRow(String row, int rowIndex) {
 		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
 		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
-		
+
 		for (int i = 0; i < row.length(); i++) {
 			if (row.charAt(i) == 'd') {
 				addObject(new JDestroyableBlock(dblock),i,rowIndex);
@@ -65,7 +65,7 @@ public class JGameMap {
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds a player to gameMap
 	 * @param player player mapobject to be added
@@ -157,7 +157,7 @@ public class JGameMap {
 		if (loc[0] != -1)
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
 	}
-	
+
 	public void absoluteMove(int dx, int dy, int id) {
 		int [] loc;
 		if (id == playerIDs[0]) {
@@ -181,6 +181,7 @@ public class JGameMap {
 			move(dx,dy,players[1]);
 		}
 	}
+
 	/**
 	 * Removes specified object from gamemap
 	 * @param obj JMapObject to be removed
@@ -190,7 +191,6 @@ public class JGameMap {
 		if (loc[0] != -1)
 			removeObject(loc[0],loc[1]);
 	}
-
 
 	/**
 	 * Returns the object at the specified location in the gameMap
@@ -282,42 +282,14 @@ public class JGameMap {
 		} else {
 			loc = find(players[1].hashCode());
 		}
-//		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
-//		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
+		//		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
+		//		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
 		if (loc[0] != -1 && gameMap[loc[0]+dx][loc[1]+dy] == null) {
 			return true;
 		}
-//		System.out.println("returnar false");
+		//		System.out.println("returnar false");
 		return false;
 	}
-
-	/**
-	 * Method for handling event
-	 * @param event udpevent to be handled
-	 */
-	public void handleEvent(UDPEvent event) {
-//		if (event.type == UDPEvent.Type.establish_connection) {
-//			JPlayer player = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), this);
-//			player.setID(event.getOriginID());
-//			addPlayer(player, player.getID(), 4, 4);
-//		}
-//
-//		if (event.type == UDPEvent.Type.player_move_up) {
-//			move(0, -1, event.getOriginID());
-//		}
-//		if (event.type == UDPEvent.Type.player_move_down) {
-//			move(0, 1, event.getOriginID());
-//		}
-//		if (event.type == UDPEvent.Type.player_move_right) {
-//			move(1, 0, event.getOriginID());
-//		}
-//		if (event.type == UDPEvent.Type.player_move_left) {
-//			move(-1,0,event.getOriginID());
-//		}
-	}
-
-
-
 
 
 }

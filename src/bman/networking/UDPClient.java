@@ -109,7 +109,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				
 				this.eventQueue.add(event);
 				this.eventFetched = false;
-				System.out.println(eventQueue.toString());
+//				System.out.println(eventQueue.toString());
 				
 				
 				

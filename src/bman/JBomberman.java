@@ -15,7 +15,7 @@ public class JBomberman {
 
 
 
-	public static void joinGame(){
+	public static void joinGame() {
 	
 
 		System.out.println("Please give server IP: ");
