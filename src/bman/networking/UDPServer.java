@@ -17,24 +17,18 @@ import bman.backend.JGameMap;
  * @author viktordahl
  *
  */
-public class UDPServer implements UDPServerInterface, Runnable {
+public class UDPServer implements UDPServerInterface {
 
-	// Testing
-	int events_sent = 0;
-	int events_received = 0;
-	int broadcasts_sent = 0;
-	
-	
+	// For testing purpose
+	private int events_sent = 0;
+	private int events_received = 0;
+	private int broadcasts_sent = 0;
+	private boolean testmode = false;
 	
 	/**
 	 * Whether the listener shall be active or not. Default: Always active.
 	 */
 	private boolean listen = true;
-	
-	/**
-	 * The JGameMap object
-	 */
-	private JGameMap gmap;
 	
 	/**
 	 * The number of clients to accept.
@@ -56,9 +50,9 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 * @param numberOfClients The number of clients the server shall wait for,
 	 * including the server itself.
 	 */
-	public UDPServer(int numberOfClients, JGameMap gmap) {
+	public UDPServer(int numberOfClients) {
+		System.out.println(this);
 		this.numberOfClients = numberOfClients;
-		this.gmap = gmap;
 		this.clients = new Client[numberOfClients];
 		try {
 			serverSocket = new DatagramSocket(UDPServerInterface.port);
@@ -76,11 +70,11 @@ public class UDPServer implements UDPServerInterface, Runnable {
 			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			UDPEvent event;
 			try {
-				/* Waits for packet */
+				/* Waits for packet. The server locks here until a package is received. */
 				serverSocket.receive(receivePacket);
 				
-				/* Decodes string of bytes to an object */
-				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
+				/* Deserializes string of bytes to an object */
+				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData());
 				ObjectInputStream oosi = new ObjectInputStream(baosi);
 				baosi.close();
 				oosi.close();
@@ -93,10 +87,9 @@ public class UDPServer implements UDPServerInterface, Runnable {
 				continue;
 			}
 
-			/* Adds the client hash if the eventtype is correct */
+			/* Adds the client hash if the event type is correct */
 			if (event.type == UDPEvent.Type.establish_connection) {
 				clients[clientsConnected++] = new Client(event.getOriginID(), receivePacket.getAddress());
-//				gmap.handleEvent(event);
 			} else {
 				System.err.println("Wrong type of event. " + event.type);
 			}
@@ -187,7 +180,6 @@ public class UDPServer implements UDPServerInterface, Runnable {
 //				System.out.println("Server: " + event.getType() + " recieved from " + event.getOriginID());
 
 				/* Sends the event to the game map to update it and make calculations etc. */
-//				gmap.handleEvent(event);
 
 				/* Send the event to all clients. It shall not send all events so some critera will be added */
 				broadcastEvent(event);
@@ -204,9 +196,9 @@ public class UDPServer implements UDPServerInterface, Runnable {
 	 */
 	@Override
 	public void run() {
-		System.out.println("Server: Thread started.");
+		System.out.println("Server: Server thread started.");
 		waitForClients(); /* Wait for all clients to join */
-		System.out.println("Server: Game starts");
+		System.out.println("Server: Game start");
 		
 		/* Broadcast start game event */
 		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));

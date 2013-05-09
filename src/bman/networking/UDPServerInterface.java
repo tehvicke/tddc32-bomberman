@@ -1,6 +1,6 @@
 package bman.networking;
 
-public interface UDPServerInterface {
+public interface UDPServerInterface extends Runnable {
 	
 	/**
 	 * The server port.

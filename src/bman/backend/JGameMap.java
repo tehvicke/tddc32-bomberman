@@ -2,8 +2,6 @@ package bman.backend;
 
 import bman.frontend.gui.JGUIGameMap;
 import bman.frontend.gui.JGUIMapObject;
-import bman.frontend.gui.JGUIScreen;
-import bman.networking.UDPEvent;
 
 /**
  * The GameMap
@@ -11,7 +9,7 @@ import bman.networking.UDPEvent;
  * Removed setsize as this does not need to be changed and can be done in the constructor
  */
 public class JGameMap {
-	public static final int mapsize =15;
+	public static final int mapsize = 15;
 	private JMapObject[][] gameMap;
 	private JPlayer[] players;
 	int[] playerIDs = {-1,-1};
@@ -23,34 +21,7 @@ public class JGameMap {
 	public JGameMap() {
 		gameMap = new JMapObject[mapsize][mapsize];
 		players = new JPlayer[2];
-
-		//Creates default layout
-//		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
-//		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
-//		for (int i = 0; i < 15; i++) {
-//			addObject(new JDestroyableBlock(dblock),0,i);
-//			addObject(new JDestroyableBlock(dblock),mapsize-1,i);
-//		}
-//		for (int i = 0; i < 15; i++) {
-//			addObject(new JMapObject(block),i,0);
-//			addObject(new JMapObject(block),i,mapsize-1);
-//		}
-
-//		gameMapRow("sssssssssssssss", 0);
-//		gameMapRow("s             s", 1);
-//		gameMapRow("s             s", 2);
-//		gameMapRow("s             s", 3);
-//		gameMapRow("s             s", 4);
-//		gameMapRow("s             s", 5);
-//		gameMapRow("s             s", 6);
-//		gameMapRow("s             s", 7);
-//		gameMapRow("s ddd    d d  s", 8);
-//		gameMapRow("s d d    d d  s", 9);
-//		gameMapRow("s d d    ddd  s", 10);
-//		gameMapRow("s             s", 11);
-//		gameMapRow("s             s", 12);
-//		gameMapRow("s             s", 13);
-//		gameMapRow("sssssssssssssss", 14);
+		
 	}
 
 	public void addMapRow(String row, int rowIndex) {
@@ -136,7 +107,6 @@ public class JGameMap {
 		int[] location = {-1,-1};
 		for (int i = 0; i < mapsize ; i++) {
 			for (int j  = 0; j < mapsize ; j++)
-
 				if (gameMap[i][j] != null && key == gameMap[i][j].hashCode()) {
 					location[0] = i;
 					location[1] = j;

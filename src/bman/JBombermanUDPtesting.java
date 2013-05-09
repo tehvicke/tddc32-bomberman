@@ -7,6 +7,7 @@ import bman.frontend.gui.JGUIGameMap;
 import bman.frontend.gui.JGUIMapObject;
 import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPServer;
+import bman.networking.UDPServerInterface;
 
 public class JBombermanUDPtesting {
 
@@ -25,7 +26,7 @@ public class JBombermanUDPtesting {
 		JGUIScreen guigamemap = new JGUIScreen(gameMap, player);
 		JPlayer player2 = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), gameMap, null);
 		
-		UDPServer serv = new UDPServer(1,gameMap);
+		UDPServerInterface serv = new UDPServer(1,gameMap);
 		Thread t = new Thread(serv);
 		t.start();
 	}
