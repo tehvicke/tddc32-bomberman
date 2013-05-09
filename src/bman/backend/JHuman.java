@@ -11,6 +11,7 @@ import bman.frontend.gui.JGUIMapObject;
  */
 public class JHuman extends JPlayer{
 	//private enum keyMapping{};
+	private boolean shiftPressed = false;
 
 
 
@@ -25,7 +26,7 @@ public class JHuman extends JPlayer{
 	 */
 	public void keypress(KeyEvent e) {
 		int key = e.getKeyCode();
-		if (key == KeyEvent.VK_L) {
+		if (key == KeyEvent.VK_SPACE) {
 			putBomb();
 			return;
 		}
@@ -39,9 +40,23 @@ public class JHuman extends JPlayer{
 			dy = -1;
 		} else if (key == KeyEvent.VK_DOWN) {
 			dy = 1;
+		} else if (key == KeyEvent.VK_SHIFT) {
+			if (shiftPressed) {
+				shiftPressed = false;
+			} else if (!shiftPressed){
+				shiftPressed = true;
+			}
+			System.out.println(shiftPressed);
 		}
-		if (dx != 0 || dy != 0)
-			super.move(dx, dy);
+
+
+		if (dx != 0 || dy != 0) {
+			if (shiftPressed) {
+				super.turn(dx, dy);
+			} else {
+				super.move(dx, dy);
+			}
+		}
 
 	}
 

@@ -1,6 +1,8 @@
 package bman.backend;
 
+import sun.awt.geom.AreaOp.AddOp;
 import bman.backend.JMapObject;
+import bman.frontend.gui.JGUIGameMap;
 import bman.frontend.gui.JGUIMapObject;
 
 public class JBomb extends JMapObject implements Runnable {
@@ -9,8 +11,11 @@ public class JBomb extends JMapObject implements Runnable {
 	private JPlayer owner;
 	public static int timer = 1000;
 
-	//STATICS WITH FIRE PARTS
-	public static JGUIMapObject JExplosion = new JGUIMapObject("./sprites/explosion.png");
+
+	Thread fuse;
+	protected static JFire fire = new JFire(new JGUIMapObject(JGUIGameMap.explosion));
+
+
 	/**
 	 * JBomb constructor without an owner
 	 * @param sprite JGUIMapobject for visual representation of the bomb
@@ -20,6 +25,7 @@ public class JBomb extends JMapObject implements Runnable {
 		super(sprite);
 		this.map = map;
 		lightFuse();
+		destroyable= true;
 	}
 
 	/**
@@ -33,103 +39,102 @@ public class JBomb extends JMapObject implements Runnable {
 		this.map = map;
 		this.owner = owner;
 		lightFuse();
+		destroyable = true;
 	}
 	/**
 	 * Starts the fuse on the bomb (starts the countdown timer for explosion)
 	 */
 	private void lightFuse() {
-		Thread bomb = new Thread(this);
-		bomb.start();
+		fuse = new Thread(this);
+		fuse.start();
 	}
-	public void explode(){
-		if (owner != null) {
-			owner.detonated();
-		}
-		// Fire Array: {up,down,left,right}{+/- 1, +/- 2, ..} etc.
-		Boolean[][] fire = new Boolean[4][explosionRaidus];
-		int [] loc = map.find(this.hashCode());
 
-		int x = loc[0];
-		int y = loc[1];
-		JMapObject temp;
 
-		// Initiating fire array
-		for (int i = 0; i < explosionRaidus; i++) {
-			fire[0][i] = true;
-			fire[1][i] = true;
-			fire[2][i] = true;
-			fire[3][i] = true;
-		}
-		//Up check
-		for (int i = 0; i< explosionRaidus ; i++) {
-			try {
-				temp = map.at(x,y-i);
-				if (temp != null && !temp.isDestroyable()) {
-					fire[0][i] = false;
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				fire[0][i] = false;
-				break;
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private boolean explode(int x, int y) {
+		boolean retur = false;
+		try {
+			JMapObject temp = map.at(x,y);
+			if (temp != null && !temp.isDestroyable()) {
+				return false;
+			} else if (temp == null) {
+				retur = true;
 			}
-		}
-		//Down check
-		for (int i = 0; i< explosionRaidus ; i++) {
-			try {
-				temp = map.at(x,y+i);
-				if (temp != null && !temp.isDestroyable()) {
-					fire[1][i] = false;
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				fire[1][i] = false;
-				break;
-			}
-		}
-		//Left check
-		for (int i = 0; i< explosionRaidus ; i++) {
-			try {
-				temp = map.at(x-i,y);
-				if (temp != null && !temp.isDestroyable()) {
-					fire[2][i] = false;
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				fire[2][i] = false;
-				break;
-			}
-		}
-		//Right check
-		for (int i = 0; i< explosionRaidus ; i++) {
-			try {
-				temp = map.at(x+i,y);
-				if (temp != null && !temp.isDestroyable()) {
-					fire[3][i] = false;
-				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				fire[3][i] = false;
-				break;
-			}
-		}
-		//Place Fire
-		//Up & Left
-		JFire fireob = new JFire(JBomb.JExplosion);
-		for (int i = 0; i < explosionRaidus; i++) {
-			if (fire[0][i] == true) {
-				map.remove(x,y-i);
-				map.addObject(fireob, x, y-i);
-			}
-			if (fire[2][i] == true) {
-				map.remove(x-i,y);
-				map.addObject(fireob, x-i, y);
-			}
-			if (fire[1][i] == true) {
-				map.remove(x,y+i);
-				map.addObject(fireob, x, y+i);
-			}
-			if (fire[3][i] == true) {
-				map.remove(x+i,y);
-				map.addObject(fireob, x+i, y);
-			}
+
+
+			map.destroy(x, y);
+
+			map.addObject(JBomb.fire, x, y);
+			return retur;
+		} catch(ArrayIndexOutOfBoundsException e) {
+			return false;
 		}
 
+
+	}
+	public void explode() {
+		int[] loc = map.find(this.hashCode());
+		Boolean left = true;
+		Boolean right = true;
+		Boolean up = true;
+		Boolean down = true;
+
+		map.remove(loc[0],loc[1]);
+		map.addObject(JBomb.fire, loc[0],loc[1]);
+
+
+		for (int i = 1; i < explosionRaidus; i++) {
+			if (left) {
+				left = explode(loc[0]-i,loc[1]);
+			}
+			if (right) {
+				right = explode(loc[0]+i,loc[1]);
+			}
+			if (up) {
+				up = explode(loc[0],loc[1]-i);
+			}
+			if (down) {
+				down = explode(loc[0],loc[1]+i);
+			}
+		}
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		map.remove(loc[0], loc[1]);
+		left = true;
+		right = true;
+		up = true;
+		down = true;
+		for (int i = 1; i < explosionRaidus ; i++) {
+			if (right && map.at(loc[0]+i, loc[1]) instanceof JFire) {
+				map.remove(loc[0]+i,loc[1]);
+			} else {
+				right = false;
+			}
+			if (left && map.at(loc[0]-i, loc[1]) instanceof JFire) {
+				map.remove(loc[0]-i,loc[1]);
+			} else {
+				left = false;
+			}
+			if (down && map.at(loc[0], loc[1]+i) instanceof JFire) {
+				map.remove(loc[0],loc[1]+i);
+			} else {
+				down = false;
+			}
+			if (up && map.at(loc[0], loc[1]-i) instanceof JFire) {
+				map.remove(loc[0],loc[1]-i);
+			} else {
+				up = false;
+			}
+		}
 	}
 
 
@@ -148,8 +153,11 @@ public class JBomb extends JMapObject implements Runnable {
 
 	}
 
-
 	public void destroy() {
-		this.explode();
+		 fuse.interrupt();
+		}
 	}
-}
+
+
+
+

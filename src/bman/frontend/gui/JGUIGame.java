@@ -15,7 +15,7 @@ import javax.swing.Timer;
 import bman.backend.JGameMap;
 import bman.backend.JHuman;
 
-public class JGUIGameMap extends JPanel implements ActionListener {
+public class JGUIGame extends JPanel implements ActionListener {
 
 	/* *
 	 * VARIABLES
@@ -42,14 +42,15 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	public static final String bomb_fire = "./sprites/bomb_fire.png";
 	public static final String bomb_nofire = "./sprites/solid_block.png";;
 
-	public static final String explosion = "./sprites/explosion.png";
-//	public static final String fireCenter = "./sprites/ugly_fire_center.png";
+	
+	public static final String fireCenter = "./sprites/ugly_fire_center.png";
 //	public static final String fireUp = "./sprites/ugly_fire_up.png";
 //	public static final String fireDown = "./sprites/ugly_fire_down.png";
 //	public static final String fireLeft = "./sprites/ugly_fire_left.png";
 //	public static final String fireRight = "./sprites/ugly_fire_right.png";
 //	public static final String fireHoriz = "./sprites/ugly_fire_center_horiz.png";
 //	public static final String fireVert = "./sprites/ugly_fire_center_vert.png";
+	public static final String explosion = "./sprites/explosion.png";
 
 	public static final String superman = "./sprites/superman.png";
 
@@ -76,7 +77,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	 * @param gameMap
 	 * @param player
 	 */
-	public JGUIGameMap(JGameMap gameMap, JHuman player) {
+	public JGUIGame(JGameMap gameMap, JHuman player) {
 		//Window properties
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		setVisible(true);
@@ -134,6 +135,13 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			player.keypress(e);
+		}
+		
+		@Override
+		public void keyReleased(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
+				player.keypress(e);
+			}
 		}
 
 	}
