@@ -63,14 +63,18 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 
 
 
-	/**
+	/*
 	 * Contents
 	 */
 	JGameMap gameMap;
 	JHuman player;
 	
 
-
+	/**
+	 * 
+	 * @param gameMap
+	 * @param player
+	 */
 	public JGUIGameMap(JGameMap gameMap, JHuman player) {
 		//Window properties
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
@@ -89,7 +93,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		Graphics2D g2d = (Graphics2D)g;
+		Graphics2D g2d = (Graphics2D) g;
 
 		/* DRAWS THE GRID */
 		for (int i = 0; i <= JGUIScreen.w_height; i +=30) {
