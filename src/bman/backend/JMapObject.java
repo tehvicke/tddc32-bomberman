@@ -10,12 +10,11 @@ import bman.frontend.gui.JGUIMapObject;
  */
 public class JMapObject {
 	protected JGUIMapObject sprite;
+	protected boolean destroyable = true;
 	
 	/**
 	 * Constructor, may be subject to change
 	 * @param sprite the JGUIMapObject representing the mapobject
-	 * @param x x location
-	 * @param y y location
 	 */
 	public JMapObject(JGUIMapObject sprite) {
 		this.sprite = sprite;

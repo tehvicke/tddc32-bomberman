@@ -1,12 +1,12 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIMapObject;
+import bman.frontend.gui.JGUIGameMap;
 
-public class JDestroyableBlock extends JBlock {
+public class JDestroyableBlock extends JMapObject {
 
-	public JDestroyableBlock(JGUIMapObject sprite) {
-		super(sprite);
-		// TODO Auto-generated constructor stub
+	public JDestroyableBlock() {
+		super(JGUIGameMap.destroyableBlockGUI);
+		
 	}
 
 }

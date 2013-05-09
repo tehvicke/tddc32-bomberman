@@ -29,14 +29,15 @@ public class JGameMap {
 	 * @param rowIndex index of the row which should be added
 	 */
 	public void addMapRow(String row, int rowIndex) {
-		if (row.length() >= mapsize)
+		if (row.length() > mapsize) {
 			return;
+		}
 
 		for (int i = 0; i < row.length(); i++) {
 			if (row.charAt(i) == 'd') {
-				addObject(new JDestroyableBlock(JGUIGameMap.destroyableBlockGUI),i,rowIndex);
+				addObject(new JDestroyableBlock(),i,rowIndex);
 			} else if (row.charAt(i) == 's') {
-				addObject(new JMapObject(JGUIGameMap.solidBlockGUI),i,rowIndex);
+				addObject(new JBlock(),i,rowIndex);
 			}
 		}
 	}
