@@ -18,11 +18,11 @@ public class JClient implements Runnable{
 	private int id;
 	private int player2ID = 0;
 
-	public JClient(String ip, String playername) {
-		this.playername = playername;
+	public JClient(String ip) {
 		this.serverIP = ip;
 		client = new UDPClient(ip);
 		id = client.hashCode();
+		System.out.println(this);
 
 	}
 

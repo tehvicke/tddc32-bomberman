@@ -3,7 +3,7 @@ package bman;
 import java.util.Scanner;
 
 import bman.backend.JClient;
-import bman.networking.UDPServer;
+import bman.backend.JServer;
 
 /**
  * The main application class. This is where the main function is and where
@@ -12,8 +12,6 @@ import bman.networking.UDPServer;
  *
  */
 public class JBomberman {
-
-
 
 	public static void joinGame() {
 	
@@ -24,20 +22,16 @@ public class JBomberman {
 		String ip = "192.168.0.101";
 	//	String ip = "192.168.0.197";
 
-		JClient client = new JClient(ip, "client");
+		JClient client = new JClient(ip);
 		Thread clientThread = new Thread(client);
 		clientThread.start();
 	}
 
 	public static void hostGame(int players) {
-//		JServer server = new JServer(); //fix
-		UDPServer server = new UDPServer(players, null); // Ska vara interfacet?
+		JServer server = new JServer(players); //fix
+//		UDPServerInterface server = new UDPServer(2);
 		
-		
-		
-		
-		
-		JClient client = new JClient("127.0.0.1","server");
+		JClient client = new JClient("127.0.0.1");
 		Thread serverThread = new Thread(server);
 		Thread clientThread = new Thread(client);
 		serverThread.start();

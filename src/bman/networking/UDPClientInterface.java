@@ -11,7 +11,12 @@ public interface UDPClientInterface {
 	/**
 	 * The port of the server
 	 */
-	public static int port = 3456;
+	public static int serverPort = 3456;
+	
+	/**
+	 * The port of the client
+	 */
+	public static int clientPort = 3457;
 	
 	/**
 	 * Connects to a server

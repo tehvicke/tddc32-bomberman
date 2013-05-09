@@ -9,7 +9,7 @@ import bman.frontend.gui.JGUIMapObject;
  * 
  */
 public class JGameMap {
-	public static final int mapsize =15;
+	public static final int mapsize = 15;
 	private JMapObject[][] gameMap;
 	private JPlayer[] players;
 	int[] playerIDs = {-1,-1};
@@ -112,7 +112,6 @@ public class JGameMap {
 		int[] location = {-1,-1};
 		for (int i = 0; i < mapsize ; i++) {
 			for (int j  = 0; j < mapsize ; j++)
-
 				if (gameMap[i][j] != null && key == gameMap[i][j].hashCode()) {
 					location[0] = i;
 					location[1] = j;

@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 public class JGUIMainMenu extends JPanel implements ActionListener  {
 
 	/**
-	 * 
+	 * ID
 	 */
 	private static final long serialVersionUID = -4776987440183048444L;
 

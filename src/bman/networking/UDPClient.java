@@ -15,11 +15,20 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	// Testing
 	int events_sent = 0;
 	int events_received = 0;
-	ArrayList<UDPEvent> eventQueue;
 	
 	
-	private UDPEvent currentEvent;
-	private boolean eventFetched = true;
+	
+	
+	/**
+	 * Set true to print debug messages.
+	 */
+	private boolean debug = false;
+	
+	/**
+	 * The event queue. If multiple events exist that hasn't been executed they,
+	 * they are stored here. FIFO.
+	 */
+	private ArrayList<UDPEvent> eventQueue;
 	
 	/**
 	 * The server IP
@@ -45,7 +54,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		this.serverip = addr;
 		this.eventQueue = new ArrayList<UDPEvent>();
 		try {
-			clientSocket = new DatagramSocket(3457);
+			clientSocket = new DatagramSocket(UDPClientInterface.clientPort);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -57,7 +66,10 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				new UDPEvent(
 						UDPEvent.Type.establish_connection, 
 						this.playerHash));
-		System.out.println("Klient: Connection request sent. Player ID: " + this.playerHash);
+		
+		if (debug) {
+			System.out.println("Klient: Connection request sent. Player ID: " + this.playerHash);
+		}
 	}
 
 	public void sendEvent(UDPEvent event) {
@@ -77,11 +89,14 @@ public class UDPClient implements UDPClientInterface, Runnable {
 							sendData, 
 							sendData.length, 
 							InetAddress.getByName(this.serverip), 
-							UDPClientInterface.port);
+							UDPClientInterface.serverPort);
 			this.clientSocket.send(sendPacket);
 
-//			System.out.println("Klient: Sent event of type: " + event.type + ". Hash code: " + event.hashCode());
-			events_sent++;
+			if (debug) {
+				System.out.println("Klient: Sent event of type: " + event.type + ". Hash code: " + event.hashCode());
+				events_sent++;
+			}
+			
 		} catch (Exception e) {
 			System.err.println("Klient: Couldn't send event of type: " + event.type + ". Hash code: " + event.hashCode());
 		}
@@ -89,7 +104,9 @@ public class UDPClient implements UDPClientInterface, Runnable {
 
 	@Override
 	public void eventListener() {
-		System.out.println("Klient: Client eventlistener startad.");
+		if (debug) {
+			System.out.println("Klient: Client eventlistener startad.");
+		}
 		while(true) {
 			try {
 				byte[] receiveData = new byte[1024];
@@ -100,20 +117,16 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData()); // Deserialize
 				ObjectInputStream oosi = new ObjectInputStream(baosi);
 				UDPEvent event = (UDPEvent) oosi.readObject();
-				System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
 				
-				/* Updates the clients current event */
-//				this.currentEvent = event;
-//				this.eventFetched = false;
-				
+				if (debug) {
+					System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
+				}
 				
 				this.eventQueue.add(event);
-				this.eventFetched = false;
-//				System.out.println(eventQueue.toString());
 				
-				
-				
+				if (debug) {
 				System.out.println("Klient: Skickade: " + events_sent + " Mottaget: " + events_received++ + " EQ: " + eventQueue.size());
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
