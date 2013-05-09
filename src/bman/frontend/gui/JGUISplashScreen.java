@@ -9,6 +9,10 @@ import java.awt.Toolkit;
 import javax.swing.JPanel;
 
 public class JGUISplashScreen extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3494347439059759205L;
 	Image logo;
 	public JGUISplashScreen() {
 		this.setBackground(Color.white);

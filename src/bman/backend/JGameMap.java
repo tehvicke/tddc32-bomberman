@@ -6,7 +6,7 @@ import bman.frontend.gui.JGUIMapObject;
 /**
  * The GameMap
  * @author Petter
- * Removed setsize as this does not need to be changed and can be done in the constructor
+ * 
  */
 public class JGameMap {
 	public static final int mapsize = 15;
@@ -21,22 +21,26 @@ public class JGameMap {
 	public JGameMap() {
 		gameMap = new JMapObject[mapsize][mapsize];
 		players = new JPlayer[2];
-		
 	}
 
+	/**
+	 * Adds a row with objects in the map
+	 * @param row String containing the layout of the row (d for destroyable, s for solid)
+	 * @param rowIndex index of the row which should be added
+	 */
 	public void addMapRow(String row, int rowIndex) {
-		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
-		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
-		
+		if (row.length() >= mapsize)
+			return;
+
 		for (int i = 0; i < row.length(); i++) {
 			if (row.charAt(i) == 'd') {
-				addObject(new JDestroyableBlock(dblock),i,rowIndex);
+				addObject(new JDestroyableBlock(JGUIGameMap.destroyableBlockGUI),i,rowIndex);
 			} else if (row.charAt(i) == 's') {
-				addObject(new JMapObject(block),i,rowIndex);
+				addObject(new JMapObject(JGUIGameMap.solidBlockGUI),i,rowIndex);
 			}
 		}
 	}
-	
+
 	/**
 	 * Adds a player to gameMap
 	 * @param player player mapobject to be added
@@ -127,7 +131,12 @@ public class JGameMap {
 		if (loc[0] != -1)
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
 	}
-	
+	/**
+	 * 
+	 * @param dx
+	 * @param dy
+	 * @param id
+	 */
 	public void absoluteMove(int dx, int dy, int id) {
 		int [] loc;
 		if (id == playerIDs[0]) {
@@ -151,7 +160,7 @@ public class JGameMap {
 			move(dx,dy,players[1]);
 		}
 	}
-	
+
 	/**
 	 * Removes specified object from gamemap
 	 * @param obj JMapObject to be removed
@@ -207,7 +216,7 @@ public class JGameMap {
 		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireUp)),x,y-radius);
 		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireDown)),x,y+radius);
 		try {
-			Thread.sleep(800);
+			Thread.sleep(200);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -232,7 +241,7 @@ public class JGameMap {
 				((JBomb)gameMap[x][y-i]).explode();
 
 			try {
-				Thread.sleep(300);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -240,10 +249,13 @@ public class JGameMap {
 		}
 		removeObject(x, y);
 	}
+
 	/**
-	 * Check if a move is valid
+	 *  Check if a move is valid, 
 	 * @param id id of the moving player
-	 * @return true if empty
+	 * @param dx x direction of the move
+	 * @param dy y direction of the move
+	 * @return True if move is valid
 	 */
 	public boolean validMove(int id, int dx, int dy) {
 		int[] loc;
@@ -252,17 +264,12 @@ public class JGameMap {
 		} else {
 			loc = find(players[1].hashCode());
 		}
-//		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
-//		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
-		if (loc[0] != -1 && gameMap[loc[0]+dx][loc[1]+dy] == null) {
+
+		if (loc[0] != -1 && loc[0]+dx > 0 && loc[0]+dx < mapsize && loc[1]+dy > 0 && loc[1]+dy < mapsize && gameMap[loc[0]+dx][loc[1]+dy] == null) {
 			return true;
 		}
-//		System.out.println("returnar false");
 		return false;
 	}
-
-
-
 
 
 }

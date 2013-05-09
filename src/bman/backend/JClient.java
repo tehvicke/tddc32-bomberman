@@ -37,48 +37,29 @@ public class JClient implements Runnable{
 			String [] args = event.getArguments();
 			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
 		}
-		if (event.type == UDPEventInterface.Type.game_start) {
+		else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
 
 			/* Positionen */
-			String[] args = {Integer.toString(3), Integer.toString(3)};		
+			String[] args = {Integer.toString(5), Integer.toString(5)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 
 
 		}
-		if (event.type == UDPEventInterface.Type.game_end) {
+		else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
 		}
 
-		if (event.type == UDPEventInterface.Type.bomb_set) {
+		else if (event.type == UDPEventInterface.Type.bomb_set) {
 			String [] args = event.getArguments();
-			JBomb bomb;
-			if (event.getOriginID() == id) {
-				bomb = new JBomb(JGUIGameMap.bomb, gameMap, player);
-				gameMap.addObject(bomb, Integer.parseInt(args[0]),Integer.parseInt(args[1]));
-			} else {
-				bomb = new JBomb(JGUIGameMap.bomb, gameMap, player_2);
-				gameMap.addObject(bomb, Integer.parseInt(args[0]),Integer.parseInt(args[1]));
-			}
-			Thread bombThread = new Thread(bomb);
-			bombThread.start();
+			gameMap.addObject(new JBomb(JGUIGameMap.bomb,gameMap), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
 		}
-		if (event.type == UDPEventInterface.Type.player_join) {
+		else if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
 		}
-		if (event.type == UDPEventInterface.Type.player_move_up) {
-			movePlayerRelative(event.getOriginID(), 0, -1);
-		}
-		if (event.type == UDPEventInterface.Type.player_move_down) {
-			movePlayerRelative(event.getOriginID(), 0, 1);
-		}
-		if (event.type == UDPEventInterface.Type.player_move_left) {
-			movePlayerRelative(event.getOriginID(), -1, 0);
-		}
-		if (event.type == UDPEventInterface.Type.player_move_right) {
-			movePlayerRelative(event.getOriginID(), 1, 0);
-		}
+
+
 		if (event.type == UDPEventInterface.Type.game_map) {
 			System.out.println("LOL");
 			String[] args = event.getArguments();
@@ -86,6 +67,7 @@ public class JClient implements Runnable{
 				gameMap.addMapRow(args[i], i);
 				System.out.println(args[i] + ", " + i);
 			}
+
 		}
 	}
 	/**
@@ -110,25 +92,14 @@ public class JClient implements Runnable{
 		client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
 	}
 
-	protected void sendMoveRelative(int dx, int dy) {
-		if (!gameMap.validMove(this.id,dx,dy)) {
-			System.out.println("klient har id: " + this.id);
-			return;
-		}
-		if (dx > 0) {
-			client.sendEvent(new UDPEvent(Type.player_move_right, this.id));
-		}
-		if (dx < 0) {
-			client.sendEvent(new UDPEvent(Type.player_move_left, this.id));
-		}
-		if (dy > 0) {
-			client.sendEvent(new UDPEvent(Type.player_move_down, this.id));
-		}
-		if (dy < 0) {
-			client.sendEvent(new UDPEvent(Type.player_move_up, this.id));
-		}
-	}
+
 	
+	
+	/**
+	 * Sends an UDPEvent containing absolute move information for a player to the server
+	 * @param dx relative x position to be moved
+	 * @param dy relative y position to be moved
+	 */
 	protected void sendMove(int dx, int dy) {
 		if (!gameMap.validMove(this.id, dx, dy)) {
 			return;
@@ -144,9 +115,7 @@ public class JClient implements Runnable{
 
 
 	/**
-	 * Creates a game
-	 * @param x Starting x position
-	 * @param y Starting y position
+	 * Starts the game and initiates the gameMap, the player and the GUI
 	 */
 	private void startGame() {
 		gameMap = new JGameMap();
@@ -155,13 +124,15 @@ public class JClient implements Runnable{
 
 	}
 
-	private void movePlayerRelative(int id, int dx, int dy) {
-		gameMap.move(dx, dy, id);
-	}
-	
+	/**
+	 * function for moving a player, sends absolute coordinates instead of relative to keep clients synced
+	 * @param id player to be moved
+	 * @param x  x location to move to
+	 * @param y y location to move to
+	 */
 	private void movePlayer(int id, int x, int y) {
 		
-		if (gameMap.at(x, y) != null) {
+		if (x < 0 || x > JGameMap.mapsize || y < 0 || y > JGameMap.mapsize || gameMap.at(x, y) != null) {
 			return;
 		}
 		
@@ -178,20 +149,9 @@ public class JClient implements Runnable{
 
 	@Override
 	public void run() {
-		//		client.establishConnection(serverIP);
-
-
+		
 		Thread clientThread = new Thread(client);
 		clientThread.start();
-
-
-		//Test code
-		//		UDPEventHandler(new UDPEvent(UDPEventInterface.Type.game_start, 0));
-		//		String [] apa = {"1","1"};
-		//		UDPEventHandler(new UDPEvent(UDPEventInterface.Type.player_join,this.id,apa));
-		//		for (int i = 0; i < 3 ; i++) {
-		//			UDPEventHandler(new UDPEvent(UDPEventInterface.Type.player_move_right, this.id));
-		//		}
 		while(true) {
 			if (client.eventExists()) {
 				UDPEventHandler(client.getEvent());

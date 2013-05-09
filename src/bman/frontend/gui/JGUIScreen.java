@@ -39,14 +39,14 @@ public class JGUIScreen extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		setResizable(false);
-		setTitle("Bomberman");
+		setTitle("Bomberdude");
 		//JGUISplashScreen splash = new JGUISplashScreen();
 		//add(splash);
 		//repaint();
 		//remove(splash);
 		
 		game = new JGUIGameMap(gmap,player);
-		add(game);
+		getContentPane().add(game);
 	
 		
 	}

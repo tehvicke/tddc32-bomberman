@@ -14,16 +14,15 @@ import javax.swing.Timer;
 
 import bman.backend.JGameMap;
 import bman.backend.JHuman;
-import bman.backend.JMapObject;
 
 public class JGUIGameMap extends JPanel implements ActionListener {
 
-	/**
+	/* *
 	 * VARIABLES
 	 */
 	private static final long serialVersionUID = -5735185698246996895L;
 
-	/******************************************************************************************************
+	/* *****************************************************************************************************
 	 * CONSTANTS
 	 *****************************************************************************************************/
 
@@ -40,7 +39,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 	public static final String solidBlock = "./sprites/solid_block.png"; 
 	public static final String destroyableBlock = "./sprites/destroyable_block.png";
 
-	public static final String bomb_fire = "./sprites/solid_block.png";
+	public static final String bomb_fire = "./sprites/bomb_fire.png";
 	public static final String bomb_nofire = "./sprites/solid_block.png";;
 
 	public static final String explosion = "./sprites/destroyable_block.png";
@@ -54,14 +53,16 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 
 	public static final String superman = "./sprites/superman.png";
 
-	/****************************************************************************************************/
+	/* ***************************************************************************************************/
+	
+	/* *
+	 * Contents
+	 */
 	public static JGUIMapObject solidBlockGUI = new JGUIMapObject(solidBlock);
 	public static JGUIMapObject destroyableBlockGUI = new JGUIMapObject(destroyableBlock);
 	public static JGUIMapObject bomb = new JGUIMapObject(bomb_fire);
 	public static JGUIMapObject player1 = new JGUIMapObject(superman);
 	public static JGUIMapObject player2 = new JGUIMapObject(player_front);
-
-
 
 	/*
 	 * Contents
@@ -79,7 +80,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		//Window properties
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		setVisible(true);
-		this.setBackground(Color.green);
+		this.setBackground(Color.LIGHT_GRAY);
 		addKeyListener(new KAdapter());
 		setFocusable(true);
 		setDoubleBuffered(true);
