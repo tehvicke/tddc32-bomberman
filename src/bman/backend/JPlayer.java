@@ -15,6 +15,7 @@ public class JPlayer extends JMapObject {
 		super(sprite);
 		this.map = map;
 		this.client = client;
+		destroyable = true;
 	}
 
 	public void setID(int playerid){
@@ -68,6 +69,10 @@ public class JPlayer extends JMapObject {
 			lastMove[1] = -1;
 		}
 		client.sendMove(dx, dy);
+	}
+	
+	public void destroy() {
+		System.out.println("I died");
 	}
 	
 	public void turn(int dx, int dy) {

@@ -6,7 +6,7 @@ public class JDestroyableBlock extends JMapObject {
 
 	public JDestroyableBlock() {
 		super(JGUIGame.destroyableBlockGUI);
-		
+		destroyable = true;
 	}
 
 }

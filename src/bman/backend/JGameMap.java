@@ -138,10 +138,9 @@ public class JGameMap {
 	 * Removes an object at a given coord
 	 * @param x x coord
 	 * @param y y coord
+	 * @throws ArrayIndexOutOfBoundsException 
 	 */
-	public void removeObject(int x, int y) {
-		gameMap[x][y] = null;
-	}
+
 
 	/**
 	 * Returns the position of a MapObject, if not found returns -1,-1
@@ -209,17 +208,33 @@ public class JGameMap {
 	public void remove(JMapObject obj) {
 		int [] loc = find(obj.hashCode());
 		if (loc[0] != -1)
-			removeObject(loc[0],loc[1]);
+			remove(loc[0],loc[1]);
 	}
 
 	/**
 	 * Returns the object at the specified location in the gameMap
-	 * @param x
-	 * @param y
-	 * @return
+	 * @param x x coord of object
+	 * @param y y coord of object
+	 * @return object at specified location
+	 * @throws ArrayIndexOutOfBoundsException
 	 */
-	public JMapObject at(int x, int y) {
+	public JMapObject at(int x, int y) throws ArrayIndexOutOfBoundsException {
 		return gameMap[x][y];
+	}
+	
+	/**
+	 * Removes object at specified position
+	 * @param x x coord of the object
+	 * @param y y coord of the object
+	 */
+	public void destroy(int x, int y) {
+		if (gameMap[x][y] != null) {
+			gameMap[x][y].destroy();
+		}
+		gameMap[x][y] = null;
+	}
+	public void remove(int x, int y) {
+		gameMap[x][y] = null;
 	}
 
 
@@ -229,67 +244,67 @@ public class JGameMap {
 	 * @param y center y coord
 	 * @param radius radius of the explosion
 	 */
-	public void explosion(int x, int y, int radius) {
-		addObject(new JFire(new JGUIMapObject(JGUIGame.fireCenter)), x, y);
-
-		for (int i = 1; i < radius ; i++) {
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			if (gameMap[x+i][y] instanceof JDestroyableBlock) {
-				removeObject(x+i,y);
-			}
-			if (gameMap[x][y+i] instanceof JDestroyableBlock) {
-				removeObject(x, y+i);
-			}
-
-			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x+i, y);
-			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y+i);
-			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x-i, y);
-			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y-i);
-		}
-		addObject(new JFire(new JGUIMapObject(JGUIGame.fireRight)),x+radius,y);
-		addObject(new JFire(new JGUIMapObject(JGUIGame.fireLeft)),x-radius,y);
-		addObject(new JFire(new JGUIMapObject(JGUIGame.fireUp)),x,y-radius);
-		addObject(new JFire(new JGUIMapObject(JGUIGame.fireDown)),x,y+radius);
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		for (int i = radius; i >0 ; i--) {
-			if (gameMap[x+i][y] instanceof JDestroyableBlock || gameMap[x+i][y] instanceof JFire)
-				removeObject(x+i, y);
-			if (gameMap[x][y+i] instanceof JDestroyableBlock || gameMap[x][y+i] instanceof JFire)
-				removeObject(x, y+i);
-			if (gameMap[x-i][y] instanceof JDestroyableBlock || gameMap[x-i][y] instanceof JFire)
-				removeObject(x-i,y);
-			if (gameMap[x][y-i] instanceof JDestroyableBlock || gameMap[x][y-i] instanceof JFire)
-				removeObject(x, y-i);
-
-			if (gameMap[x+i][y] instanceof JBomb)
-				((JBomb)gameMap[x+i][y]).explode();
-			if (gameMap[x][y+i] instanceof JBomb)
-				((JBomb)gameMap[x][y+i]).explode();
-			if (gameMap[x-i][y] instanceof JBomb)
-				((JBomb)gameMap[x-i][y]).explode();
-			if (gameMap[x][y-i] instanceof JBomb)
-				((JBomb)gameMap[x][y-i]).explode();
-
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		removeObject(x, y);
-	}
+//	public void explosion(int x, int y, int radius) {
+//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireCenter)), x, y);
+//
+//		for (int i = 1; i < radius ; i++) {
+//			try {
+//				Thread.sleep(50);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//			if (gameMap[x+i][y] instanceof JDestroyableBlock) {
+//				removeObject(x+i,y);
+//			}
+//			if (gameMap[x][y+i] instanceof JDestroyableBlock) {
+//				removeObject(x, y+i);
+//			}
+//
+//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x+i, y);
+//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y+i);
+//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x-i, y);
+//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y-i);
+//		}
+//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireRight)),x+radius,y);
+//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireLeft)),x-radius,y);
+//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireUp)),x,y-radius);
+//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireDown)),x,y+radius);
+//		try {
+//			Thread.sleep(200);
+//		} catch (InterruptedException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		for (int i = radius; i >0 ; i--) {
+//			if (gameMap[x+i][y] instanceof JDestroyableBlock || gameMap[x+i][y] instanceof JFire)
+//				removeObject(x+i, y);
+//			if (gameMap[x][y+i] instanceof JDestroyableBlock || gameMap[x][y+i] instanceof JFire)
+//				removeObject(x, y+i);
+//			if (gameMap[x-i][y] instanceof JDestroyableBlock || gameMap[x-i][y] instanceof JFire)
+//				removeObject(x-i,y);
+//			if (gameMap[x][y-i] instanceof JDestroyableBlock || gameMap[x][y-i] instanceof JFire)
+//				removeObject(x, y-i);
+//
+//			if (gameMap[x+i][y] instanceof JBomb)
+//				((JBomb)gameMap[x+i][y]).explode();
+//			if (gameMap[x][y+i] instanceof JBomb)
+//				((JBomb)gameMap[x][y+i]).explode();
+//			if (gameMap[x-i][y] instanceof JBomb)
+//				((JBomb)gameMap[x-i][y]).explode();
+//			if (gameMap[x][y-i] instanceof JBomb)
+//				((JBomb)gameMap[x][y-i]).explode();
+//
+//			try {
+//				Thread.sleep(50);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		removeObject(x, y);
+//	}
 
 	/**
 	 *  Check if a move is valid, 
@@ -311,6 +326,7 @@ public class JGameMap {
 		}
 		return false;
 	}
+	
 
 
 }

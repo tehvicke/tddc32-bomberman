@@ -241,7 +241,8 @@ public class UDPServer implements UDPServerInterface {
 				};
 		
 //		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout2));
-		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, new String[] {"random", "10"}));
+
+		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, new String[] {"random", "5"}));
 		eventListener(); /* Start the event listener */
 	}
 	

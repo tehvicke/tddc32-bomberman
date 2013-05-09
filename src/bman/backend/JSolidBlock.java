@@ -16,5 +16,6 @@ public class JSolidBlock extends JMapObject{
 	 */
 	public JSolidBlock() {
 		super(JGUIGame.solidBlockGUI);
+		this.destroyable = false;
 	}
 }
