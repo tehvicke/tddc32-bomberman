@@ -115,6 +115,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 	 */
 	private void initializeKeyListeners() {
 		myInputMap = this.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		myActionMap = this.getActionMap();
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "move_up");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "move_down");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false), "move_left");
@@ -124,7 +125,6 @@ public class JGUIGame extends JPanel implements ActionListener {
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK, false), "turn_left");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK, false), "turn_right");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0, false), "lay_bomb");
-		myActionMap = this.getActionMap();
 		myActionMap.put("move_up", new KeyPressed(KeyEvent.VK_UP));
 		myActionMap.put("move_down", new KeyPressed(KeyEvent.VK_DOWN));
 		myActionMap.put("move_left", new KeyPressed(KeyEvent.VK_LEFT));
@@ -134,13 +134,11 @@ public class JGUIGame extends JPanel implements ActionListener {
 		myActionMap.put("turn_left", new KeyPressed(KeyEvent.VK_LEFT, true));
 		myActionMap.put("turn_right", new KeyPressed(KeyEvent.VK_RIGHT, true));
 		myActionMap.put("lay_bomb", new KeyPressed(KeyEvent.VK_SPACE));
-
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
-
 		/* DRAWS THE GRID */
 		for (int i = 0; i <= JGUIScreen.w_height; i +=30) {
 			g2d.setColor(Color.black);
