@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import bman.backend.JGameMap;
 import bman.backend.JHuman;
+import javax.swing.JCheckBox;
 
 public class JGUIScreen extends JFrame {
 
@@ -45,7 +46,7 @@ public class JGUIScreen extends JFrame {
 		//remove(splash);
 		
 		game = new JGUIGameMap(gmap,player);
-		add(game);
+		getContentPane().add(game);
 	
 		
 	}

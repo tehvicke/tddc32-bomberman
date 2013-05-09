@@ -3,8 +3,7 @@ package bman;
 import java.util.Scanner;
 
 import bman.backend.JClient;
-import bman.backend.JServer;
-import bman.networking.*;
+import bman.networking.UDPServer;
 
 /**
  * The main application class. This is where the main function is and where
@@ -23,7 +22,7 @@ public class JBomberman {
 
 
 		String ip = "192.168.0.101";
-		//String ip = "192.168.0.197";
+	//	String ip = "192.168.0.197";
 
 		JClient client = new JClient(ip, "client");
 		Thread clientThread = new Thread(client);

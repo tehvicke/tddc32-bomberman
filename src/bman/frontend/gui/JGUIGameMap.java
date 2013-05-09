@@ -75,7 +75,7 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 		//Window properties
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		setVisible(true);
-		this.setBackground(Color.green);
+		this.setBackground(Color.LIGHT_GRAY);
 		addKeyListener(new KAdapter());
 		setFocusable(true);
 		setDoubleBuffered(true);

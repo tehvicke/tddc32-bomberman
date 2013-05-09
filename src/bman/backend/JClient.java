@@ -33,6 +33,7 @@ public class JClient implements Runnable{
 	}
 
 	public void UDPEventHandler(UDPEvent event) {
+		System.err.println("Event handled: " + event.toString());
 		
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
@@ -42,7 +43,7 @@ public class JClient implements Runnable{
 			startGame();
 
 			/* Positionen */
-			String[] args = {Integer.toString(2), Integer.toString(10)};		
+			String[] args = {Integer.toString(5), Integer.toString(5)};		
 			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 
 
@@ -80,9 +81,15 @@ public class JClient implements Runnable{
 		if (event.type == UDPEventInterface.Type.player_move_right) {
 			movePlayerRelative(event.getOriginID(), 1, 0);
 		}
-		switch (event.type){
-		//case game_map:
-			
+
+		if (event.type == UDPEventInterface.Type.game_map) {
+			System.out.println("LOL");
+			String[] args = event.getArguments();
+			for (int i = 0; i < 15; i++) {
+				gameMap.addMapRow(args[i], i);
+				System.out.println(args[i] + ", " + i);
+			}
+
 		}
 	}
 	/**
@@ -158,7 +165,7 @@ public class JClient implements Runnable{
 	
 	private void movePlayer(int id, int x, int y) {
 		
-		if (gameMap.at(x, y) != null) {
+		if (x < 0 || x > gameMap.mapsize || y < 0 || y > gameMap.mapsize || gameMap.at(x, y) != null) {
 			return;
 		}
 		
@@ -194,7 +201,7 @@ public class JClient implements Runnable{
 				UDPEventHandler(client.getEvent());
 			}
 			try {
-				Thread.sleep(2);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -58,4 +58,8 @@ public class UDPEvent implements UDPEventInterface, Serializable {
 		}
 		return null;
 	}
+	
+	public String toString() {
+		return this.type + " O: " + this.origin;
+	}
 }

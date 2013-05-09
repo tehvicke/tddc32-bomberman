@@ -53,7 +53,7 @@ public class JGameMap {
 //		gameMapRow("sssssssssssssss", 14);
 	}
 
-	private void gameMapRow(String row, int rowIndex) {
+	public void addMapRow(String row, int rowIndex) {
 		JGUIMapObject block = new JGUIMapObject(JGUIGameMap.solidBlock); 
 		JGUIMapObject dblock = new JGUIMapObject(JGUIGameMap.destroyableBlock);
 		
@@ -282,12 +282,12 @@ public class JGameMap {
 		} else {
 			loc = find(players[1].hashCode());
 		}
-		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
-		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
+//		System.out.println("player id är: " + playerIDs[0] + " | " + playerIDs[1]);
+//		System.out.println("loc 0 är: " +loc[0] + " dx: " +dx + " dy: " + dy);
 		if (loc[0] != -1 && gameMap[loc[0]+dx][loc[1]+dy] == null) {
 			return true;
 		}
-		System.out.println("returnar false");
+//		System.out.println("returnar false");
 		return false;
 	}
 
@@ -296,24 +296,24 @@ public class JGameMap {
 	 * @param event udpevent to be handled
 	 */
 	public void handleEvent(UDPEvent event) {
-		if (event.type == UDPEvent.Type.establish_connection) {
-			JPlayer player = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), this);
-			player.setID(event.getOriginID());
-			addPlayer(player, player.getID(), 4, 4);
-		}
-
-		if (event.type == UDPEvent.Type.player_move_up) {
-			move(0, -1, event.getOriginID());
-		}
-		if (event.type == UDPEvent.Type.player_move_down) {
-			move(0, 1, event.getOriginID());
-		}
-		if (event.type == UDPEvent.Type.player_move_right) {
-			move(1, 0, event.getOriginID());
-		}
-		if (event.type == UDPEvent.Type.player_move_left) {
-			move(-1,0,event.getOriginID());
-		}
+//		if (event.type == UDPEvent.Type.establish_connection) {
+//			JPlayer player = new JPlayer(new JGUIMapObject(JGUIGameMap.superman), this);
+//			player.setID(event.getOriginID());
+//			addPlayer(player, player.getID(), 4, 4);
+//		}
+//
+//		if (event.type == UDPEvent.Type.player_move_up) {
+//			move(0, -1, event.getOriginID());
+//		}
+//		if (event.type == UDPEvent.Type.player_move_down) {
+//			move(0, 1, event.getOriginID());
+//		}
+//		if (event.type == UDPEvent.Type.player_move_right) {
+//			move(1, 0, event.getOriginID());
+//		}
+//		if (event.type == UDPEvent.Type.player_move_left) {
+//			move(-1,0,event.getOriginID());
+//		}
 	}
 
 
