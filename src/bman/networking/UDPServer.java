@@ -240,8 +240,8 @@ public class UDPServer implements UDPServerInterface {
 		        "sssssssssssssss"
 				};
 		
-		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout2));
-		
+//		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout2));
+		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, new String[] {"random", "50"}));
 		eventListener(); /* Start the event listener */
 	}
 	

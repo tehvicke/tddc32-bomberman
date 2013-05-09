@@ -1,9 +1,9 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIGameMap;
+import bman.frontend.gui.JGUIGame;
 
 
-public class JBlock extends JMapObject{
+public class JSolidBlock extends JMapObject{
 	private int durability;
 	private enum type{};
 	private boolean blocksPath=true;
@@ -14,7 +14,7 @@ public class JBlock extends JMapObject{
 	 * @param x
 	 * @param y
 	 */
-	public JBlock() {
-		super(JGUIGameMap.solidBlockGUI);
+	public JSolidBlock() {
+		super(JGUIGame.solidBlockGUI);
 	}
 }

@@ -32,7 +32,7 @@ public class JGUIScreen extends JFrame {
 	/**
 	 * Members
 	 */
-	JGUIGameMap game;
+	JGUIGame game;
 
 	public JGUIScreen(JGameMap gmap, JHuman player) {
 		this.setSize(new Dimension(w_width+2,w_height+28));
@@ -45,7 +45,7 @@ public class JGUIScreen extends JFrame {
 		//repaint();
 		//remove(splash);
 		
-		game = new JGUIGameMap(gmap,player);
+		game = new JGUIGame(gmap,player);
 		getContentPane().add(game);
 	
 		

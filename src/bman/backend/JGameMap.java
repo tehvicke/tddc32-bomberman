@@ -1,7 +1,10 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIGameMap;
+import java.util.Random;
+
+import bman.frontend.gui.JGUIGame;
 import bman.frontend.gui.JGUIMapObject;
+
 
 /**
  * The GameMap
@@ -37,10 +40,32 @@ public class JGameMap {
 			if (row.charAt(i) == 'd') {
 				addObject(new JDestroyableBlock(),i,rowIndex);
 			} else if (row.charAt(i) == 's') {
-				addObject(new JBlock(),i,rowIndex);
+				addObject(new JSolidBlock(),i,rowIndex);
 			}
 		}
 	}
+	
+	public void randomizedMap(int percentFilled) {
+		Random gen = new Random();
+		for (int col = 0; col < mapsize; col++) {
+			for (int row = 0; row < mapsize; row++) {
+				if (
+						(row == 0) || // top row 
+						(col == 0) || // left row
+						(col == mapsize - 1) || // right row
+						(row == mapsize - 1) || // bottom row
+						(row % 2 == 0 && col % 2 == 0) // middle solid blocks
+						) {
+					addObject(new JSolidBlock(), col, row);
+				} else {
+					int number = gen.nextInt(100);
+					if (number < percentFilled) {
+						addObject(new JDestroyableBlock(), col, row);
+					}
+				}
+			}
+ 		}
+		}
 
 	/**
 	 * Adds a player to gameMap
@@ -50,7 +75,22 @@ public class JGameMap {
 	 * @param y start y position
 	 */
 	public void addPlayer(JPlayer player, int id, int x, int y) {
-		addObject(player, x, y);
+		Random gen = new Random();
+		int maxCount = 1000;
+		while(true) {
+			int x_rand = gen.nextInt(mapsize);
+			int y_rand = gen.nextInt(mapsize);
+			if (this.gameMap[x_rand][y_rand] == null) { // Only add if space is empty
+				addObject(player, x_rand, y_rand);
+				break;
+			}
+			if (maxCount-- < 0) {
+				System.err.println("Nowhere to put player " + player.getID() + ". Exits game.");
+				System.exit(0);
+			}
+		}
+		
+//		addObject(player, x, y);
 		if (playerIDs[0] == -1) {
 			playerIDs[0] = id;
 			players[0] = player;
@@ -190,7 +230,7 @@ public class JGameMap {
 	 * @param radius radius of the explosion
 	 */
 	public void explosion(int x, int y, int radius) {
-		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireCenter)), x, y);
+		addObject(new JFire(new JGUIMapObject(JGUIGame.fireCenter)), x, y);
 
 		for (int i = 1; i < radius ; i++) {
 			try {
@@ -207,15 +247,15 @@ public class JGameMap {
 				removeObject(x, y+i);
 			}
 
-			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireHoriz)), x+i, y);
-			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireVert)), x, y+i);
-			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireHoriz)), x-i, y);
-			addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireVert)), x, y-i);
+			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x+i, y);
+			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y+i);
+			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x-i, y);
+			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y-i);
 		}
-		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireRight)),x+radius,y);
-		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireLeft)),x-radius,y);
-		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireUp)),x,y-radius);
-		addObject(new JFire(new JGUIMapObject(JGUIGameMap.fireDown)),x,y+radius);
+		addObject(new JFire(new JGUIMapObject(JGUIGame.fireRight)),x+radius,y);
+		addObject(new JFire(new JGUIMapObject(JGUIGame.fireLeft)),x-radius,y);
+		addObject(new JFire(new JGUIMapObject(JGUIGame.fireUp)),x,y-radius);
+		addObject(new JFire(new JGUIMapObject(JGUIGame.fireDown)),x,y+radius);
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e1) {

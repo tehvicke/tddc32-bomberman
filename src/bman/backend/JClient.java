@@ -1,6 +1,6 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIGameMap;
+import bman.frontend.gui.JGUIGame;
 import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPClient;
 import bman.networking.UDPEvent;
@@ -55,7 +55,7 @@ public class JClient implements Runnable{
 
 		else if (event.type == UDPEventInterface.Type.bomb_set) {
 			String [] args = event.getArguments();
-			gameMap.addObject(new JBomb(JGUIGameMap.bomb,gameMap), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+			gameMap.addObject(new JBomb(JGUIGame.bomb,gameMap), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
 		}
 		else if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
@@ -66,9 +66,14 @@ public class JClient implements Runnable{
 		if (event.type == UDPEventInterface.Type.game_map) {
 			System.out.println("LOL");
 			String[] args = event.getArguments();
-			for (int i = 0; i < 15; i++) {
-				gameMap.addMapRow(args[i], i);
-				System.out.println(args[i] + ", " + i);
+
+			if (args[0].equals("random")) {
+				gameMap.randomizedMap(Integer.parseInt(args[1]));
+			} else {
+				for (int i = 0; i < 15; i++) {
+					gameMap.addMapRow(args[i], i);
+					System.out.println(args[i] + ", " + i);
+				}
 			}
 
 		}
@@ -84,7 +89,7 @@ public class JClient implements Runnable{
 			gameMap.addPlayer(player, id, x, y);
 		} else {
 			player2ID = id;
-			player_2 = new JPlayer(JGUIGameMap.player2,gameMap,this);
+			player_2 = new JPlayer(JGUIGame.player2,gameMap,this);
 			gameMap.addPlayer(player_2, id, x, y);
 		}
 
@@ -122,7 +127,7 @@ public class JClient implements Runnable{
 	 */
 	private void startGame() {
 		gameMap = new JGameMap();
-		player = new JHuman(JGUIGameMap.player1, gameMap,this);
+		player = new JHuman(JGUIGame.player1, gameMap,this);
 		guiScreen = new JGUIScreen(gameMap, player);
 
 	}

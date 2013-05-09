@@ -12,8 +12,6 @@ public abstract class JMapObject {
 	protected JGUIMapObject sprite;
 	protected boolean destroyable = true;
 	
-	protected boolean destroyable = true;
-	
 	/**
 	 * Constructor, may be subject to change
 	 * @param sprite the JGUIMapObject representing the mapobject
