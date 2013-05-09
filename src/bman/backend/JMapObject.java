@@ -29,4 +29,6 @@ public class JMapObject {
 	public Image getImage() {
 		return sprite.getImage();
 	}
+	
+	
 }

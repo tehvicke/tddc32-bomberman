@@ -24,10 +24,6 @@ public interface UDPEventInterface {
 		win,
 
 		// Player stuff
-		player_move_up,
-		player_move_down,
-		player_move_right,
-		player_move_left,
 		player_move,
 //		player_move_stop,
 		player_die,

@@ -14,16 +14,15 @@ import javax.swing.Timer;
 
 import bman.backend.JGameMap;
 import bman.backend.JHuman;
-import bman.backend.JMapObject;
 
 public class JGUIGameMap extends JPanel implements ActionListener {
 
-	/**
+	/* *
 	 * VARIABLES
 	 */
 	private static final long serialVersionUID = -5735185698246996895L;
 
-	/******************************************************************************************************
+	/* *****************************************************************************************************
 	 * CONSTANTS
 	 *****************************************************************************************************/
 
@@ -54,20 +53,18 @@ public class JGUIGameMap extends JPanel implements ActionListener {
 
 	public static final String superman = "./sprites/superman.png";
 
-	/****************************************************************************************************/
+	/* ***************************************************************************************************/
+	
+	/* *
+	 * Contents
+	 */
 	public static JGUIMapObject solidBlockGUI = new JGUIMapObject(solidBlock);
 	public static JGUIMapObject destroyableBlockGUI = new JGUIMapObject(destroyableBlock);
 	public static JGUIMapObject bomb = new JGUIMapObject(bomb_fire);
 	public static JGUIMapObject player1 = new JGUIMapObject(superman);
 	public static JGUIMapObject player2 = new JGUIMapObject(player_front);
-
-
-
-	/**
-	 * Contents
-	 */
-	JGameMap gameMap;
-	JHuman player;
+	private JGameMap gameMap;
+	private JHuman player;
 	
 
 

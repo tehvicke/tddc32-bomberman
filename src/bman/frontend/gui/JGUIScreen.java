@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 
 import bman.backend.JGameMap;
 import bman.backend.JHuman;
-import javax.swing.JCheckBox;
 
 public class JGUIScreen extends JFrame {
 
@@ -40,7 +39,7 @@ public class JGUIScreen extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		setResizable(false);
-		setTitle("Bomberman");
+		setTitle("Bomberdude");
 		//JGUISplashScreen splash = new JGUISplashScreen();
 		//add(splash);
 		//repaint();

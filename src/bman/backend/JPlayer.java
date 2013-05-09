@@ -1,17 +1,14 @@
 package bman.backend;
 
-import bman.backend.JMapObject;
-import bman.frontend.gui.JGUIGameMap;
 import bman.frontend.gui.JGUIMapObject;
-import bman.frontend.gui.JGUIScreen;
 import bman.frontend.gui.JGUIMapObject.Direction;
 
 public class JPlayer extends JMapObject {
 	private int playerid = 0;
 	JGameMap map;
 	JClient client;
-	int active_bombs = 0;
-	int max_bombs = 2;
+	//int active_bombs = 0;
+	//int max_bombs = 2;
 	int [] lastMove = {0,0};
 
 	public JPlayer(JGUIMapObject sprite,JGameMap map, JClient client) {
@@ -30,19 +27,19 @@ public class JPlayer extends JMapObject {
 	}
 	
 	public void putBomb() {
-		if (active_bombs >= max_bombs)
-			return;
+		//if (active_bombs >= max_bombs)
+		//	return;
 		int[] loc = map.find(this.hashCode());
 		//JBomb bomb = new JBomb(new JGUIMapObject(JGUIGameMap.bomb_nofire),map,this);
 		//Thread t = new Thread(bomb, "t2");
 		//map.addObject(bomb,loc[0]+lastMove[0], loc[1]+lastMove[1]);
 		client.putBomb(loc[0]+lastMove[0], loc[1]+lastMove[1]);
 		//t.start();
-		active_bombs++;
+		//active_bombs++;
 	}
 	
 	public void detonated() {
-		active_bombs--;
+		//active_bombs--;
 	}
 
 
