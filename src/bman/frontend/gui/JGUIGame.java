@@ -21,6 +21,12 @@ import bman.JBomberman;
 import bman.backend.JGameMap;
 import bman.backend.JHuman;
 
+/**
+ * The GUI implementation of the game, Draws the game screen and contains keylistener for player control.
+ * Also implements actionlistener as a way of refreshing the window 
+ * @author petter
+ *
+ */
 public class JGUIGame extends JPanel implements ActionListener {
 
 	/* *
@@ -31,7 +37,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 	/* *****************************************************************************************************
 	 * CONSTANTS
 	 *****************************************************************************************************/
-
+	
 	private static final String player_front = "./sprites/white_front.png";
 	private static final String player_back = "./sprites/white_back.png";
 	private static final String player_left = "./sprites/white_left.png";
@@ -45,20 +51,15 @@ public class JGUIGame extends JPanel implements ActionListener {
 	private static final String solidBlock = "./sprites/solid_block.png"; 
 	private static final String destroyableBlock = "./sprites/destroyable_block.png";
 
-	public static final String bomb_fire = "./sprites/bomb_fire.png";
-	public static final String bomb_nofire = "./sprites/solid_block.png";;
+	private static final String bomb_fire = "./sprites/bomb_fire.png";
+	private static final String explosion = "./sprites/explosion.png";
 
-	
-	public static final String fireCenter = "./sprites/ugly_fire_center.png";
-
-	public static final String explosion = "./sprites/explosion.png";
-
-	public static final String superman = "./sprites/superman.png";
+	//public static final String superman = "./sprites/superman.png";
 
 	/* ***************************************************************************************************/
 
 	/* *
-	 * Contents
+	 * Static JGUIMapObjects for usage by other classes, used to reduce unnecessary objects
 	 */
 	public static JGUIMapObject solidBlockGUI = new JGUIMapObject(solidBlock);
 	public static JGUIMapObject destroyableBlockGUI = new JGUIMapObject(destroyableBlock);
@@ -71,7 +72,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 	 * Contents
 	 */
 	JGameMap gameMap;
-	JHuman player;
+	JHuman player; //The player object
 
 
 	/* KEY BINDING */
@@ -79,9 +80,9 @@ public class JGUIGame extends JPanel implements ActionListener {
     ActionMap myActionMap = new ActionMap();
 	
 	/**
-	 * 
-	 * @param gameMap
-	 * @param player
+	 * Constructs JGUIGameMap objects
+	 * @param gameMap JGameMap the JGUIGameMap is associated with
+	 * @param player the player object
 	 */
 	public JGUIGame(JGameMap gameMap, JHuman player) {
 		//Window properties
@@ -95,7 +96,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 		setFocusable(true);
 		setDoubleBuffered(true);
 		//Timer which triggers actionlistener in this class
-		Timer timer = new Timer(6, this);
+		Timer timer = new Timer(5, this);
 		timer.start();
 		this.gameMap = gameMap;
 		this.player = player;
@@ -133,7 +134,11 @@ public class JGUIGame extends JPanel implements ActionListener {
 		myActionMap.put("lay_bomb", new KeyPressed(KeyEvent.VK_SPACE, true));
 	}
 
-	public void paint(Graphics g) {
+	/**
+	 * Overwritten paint method, In addition to the paint in the superclass it also draws all objects in the gameMap and
+	 * a gridline pattern.
+	 */
+	 public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
 		/* DRAWS THE GRID */

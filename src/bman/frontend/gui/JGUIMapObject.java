@@ -5,13 +5,13 @@ import java.awt.Toolkit;
 
 
 /**
- * Class containing the graphical representation of a JMapObject
+ * The graphical representation of a JMapObject
  * @author petter
  *
  */
 public class JGUIMapObject {
 	
-	
+	//Enum for determining appropriate sprite to use
 	public enum Direction {
 		DOWN,UP,LEFT,RIGHT;
 	}

@@ -24,28 +24,34 @@ public class JGUIMainMenu extends JPanel  {
 	 */
 	private static final long serialVersionUID = -4776987440183048444L;
 	
-	private static Image logo = Toolkit.getDefaultToolkit().getImage("./sprites/logo.png");
+	//BackGround Image and buttonlabels
 	private static Image background = Toolkit.getDefaultToolkit().getImage("./sprites/background.png");
 	private static String[] options = {"Join Game","Host Game","Exit Game"};
-	private JButton[] buttons;
 	
-
+	
+	//Panels and buttons which make up the JMainMenu
 	private JPanel joinPanel;
 	private JPanel hostPanel;
 	private JPanel menuPanel;
+	private JButton[] buttons;
 	
+	//References to client and server to be started by CreateListener and connectListener
 	private JClient client;
 	private JServer server;
 	
+	//Components for joinPanel & hostPanel
 	private JTextField ipField;
 	private JTextField fill;
+	private JLabel waitMsg = new JLabel("Waiting for Connections..");
 	
+	//Reference to the JGUIScreen which holds the mainMenu
 	private JGUIScreen parentFrame;
 	
 
 
 	/**
-	 * Default constructor
+	 * Constructs a JGUIMainMenu object.
+	 * @param parentFrame, JGUISCreen or other JFrame which contains the menu
 	 */
 	public JGUIMainMenu(JGUIScreen parentFrame) {
 		//Init of Main Menu
@@ -55,26 +61,27 @@ public class JGUIMainMenu extends JPanel  {
 		this.setVisible(true);
 		this.setLayout(null);
 		this.setOpaque(false);
-		int topMargin = 250;
+		
+		
+		//Listener used by left side buttons
 		buttonListener bl = new buttonListener();
 		
-		//Cosmetics
-		Image playerIcon;
-		Image player2Icon;
-		
-		//Init menuPanel
+				
+		//Init of menuPanel
+		int topMargin = 250;
 		menuPanel = new JPanel();
 		menuPanel.setBounds(0,topMargin, JGUIScreen.w_width/3,JGUIScreen.w_height-topMargin);
 		menuPanel.setBackground(Color.white);
 		menuPanel.setLayout(new BoxLayout(menuPanel,BoxLayout.Y_AXIS));
 
-		this.add(menuPanel);
+		
 		buttons = new JButton[options.length];
 		for (int i  = 0; i < options.length; i++ ) {
 			buttons[i] = new JButton(options[i]);
 			buttons[i].addActionListener(bl);
 			menuPanel.add(buttons[i]);
 		}
+		
 		//Join Game Panel
 		joinPanel = new JPanel();
 		joinPanel.setVisible(false);
@@ -84,15 +91,14 @@ public class JGUIMainMenu extends JPanel  {
 		//Content of joinPanel
 		JLabel ip = new JLabel("IP Address:");
 		ipField = new JTextField("xxx.xxx.xxx.xxx");
-		JLabel errorMSG = new JLabel();
-		errorMSG.setVisible(false);
+	
 		JButton connect = new JButton("Connect");
 		connect.addActionListener(new connectListener());
-		joinPanel.add(errorMSG);
+		
 		joinPanel.add(ip);
 		joinPanel.add(ipField);
 		joinPanel.add(connect);
-		this.add(joinPanel);
+		
 		
 		//Host Panel
 		hostPanel = new JPanel();
@@ -105,37 +111,42 @@ public class JGUIMainMenu extends JPanel  {
 		fill = new JTextField("25");
 		JButton start = new JButton("Start Server");
 		start.addActionListener(new createListener());
+		waitMsg.setForeground(Color.red);
+		waitMsg.setVisible(false);
 		
-		//Adding
 		hostPanel.add(fillDesc);
 		hostPanel.add(fill);
 		hostPanel.add(start);
-		this.add(hostPanel);
+		hostPanel.add(waitMsg);
 		
+		//Add to mainMenu
+		this.add(menuPanel);
+		this.add(joinPanel);
+		this.add(hostPanel);
 	}
 	
 	
 	
 
-
+	/**
+	 * Paints the menu with background
+	 */
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.drawImage(background,0,0,this);
 		super.paint(g);
-		
-		
-		//g2d.drawImage(logo, 220, 100, this);
-		
-		
-
+		g.dispose();
 	}
 
 	/**
 	 * Class which handles left side buttons (Join/Host/Exit)
+	 * Depending on which button is pressed either changes which
+	 * components should be visible or exits the game.
 	 * @author petter
 	 *
 	 */
 	private class buttonListener implements ActionListener {
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if((JButton) e.getSource() == buttons[0]) {
@@ -155,7 +166,7 @@ public class JGUIMainMenu extends JPanel  {
 		
 	}
 	/**
-	 * Listener responsible for connecting
+	 * Listener which handles game joining
 	 * @author petter
 	 *
 	 */
@@ -163,10 +174,8 @@ public class JGUIMainMenu extends JPanel  {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			//Reads IP from UI component
 			String ip = ipField.getText();
-			
-			
-			
 			// Create client
 			client = new JClient(ip,parentFrame);
 			Thread clientThread = new Thread(client);
@@ -174,18 +183,28 @@ public class JGUIMainMenu extends JPanel  {
 		}
 		
 	}
+	
+	/**
+	 * Listener which creates a server when the button is pressed and also
+	 * creates a client which connects to the local server.
+	 * @author petter
+	 *
+	 */
 	private class createListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			//Reads input
 			String fillSt = fill.getText();
     		int fillperc = Integer.parseInt(fillSt);
-			server = new JServer(1, fillperc);
+    		
+			server = new JServer(2, fillperc);
 			client = new JClient("localhost",parentFrame);
 			Thread serverThread = new Thread(server);
 			Thread clientThread = new Thread(client);
 			serverThread.start();
 			clientThread.start();
+			waitMsg.setVisible(true);
 			
 		}
 		

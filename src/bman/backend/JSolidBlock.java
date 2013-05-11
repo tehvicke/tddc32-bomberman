@@ -10,9 +10,7 @@ import bman.frontend.gui.JGUIGame;
 public class JSolidBlock extends JMapObject{
 
 	/**
-	 * 
-	 * @param x
-	 * @param y
+	 * Constructs a JSolidBlock object
 	 */
 	public JSolidBlock() {
 		super(JGUIGame.solidBlockGUI);

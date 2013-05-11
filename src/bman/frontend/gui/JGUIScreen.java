@@ -19,7 +19,7 @@ public class JGUIScreen extends JFrame {
 		}
 
 	}
-	private boolean isActive = false;
+
 	/**
 	 * Variables
 	 */
@@ -27,9 +27,7 @@ public class JGUIScreen extends JFrame {
 	protected static int w_height = 450;
 	private static final long serialVersionUID = 7135568752644883047L;
 
-	/**
-	 * Members
-	 */
+	//JPanel which is shown in the UI
 	JPanel content;
 	/**
 	 * Default constructor
@@ -55,11 +53,11 @@ public class JGUIScreen extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		setResizable(false);
-		setTitle("Bomberdude");
+		setTitle("BomberDude");
 	}
 	
 	/**
-	 * Adds content to the JGUIScreen
+	 * Adds a JPanel object to the JGUIScreen
 	 * @param JPanel to be added
 	 */
 	public void addContent(JPanel gm) {
@@ -80,9 +78,6 @@ public class JGUIScreen extends JFrame {
 	}
 	
 
-	public void setActive() {
-
-	}
 
 
 }

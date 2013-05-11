@@ -55,8 +55,10 @@ public class JClient implements Runnable{
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
 			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+			
 		} else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
+			
 		} else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
 		} else if (event.type == UDPEventInterface.Type.bomb_set) {
@@ -125,9 +127,9 @@ public class JClient implements Runnable{
 	}
 	/**
 	 * Creates a player with id at specified location
-	 * @param id2
-	 * @param x
-	 * @param y
+	 * @param id the ID of the player
+	 * @param x x coord
+	 * @param y y coord
 	 */
 	private void addPlayer(int id, int x, int y) {
 		System.out.println("x:" + x + " y:" + y);
@@ -140,7 +142,11 @@ public class JClient implements Runnable{
 
 	}
 
-
+	/**
+	 * Puts a bomb at the specified location
+	 * @param x x coord
+	 * @param y y coord
+	 */
 	protected void putBomb(int x, int y) {
 		if (gameMap.validMove(x, y)) {
 			String[] arg = {Integer.toString(x),Integer.toString(y)};
@@ -213,7 +219,7 @@ public class JClient implements Runnable{
 	}
 	
 	/**
-	 * 
+	 * Returns the client
 	 * @return The UDP Client
 	 */
 	public UDPClient getUDPClient() {
