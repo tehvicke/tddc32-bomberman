@@ -5,7 +5,9 @@ import java.awt.Toolkit;
 
 
 /**
- * The graphical representation of a JMapObject
+ * The graphical representation of a JMapObject,
+ * contains Images for movement in different directions
+ * and functions for switching between these.
  * @author petter
  *
  */
@@ -20,6 +22,7 @@ public class JGUIMapObject {
 	 * Members
 	 */
 	Image[] sprites;
+	/* The sprite currently active */
 	Image active;
 
 

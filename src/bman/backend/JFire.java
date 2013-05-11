@@ -3,7 +3,7 @@ package bman.backend;
 import bman.frontend.gui.JGUIGame;
 
 /**
- * the Fire class, Fire appears when bombs explode
+ * the Fire class, Fire appears when bombs explode.
  * @author petter
  *
  */
