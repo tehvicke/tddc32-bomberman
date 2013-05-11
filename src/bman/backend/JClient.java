@@ -81,8 +81,7 @@ public class JClient implements Runnable{
 	}
 	
 	/**
-	 * Adds the player on a random place on the map. Tries 1000 times and if no
-	 * free place is found it's assumed 
+	 * Adds the player on a random place on the map. Exits game if no place is found.
 	 */
 	private void randomizePlayerPosition() {
 		
@@ -176,15 +175,14 @@ public class JClient implements Runnable{
 	/**
 	 * function for moving a player, sends absolute coordinates instead of relative to keep clients synced
 	 * @param id player to be moved
-	 * @param x  x location to move to
+	 * @param x x location to move to
 	 * @param y y location to move to
 	 */
 	private void movePlayer(int id, int x, int y) {
-
 		if (x < 0 || x > JGameMap.mapsize || y < 0 || y > JGameMap.mapsize || gameMap.at(x, y) != null) {
 			return;
 		}
-
+		
 		if (id == this.id) {
 			gameMap.remove(player);
 			gameMap.addObject(player, x, y);
@@ -193,8 +191,6 @@ public class JClient implements Runnable{
 			gameMap.addObject(player_2, x, y);
 		}
 	}
-
-
 
 	@Override
 	public void run() {
@@ -207,7 +203,7 @@ public class JClient implements Runnable{
 				UDPEventHandler(client.getEvent());
 			}
 			try {
-				Thread.sleep(0);
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
