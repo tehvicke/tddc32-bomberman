@@ -18,7 +18,8 @@ public class JBomb extends JMapObject implements Runnable {
 	 */
 	protected static JFire fire = new JFire();
 	
-	
+	/* The Radius of the explosion, the gameMap containing the bomb 
+	 * and the Thread containing the bomb */
 	private int explosionRadius = 3;
 	private JGameMap map;
 	private JPlayer owner;
@@ -61,10 +62,10 @@ public class JBomb extends JMapObject implements Runnable {
 	}
 
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * Explodes the object at given location in the gameMap
+	 * @param x x coord of the object.
+	 * @param y y coord of the object
+	 * @return True if target was empty
 	 */
 	private boolean explode(int x, int y) {
 		boolean retur = false;
@@ -91,6 +92,10 @@ public class JBomb extends JMapObject implements Runnable {
 		}
 	}
 	
+	/**
+	 * Explodes the bomb, destroying nearby block and spreading fire in a radius
+	 * around the bombs location
+	 */
 	public void explode() {
 		int[] loc = map.find(this.hashCode());
 		Boolean left = true;
@@ -154,6 +159,7 @@ public class JBomb extends JMapObject implements Runnable {
 		}
 	}
 	
+	/* Waits a certain time before exploding */
 	@Override
 	public void run() {
 		try {
@@ -167,6 +173,7 @@ public class JBomb extends JMapObject implements Runnable {
 	}
 
 	public void destroy() {
+		/* Makes the bomb explode if destroyed */
 		 fuse.interrupt();
 		}
 	}
