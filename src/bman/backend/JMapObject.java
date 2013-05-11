@@ -36,6 +36,10 @@ public abstract class JMapObject {
 		return destroyable;
 	}
 	
+	/**
+	 * A function for destroying an object. Default is to do nothing but it
+	 * can be overridden if wanted.
+	 */
 	public void destroy() {
 		
 	}

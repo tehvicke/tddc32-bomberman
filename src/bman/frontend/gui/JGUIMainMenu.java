@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class JGUIMainMenu extends JPanel implements ActionListener  {
 
@@ -21,10 +22,8 @@ public class JGUIMainMenu extends JPanel implements ActionListener  {
 	private static final long serialVersionUID = -4776987440183048444L;
 	JLabel banan;
 	private static Image logo = Toolkit.getDefaultToolkit().getImage("./sprites/logo.png");
-	private int selected;
+	
 	private static String[] options = {"Join Game","Host Game","Exit Game"};
-	private static String selectedLeft = "****";
-	private static String selectedRight = "***";
 	private JButton[] buttons;
 
 
@@ -34,9 +33,12 @@ public class JGUIMainMenu extends JPanel implements ActionListener  {
 	/* KEY BINDING */
 
 
-	JPanel joinPanel;
-	JPanel hostPanel;
-	JPanel menuPanel;
+	private JPanel joinPanel;
+	private JPanel hostPanel;
+	private JPanel menuPanel;
+	
+	
+	
 
 
 	/**
@@ -47,6 +49,7 @@ public class JGUIMainMenu extends JPanel implements ActionListener  {
 		this.setVisible(true);
 		this.setLayout(null);
 		int topMargin = 250;
+		buttonListener bl = new buttonListener();
 
 		//Init menuPanel
 		menuPanel = new JPanel();
@@ -58,14 +61,18 @@ public class JGUIMainMenu extends JPanel implements ActionListener  {
 		buttons = new JButton[options.length];
 		for (int i  = 0; i < options.length; i++ ) {
 			buttons[i] = new JButton(options[i]);
-
+			buttons[i].addActionListener(bl);
 			menuPanel.add(buttons[i]);
 		}
-		menuPanel.isVisible();
-
-
+		//Join Game Panel
+		joinPanel = new JPanel();
+		JTextField ipField = new JTextField("Server IP:");
+		joinPanel.add(ipField);
+		
 	}
-
+	
+	
+	
 
 
 	public void paint(Graphics g) {
@@ -78,6 +85,26 @@ public class JGUIMainMenu extends JPanel implements ActionListener  {
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
 
+	}
+	
+	private class buttonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if((JButton) e.getSource() == buttons[0]) {
+				System.out.println("show pressed");
+				joinPanel.setVisible(true);
+				hostPanel.setVisible(false);
+			} else if ((JButton) e.getSource() == buttons[1]) {
+				System.out.println("host pressed");
+				joinPanel.setVisible(false);
+				hostPanel.setVisible(true);
+			} else {
+				//NEEDS TO BE DONE PROPERLY
+				System.exit(0);
+			}
+			
+		}
+		
 	}
 
 

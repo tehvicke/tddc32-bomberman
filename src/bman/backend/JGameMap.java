@@ -184,7 +184,7 @@ public class JGameMap {
 	}
 
 	/**
-	 * Returns wether or not a position in the gameMap is empty and thus moveable to
+	 * Returns whether or not a position in the gameMap is empty and thus movable to
 	 * @param x x coord of the position
 	 * @param y y coord of the position
 	 * @return true if empty
@@ -197,7 +197,8 @@ public class JGameMap {
 	}
 
 	/**
-	 * Removes object at specified position
+	 * Removes object at specified position and calls the objects
+	 * destroy() function.
 	 * @param x x coord of the object
 	 * @param y y coord of the object
 	 */
@@ -207,78 +208,17 @@ public class JGameMap {
 		}
 		gameMap[x][y] = null;
 	}
+	
+	/**
+	 * Removes an object from the grid. Similar to destroy(x, y) but without calling
+	 * the objects destroy() function.
+	 * @param x x coord
+	 * @param y y coord
+	 */
 	public void remove(int x, int y) {
 		gameMap[x][y] = null;
 	}
 
-
-	/**
-	 * Create an explosion centered at given coordinates and with specified radius
-	 * @param x center x coord
-	 * @param y center y coord
-	 * @param radius radius of the explosion
-	 */
-	//	public void explosion(int x, int y, int radius) {
-	//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireCenter)), x, y);
-	//
-	//		for (int i = 1; i < radius ; i++) {
-	//			try {
-	//				Thread.sleep(50);
-	//			} catch (InterruptedException e) {
-	//				// TODO Auto-generated catch block
-	//				e.printStackTrace();
-	//			}
-	//
-	//			if (gameMap[x+i][y] instanceof JDestroyableBlock) {
-	//				removeObject(x+i,y);
-	//			}
-	//			if (gameMap[x][y+i] instanceof JDestroyableBlock) {
-	//				removeObject(x, y+i);
-	//			}
-	//
-	//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x+i, y);
-	//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y+i);
-	//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireHoriz)), x-i, y);
-	//			addObject(new JFire(new JGUIMapObject(JGUIGame.fireVert)), x, y-i);
-	//		}
-	//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireRight)),x+radius,y);
-	//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireLeft)),x-radius,y);
-	//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireUp)),x,y-radius);
-	//		addObject(new JFire(new JGUIMapObject(JGUIGame.fireDown)),x,y+radius);
-	//		try {
-	//			Thread.sleep(200);
-	//		} catch (InterruptedException e1) {
-	//			// TODO Auto-generated catch block
-	//			e1.printStackTrace();
-	//		}
-	//		for (int i = radius; i >0 ; i--) {
-	//			if (gameMap[x+i][y] instanceof JDestroyableBlock || gameMap[x+i][y] instanceof JFire)
-	//				removeObject(x+i, y);
-	//			if (gameMap[x][y+i] instanceof JDestroyableBlock || gameMap[x][y+i] instanceof JFire)
-	//				removeObject(x, y+i);
-	//			if (gameMap[x-i][y] instanceof JDestroyableBlock || gameMap[x-i][y] instanceof JFire)
-	//				removeObject(x-i,y);
-	//			if (gameMap[x][y-i] instanceof JDestroyableBlock || gameMap[x][y-i] instanceof JFire)
-	//				removeObject(x, y-i);
-	//
-	//			if (gameMap[x+i][y] instanceof JBomb)
-	//				((JBomb)gameMap[x+i][y]).explode();
-	//			if (gameMap[x][y+i] instanceof JBomb)
-	//				((JBomb)gameMap[x][y+i]).explode();
-	//			if (gameMap[x-i][y] instanceof JBomb)
-	//				((JBomb)gameMap[x-i][y]).explode();
-	//			if (gameMap[x][y-i] instanceof JBomb)
-	//				((JBomb)gameMap[x][y-i]).explode();
-	//
-	//			try {
-	//				Thread.sleep(50);
-	//			} catch (InterruptedException e) {
-	//				// TODO Auto-generated catch block
-	//				e.printStackTrace();
-	//			}
-	//		}
-	//		removeObject(x, y);
-	//	}
 
 	/**
 	 *  Check if a move is valid, 
