@@ -28,7 +28,8 @@ public class JClient implements Runnable{
 	 * Constructor with IP argument
 	 * @param ip IP address of the server.
 	 */
-	public JClient(String ip) {
+	public JClient(String ip,JGUIScreen guiScreen) {
+		this.guiScreen = guiScreen;
 		this.serverIP = ip;
 		client = new UDPClient(ip);
 		id = client.hashCode();
@@ -167,8 +168,8 @@ public class JClient implements Runnable{
 	private void startGame() {
 		gameMap = new JGameMap();
 		player = new JHuman(JGUIGame.player1, gameMap,this);
-		guiScreen = new JGUIScreen(new JGUIGame(gameMap, player));
-
+		guiScreen.removeContent();
+		guiScreen.addContent(new JGUIGame(gameMap, player));
 	}
 
 	/**
