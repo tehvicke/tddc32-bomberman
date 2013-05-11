@@ -3,6 +3,8 @@ package bman.backend;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JPanel;
+
 import bman.JBomberman;
 import bman.frontend.gui.JGUIGame;
 import bman.frontend.gui.JGUIScreen;
@@ -62,20 +64,17 @@ public class JClient implements Runnable{
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
 		} else if (event.type == UDPEventInterface.Type.game_map) {
 			String[] args = event.getArguments();
-
 			for (int i = 0; i < 15; i++) {
 				gameMap.addMapRow(args[i], i);
-				System.out.println(args[i] + ", " + i);
 			}
-			System.err.println("Map generated.");
-			
 			randomizePlayerPosition();
-		} else if (event.type == UDPEventInterface.Type.player_die) {
-			System.out.println("player die from " + event.getOriginID());
 			
+		} else if (event.type == UDPEventInterface.Type.player_die) {
 			if (event.getOriginID() == client.hashCode()) {
-				// Player dies, print "You lost!"
+				System.err.println("Du dog! :(");
 			}
+		} else if (event.type == UDPEventInterface.Type.player_win) {
+			System.out.println("Du vann!");
 		}
 	}
 	

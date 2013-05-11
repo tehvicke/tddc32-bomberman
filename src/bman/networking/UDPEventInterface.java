@@ -17,16 +17,17 @@ public interface UDPEventInterface {
 //		scan_for_open_connections,
 		establish_connection,
 		game_start,
-		player_join,
 		game_end,
 		game_map,
 		kick,
-		win,
+		
 
 		// Player stuff
+		player_join,
 		player_move,
 		player_die,
 		player_leave,
+		player_win,
 
 		// Other
 		bomb_set,

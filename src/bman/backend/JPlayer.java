@@ -76,7 +76,6 @@ public class JPlayer extends JMapObject {
 		} else {
 			System.err.println("Jag dog inte!!");
 		}
-		
 	}
 
 	public void turn(int dx, int dy) {
