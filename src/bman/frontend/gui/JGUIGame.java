@@ -50,12 +50,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 
 	
 	public static final String fireCenter = "./sprites/ugly_fire_center.png";
-//	public static final String fireUp = "./sprites/ugly_fire_up.png";
-//	public static final String fireDown = "./sprites/ugly_fire_down.png";
-//	public static final String fireLeft = "./sprites/ugly_fire_left.png";
-//	public static final String fireRight = "./sprites/ugly_fire_right.png";
-//	public static final String fireHoriz = "./sprites/ugly_fire_center_horiz.png";
-//	public static final String fireVert = "./sprites/ugly_fire_center_vert.png";
+
 	public static final String explosion = "./sprites/explosion.png";
 
 	public static final String superman = "./sprites/superman.png";
@@ -70,6 +65,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 	public static JGUIMapObject bomb = new JGUIMapObject(bomb_fire);
 	public static JGUIMapObject player1 = new JGUIMapObject(superman);
 	public static JGUIMapObject player2 = new JGUIMapObject(player_front);
+	public static JGUIMapObject fire = new JGUIMapObject(explosion);
 
 	/*
 	 * Contents

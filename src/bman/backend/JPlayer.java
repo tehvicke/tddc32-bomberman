@@ -7,8 +7,6 @@ public class JPlayer extends JMapObject {
 	private int playerid = 0;
 	JGameMap map;
 	JClient client;
-	//int active_bombs = 0;
-	//int max_bombs = 2;
 	int [] lastMove = {0,0};
 
 	public JPlayer(JGUIMapObject sprite,JGameMap map, JClient client) {
@@ -22,23 +20,18 @@ public class JPlayer extends JMapObject {
 		this.playerid = playerid;
 
 	}
-	
+
 	public int getID() {
 		return playerid;
 	}
-	
+	/**
+	 * Pubts a bomb next to the player
+	 */
 	public void putBomb() {
-		//if (active_bombs >= max_bombs)
-		//	return;
 		int[] loc = map.find(this.hashCode());
-		//JBomb bomb = new JBomb(new JGUIMapObject(JGUIGameMap.bomb_nofire),map,this);
-		//Thread t = new Thread(bomb, "t2");
-		//map.addObject(bomb,loc[0]+lastMove[0], loc[1]+lastMove[1]);
 		client.putBomb(loc[0]+lastMove[0], loc[1]+lastMove[1]);
-		//t.start();
-		//active_bombs++;
 	}
-	
+
 	public void detonated() {
 		//active_bombs--;
 	}
@@ -70,14 +63,11 @@ public class JPlayer extends JMapObject {
 		}
 		client.sendMove(dx, dy);
 	}
-	
+
 	public void destroy() {
-//		if (this.client) {
-			
-//		}
 		System.out.println("I died");
 	}
-	
+
 	public void turn(int dx, int dy) {
 		if (dx > 0) {
 			sprite.move(Direction.RIGHT);

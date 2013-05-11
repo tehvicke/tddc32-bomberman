@@ -1,7 +1,5 @@
 package bman.backend;
 
-import bman.backend.JMapObject;
-import bman.frontend.gui.JGUIGame;
 import bman.frontend.gui.JGUIMapObject;
 
 public class JBomb extends JMapObject implements Runnable {
@@ -12,7 +10,7 @@ public class JBomb extends JMapObject implements Runnable {
 
 
 	Thread fuse;
-	protected static JFire fire = new JFire(new JGUIMapObject(JGUIGame.explosion));
+	protected static JFire fire = new JFire();
 
 
 	/**

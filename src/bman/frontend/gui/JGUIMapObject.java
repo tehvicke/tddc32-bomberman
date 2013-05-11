@@ -5,11 +5,12 @@ import java.awt.Toolkit;
 
 
 /**
- * 
+ * Class containing the graphical representation of a JMapObject
  * @author petter
  *
  */
 public class JGUIMapObject {
+	
 	
 	public enum Direction {
 		DOWN,UP,LEFT,RIGHT;
@@ -22,11 +23,21 @@ public class JGUIMapObject {
 	Image active;
 
 
-	
+	/**
+	 * Constructor for objects requiring only one sprite
+	 * @param sprite sprite which should be used for the object
+	 */
 	public JGUIMapObject(String sprite) {
 		
 		active = Toolkit.getDefaultToolkit().getImage(sprite);
 	}
+	/**
+	 * Constructor for moving objects
+	 * @param frontsp Front sprite
+	 * @param backsp back sprite
+	 * @param leftsp left sprite
+	 * @param rightsp right sprite
+	 */
 	public JGUIMapObject(String frontsp, String backsp, String leftsp, String rightsp) {
 		sprites = new Image[4];
 		
@@ -40,7 +51,7 @@ public class JGUIMapObject {
 	}
 	/**
 	 * Changes the MapObject to use appropriate sprite;
-	 * @param dir Enum containing move direction
+	 * @param dir Move direction
 	 */
 	public void move(Direction dir) {
 		if (sprites != null) {
@@ -48,7 +59,10 @@ public class JGUIMapObject {
 		}
 	}
 
-
+	/**
+	 * Returns the active Image/Sprite of the JGUIMapObject
+	 * @return active Image
+	 */
 	public Image getImage() {
 		return active;
 	}
