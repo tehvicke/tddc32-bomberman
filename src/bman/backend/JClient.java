@@ -14,7 +14,7 @@ import bman.networking.UDPEventInterface;
 import bman.networking.UDPEventInterface.Type;
 
 public class JClient implements Runnable{
-	private String playername;
+	
 	private UDPClient client;
 	private String serverIP;
 	private JGameMap gameMap;
@@ -30,7 +30,8 @@ public class JClient implements Runnable{
 	 * Constructor with IP argument
 	 * @param ip IP address of the server.
 	 */
-	public JClient(String ip) {
+	public JClient(String ip,JGUIScreen guiScreen) {
+		this.guiScreen = guiScreen;
 		this.serverIP = ip;
 		client = new UDPClient(ip);
 		id = client.hashCode();
@@ -126,6 +127,7 @@ public class JClient implements Runnable{
 	 * @param y
 	 */
 	private void addPlayer(int id, int x, int y) {
+		System.out.println("x:" + x + " y:" + y);
 		if (id == this.id) {
 			gameMap.addPlayer(player, id, x, y);
 		} else {
@@ -165,8 +167,8 @@ public class JClient implements Runnable{
 	private void startGame() {
 		gameMap = new JGameMap();
 		player = new JHuman(JGUIGame.player1, gameMap,this);
-		guiScreen = new JGUIScreen(new JGUIGame(gameMap, player));
-
+		guiScreen.removeContent();
+		guiScreen.addContent(new JGUIGame(gameMap, player));
 	}
 
 	/**

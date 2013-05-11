@@ -1,7 +1,6 @@
 package bman.backend;
 
 import bman.frontend.gui.JGUIGame;
-import bman.frontend.gui.JGUIMapObject;
 
 public class JFire extends JMapObject {
 

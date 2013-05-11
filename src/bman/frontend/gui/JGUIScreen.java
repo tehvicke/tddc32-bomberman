@@ -7,9 +7,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import bman.backend.JGameMap;
-import bman.backend.JHuman;
-
 public class JGUIScreen extends JFrame {
 
 	private class exitListener implements ActionListener {
@@ -68,6 +65,8 @@ public class JGUIScreen extends JFrame {
 	public void addContent(JPanel gm) {
 		this.content = gm;
 		this.add(gm);
+		this.revalidate();
+		this.repaint();
 	}
 
 	/**

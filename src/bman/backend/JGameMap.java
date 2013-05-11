@@ -1,9 +1,5 @@
 package bman.backend;
 
-import java.util.Random;
-
-import bman.frontend.gui.JGUIGame;
-import bman.frontend.gui.JGUIMapObject;
 
 
 /**
@@ -44,7 +40,7 @@ public class JGameMap {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * Adds a player to gameMap
@@ -54,7 +50,7 @@ public class JGameMap {
 	 * @param y start y position
 	 */
 	public void addPlayer(JPlayer player, int id, int x, int y) {
-		
+
 		addObject(player, x, y);
 		if (playerIDs[0] == -1) {
 			playerIDs[0] = id;
@@ -186,7 +182,7 @@ public class JGameMap {
 	public JMapObject at(int x, int y) throws ArrayIndexOutOfBoundsException {
 		return gameMap[x][y];
 	}
-	
+
 	/**
 	 * Returns whether or not a position in the gameMap is empty and thus movable to
 	 * @param x x coord of the position
@@ -199,7 +195,7 @@ public class JGameMap {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Removes object at specified position and calls the objects
 	 * destroy() function.
@@ -222,6 +218,7 @@ public class JGameMap {
 	public void remove(int x, int y) {
 		gameMap[x][y] = null;
 	}
+
 
 	/**
 	 *  Check if a move is valid, 
@@ -250,7 +247,7 @@ public class JGameMap {
 		}
 		return false;
 	}
-	
+
 
 
 }

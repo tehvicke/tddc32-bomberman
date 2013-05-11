@@ -9,6 +9,6 @@ public class JPowerUp extends JMapObject{
 		// TODO Auto-generated constructor stub
 	}
 
-	private enum type{};
+
 	
 }
