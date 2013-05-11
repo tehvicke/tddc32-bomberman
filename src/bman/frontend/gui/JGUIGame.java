@@ -21,6 +21,7 @@ import javax.swing.Timer;
 
 import com.sun.xml.internal.dtdparser.InputEntity;
 
+import bman.JBomberman;
 import bman.backend.JGameMap;
 import bman.backend.JHuman;
 
@@ -126,15 +127,15 @@ public class JGUIGame extends JPanel implements ActionListener {
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK, false), "turn_left");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK, false), "turn_right");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0, false), "lay_bomb");
-		myActionMap.put("move_up", new KeyPressed(KeyEvent.VK_UP));
-		myActionMap.put("move_down", new KeyPressed(KeyEvent.VK_DOWN));
-		myActionMap.put("move_left", new KeyPressed(KeyEvent.VK_LEFT));
-		myActionMap.put("move_right", new KeyPressed(KeyEvent.VK_RIGHT));
+		myActionMap.put("move_up", new KeyPressed(KeyEvent.VK_UP, false));
+		myActionMap.put("move_down", new KeyPressed(KeyEvent.VK_DOWN, false));
+		myActionMap.put("move_left", new KeyPressed(KeyEvent.VK_LEFT, false));
+		myActionMap.put("move_right", new KeyPressed(KeyEvent.VK_RIGHT, false));
 		myActionMap.put("turn_up", new KeyPressed(KeyEvent.VK_UP, true));
 		myActionMap.put("turn_down", new KeyPressed(KeyEvent.VK_DOWN, true));
 		myActionMap.put("turn_left", new KeyPressed(KeyEvent.VK_LEFT, true));
 		myActionMap.put("turn_right", new KeyPressed(KeyEvent.VK_RIGHT, true));
-		myActionMap.put("lay_bomb", new KeyPressed(KeyEvent.VK_SPACE));
+		myActionMap.put("lay_bomb", new KeyPressed(KeyEvent.VK_SPACE, false));
 	}
 
 	public void paint(Graphics g) {
@@ -187,39 +188,33 @@ public class JGUIGame extends JPanel implements ActionListener {
 		}
 	}
 
-	public class KBinding extends AbstractAction {
-		KeyEvent actionIndex;
-		public KBinding() { 
-			KeyboardFocusManager manager =  
-					KeyboardFocusManager.getCurrentKeyboardFocusManager();  
-			manager.addKeyEventDispatcher(new KeyEventDispatcher() {
-				public boolean dispatchKeyEvent(KeyEvent e) {
-					actionIndex = e;  
-					return false;
-				}
-			});  
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			player.keypress(actionIndex);
-
-		}
-	}
 	
-	final class KeyPressed extends AbstractAction {
+	/**
+	 * The key listener class.
+	 * @author viktordahl
+	 *
+	 */
+	private final class KeyPressed extends AbstractAction {
         /**
 		 * ID
 		 */
 		private static final long serialVersionUID = 1L;
 		
+		/**
+		 * The key that is being handled.
+		 */
 		int key;
+		
+		/**
+		 * Whether shift is pressed or not.
+		 */
         boolean shift = false;
-//		
-        public KeyPressed(int key) {
-        	this.key = key;
-        }
         
+        /**
+         * 
+         * @param key The key being pressed.
+         * @param shift True if shift is being held.
+         */
         public KeyPressed(int key, boolean shift) {
         	this.key = key;
         	this.shift = shift;
@@ -227,9 +222,10 @@ public class JGUIGame extends JPanel implements ActionListener {
         
         @Override
         public void actionPerformed(ActionEvent e) {
-    		System.err.println("EEEEEEE KNAPP NERE! " + this.key);
-        	if (shift) {
-        		System.out.println("shift");
+        	if (JBomberman.debug) {
+        		System.err.println("Button pressed: " + this.key);
+        	}
+        	if (shift) { /* If shift is pressed the user shall only turn */
         		player.turnKey(key);
         	} else {
         		player.moveKey(key);

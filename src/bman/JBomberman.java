@@ -12,6 +12,8 @@ import bman.backend.JServer;
  *
  */
 public class JBomberman {
+	
+	public static boolean debug;
 
 	public static void joinGame() {
 	
