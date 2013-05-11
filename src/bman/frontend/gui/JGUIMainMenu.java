@@ -28,12 +28,12 @@ public class JGUIMainMenu extends JPanel  {
 	
 	private static String[] options = {"Join Game","Host Game","Exit Game"};
 	private JButton[] buttons;
-
+	
 
 	private static int xOffset = 50;
 	private static int menuStartHeight = 250;
 	private static int buttonSpacing = 50;
-	/* KEY BINDING */
+	
 
 
 	private JPanel joinPanel;
@@ -54,13 +54,18 @@ public class JGUIMainMenu extends JPanel  {
 	 * Default constructor
 	 */
 	public JGUIMainMenu(JGUIScreen parentFrame) {
+		//Init of Main Menu
 		this.parentFrame=parentFrame;
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		this.setVisible(true);
 		this.setLayout(null);
 		int topMargin = 250;
 		buttonListener bl = new buttonListener();
-
+		
+		//Cosmetics
+		Image playerIcon;
+		Image player2Icon;
+		
 		//Init menuPanel
 		menuPanel = new JPanel();
 		menuPanel.setBounds(0,topMargin, JGUIScreen.w_width/3,JGUIScreen.w_height-topMargin);
@@ -158,7 +163,7 @@ public class JGUIMainMenu extends JPanel  {
 		public void actionPerformed(ActionEvent arg0) {
 			String ip = ipField.getText();
 			
-			//IP CHECKING HERE
+			
 			
 			// Create client
 			client = new JClient(ip,parentFrame);
