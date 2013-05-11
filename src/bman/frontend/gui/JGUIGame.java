@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
@@ -90,8 +91,6 @@ public class JGUIGame extends JPanel implements ActionListener {
 
 		/* Adds all things needed for listens on the right keys */
 		initializeKeyListeners();
-		
-		System.out.println("Tjohohlo");
 
 		setFocusable(true);
 		setDoubleBuffered(true);
@@ -107,7 +106,11 @@ public class JGUIGame extends JPanel implements ActionListener {
 	 * Initializes the key listeners for controlling the player.
 	 */
 	private void initializeKeyListeners() {
-		myInputMap = this.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		if (JBomberman.debug) {
+			System.out.println("Klient: Key listeners initiated.");
+		}
+		this.requestFocus();
+		myInputMap = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		myActionMap = this.getActionMap();
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0, false), "move_up");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "move_down");

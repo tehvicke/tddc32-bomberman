@@ -2,15 +2,29 @@ package bman.backend;
 
 import bman.frontend.gui.JGUIMapObject;
 
+/**
+ * The bomb class. Handles things like explode etc. The explosion is run in a separate thread.
+ * @author viktordahl
+ *
+ */
 public class JBomb extends JMapObject implements Runnable {
+	/**
+	 * The fuse timer for the bomb.
+	 */
+	public static int timer = 1500;
+	
+	/**
+	 * The fire object that used in the explosion.
+	 */
+	protected static JFire fire = new JFire();
+	
+	
 	private int explosionRadius = 3;
 	private JGameMap map;
 	private JPlayer owner;
-	public static int timer = 1500;
-
-
-	Thread fuse;
-	protected static JFire fire = new JFire();
+	private Thread fuse;
+	
+	
 
 
 	/**
