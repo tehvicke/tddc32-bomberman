@@ -5,6 +5,11 @@ import bman.frontend.gui.JGUIMapObject.Direction;
 import bman.networking.UDPEvent;
 import bman.networking.UDPEventInterface;
 
+/**
+ * 
+ * @author viktordahl
+ *
+ */
 public class JPlayer extends JMapObject {
 	private int playerid = 0;
 	JGameMap map;
@@ -18,11 +23,18 @@ public class JPlayer extends JMapObject {
 		destroyable = true;
 	}
 
+	/**
+	 * 
+	 * @param playerid The ID of the player
+	 */
 	public void setID(int playerid){
 		this.playerid = playerid;
-
 	}
 
+	/**
+	 * 
+	 * @return The ID of the player
+	 */
 	public int getID() {
 		return playerid;
 	}
@@ -33,12 +45,6 @@ public class JPlayer extends JMapObject {
 		int[] loc = map.find(this.hashCode());
 		client.putBomb(loc[0]+lastMove[0], loc[1]+lastMove[1]);
 	}
-
-	public void detonated() {
-		//active_bombs--;
-	}
-
-
 
 	/**
 	 * Moves the object and changes the sprite with appropriate direction, Lastmove så bomben kan läggas
@@ -78,6 +84,12 @@ public class JPlayer extends JMapObject {
 		}
 	}
 
+	/**
+	 * Allows the player to turn without moving, allowing him to lay bombs
+	 * in different directions.
+	 * @param dx x coord
+	 * @param dy y coord
+	 */
 	public void turn(int dx, int dy) {
 		if (dx > 0) {
 			sprite.move(Direction.RIGHT);
