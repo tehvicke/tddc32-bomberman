@@ -119,6 +119,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK, false), "turn_left");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK, false), "turn_right");
 		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0, false), "lay_bomb");
+		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,InputEvent.SHIFT_DOWN_MASK, false), "lay_bomb");
 		myActionMap.put("move_up", new KeyPressed(KeyEvent.VK_UP, false));
 		myActionMap.put("move_down", new KeyPressed(KeyEvent.VK_DOWN, false));
 		myActionMap.put("move_left", new KeyPressed(KeyEvent.VK_LEFT, false));
@@ -127,7 +128,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 		myActionMap.put("turn_down", new KeyPressed(KeyEvent.VK_DOWN, true));
 		myActionMap.put("turn_left", new KeyPressed(KeyEvent.VK_LEFT, true));
 		myActionMap.put("turn_right", new KeyPressed(KeyEvent.VK_RIGHT, true));
-		myActionMap.put("lay_bomb", new KeyPressed(KeyEvent.VK_SPACE, false));
+		myActionMap.put("lay_bomb", new KeyPressed(KeyEvent.VK_SPACE, true));
 	}
 
 	public void paint(Graphics g) {
@@ -199,7 +200,7 @@ public class JGUIGame extends JPanel implements ActionListener {
         	if (JBomberman.debug) {
         		System.err.println("Button pressed: " + this.key);
         	}
-        	if (shift) { /* If shift is pressed the user shall only turn */
+        	if (shift && this.key != KeyEvent.VK_SPACE) { /* If shift is pressed the user shall only turn */
         		player.turnKey(key);
         	} else {
         		player.moveKey(key);
