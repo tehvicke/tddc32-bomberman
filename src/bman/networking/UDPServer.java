@@ -34,6 +34,11 @@ public class UDPServer implements UDPServerInterface {
 	 * The number of clients to accept.
 	 */
 	private int numberOfClients;
+	
+	/**
+	 * The percent of the map filled with destroyable blocks.
+	 */
+	private int percentFilled;
 
 	/**
 	 * The server socket.
@@ -53,6 +58,24 @@ public class UDPServer implements UDPServerInterface {
 	public UDPServer(int numberOfClients) {
 		System.out.println(this);
 		this.numberOfClients = numberOfClients;
+		this.clients = new Client[numberOfClients];
+		try {
+			serverSocket = new DatagramSocket(UDPServerInterface.port);
+		} catch (Exception e) {
+			System.err.println("Problem UDPServer constructor.");
+		}
+	}
+	
+	/**
+	 * Constructor for the server with two arguments
+	 * @param numberOfClients The number of clients the server shall wait for,
+	 * including the server itself.
+	 * @param percentFilled The percent of the map filled with destroyable blocks.
+	 */
+	public UDPServer(int numberOfClients, int percentFilled) {
+		System.out.println(this);
+		this.numberOfClients = numberOfClients;
+		this.percentFilled = percentFilled;
 		this.clients = new Client[numberOfClients];
 		try {
 			serverSocket = new DatagramSocket(UDPServerInterface.port);
@@ -242,7 +265,7 @@ public class UDPServer implements UDPServerInterface {
 		
 //		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout2));
 
-		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, new String[] {"random", "5"}));
+		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, new String[] {"random", Integer.toString(this.percentFilled)}));
 		eventListener(); /* Start the event listener */
 	}
 	

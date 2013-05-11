@@ -97,7 +97,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 		setVisible(true);
 		this.setBackground(Color.LIGHT_GRAY);
 
-		//VIKTOR
+		/* Adds all things needed for listens on the right keys */
 		initializeKeyListeners();
 		
 		System.out.println("Tjohohlo");

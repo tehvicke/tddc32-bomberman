@@ -72,6 +72,9 @@ public class JPlayer extends JMapObject {
 	}
 	
 	public void destroy() {
+//		if (this.client) {
+			
+//		}
 		System.out.println("I died");
 	}
 	
@@ -93,6 +96,5 @@ public class JPlayer extends JMapObject {
 			lastMove[0] = 0;
 			lastMove[1] = -1;
 		}
-//		client.sendMove(dx, dy);
 	}
 }

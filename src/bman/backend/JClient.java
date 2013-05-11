@@ -1,5 +1,7 @@
 package bman.backend;
 
+import java.util.Random;
+
 import bman.frontend.gui.JGUIGame;
 import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPClient;
@@ -44,10 +46,24 @@ public class JClient implements Runnable{
 			startGame();
 
 			/* Positionen */
-			String[] args = {Integer.toString(5), Integer.toString(5)};		
-			client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
-
-
+			
+			Random gen = new Random();
+			int maxTries = 1000;
+			while(true) {
+				int x_rand = gen.nextInt(JGameMap.mapsize);
+				int y_rand = gen.nextInt(JGameMap.mapsize);
+				if (this.gameMap.at(x_rand, y_rand) == null) {
+//					addObject(player, x_rand, y_rand);
+					String[] args = {Integer.toString(5), Integer.toString(5)};
+					client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
+					break;
+				}
+				if (maxTries-- < 0) {
+					System.err.println("Nowhere to put player " + player.getID() + ". Exits game.");
+					client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, client.hashCode()));
+					System.exit(0);
+				}
+			}
 		}
 		else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
@@ -95,14 +111,12 @@ public class JClient implements Runnable{
 
 	}
 
+
 	protected void putBomb(int x, int y) {
 		String[] arg = {Integer.toString(x),Integer.toString(y)};
 		client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
 	}
 
-
-	
-	
 	/**
 	 * Sends an UDPEvent containing absolute move information for a player to the server
 	 * @param dx relative x position to be moved
@@ -117,10 +131,6 @@ public class JClient implements Runnable{
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_move, this.id,arg));
 		
 	}
-	
-	
-
-
 
 	/**
 	 * Starts the game and initiates the gameMap, the player and the GUI
@@ -157,25 +167,21 @@ public class JClient implements Runnable{
 
 	@Override
 	public void run() {
-		
 		Thread clientThread = new Thread(client);
 		clientThread.start();
-		while(true) {
+		while(true) {  /* NOTE: This is done with busy wait (polling) and are thus CPU inefficient.
+		 				* This would have been changed but there wasn't time.
+		 				*/
 			if (client.eventExists()) {
 				UDPEventHandler(client.getEvent());
 			}
 			try {
-				Thread.sleep(1);
+				Thread.sleep(0);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
-
-
 	}
-
-
 }
 

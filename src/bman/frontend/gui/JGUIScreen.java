@@ -51,7 +51,6 @@ public class JGUIScreen extends JFrame {
 		
 	}
 
-
 	public void setActive() {
 
 	}

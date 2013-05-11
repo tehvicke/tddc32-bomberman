@@ -25,15 +25,13 @@ public interface UDPEventInterface {
 
 		// Player stuff
 		player_move,
-//		player_move_stop,
 		player_die,
-		player_grid_change,
+		player_leave,
 
 		// Other
 		bomb_set,
 		bomb_explode,
 		misc,
-//		add_object
 	};
 	
 	/**
