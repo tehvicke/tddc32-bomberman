@@ -199,7 +199,7 @@ public class UDPServer implements UDPServerInterface {
 					this.getClient(event.getOriginID()).setAlive(false);
 					
 					if (playersAlive == 1 && clients.length - playersAlive > 0) {
-						Client client;
+						
 						for (Client cli : clients) {
 							if (cli.isAlive()) {
 								sendEvent(new UDPEvent(UDPEventInterface.Type.player_win, 0), cli.hash);

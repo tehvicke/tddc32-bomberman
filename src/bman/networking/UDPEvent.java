@@ -1,6 +1,5 @@
 package bman.networking;
 
-import java.io.Serializable;
 
 public class UDPEvent implements UDPEventInterface {
 
