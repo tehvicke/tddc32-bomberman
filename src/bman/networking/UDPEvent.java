@@ -1,7 +1,5 @@
 package bman.networking;
 
-import java.io.Serializable;
-
 public class UDPEvent implements UDPEventInterface {
 
 	private static final long serialVersionUID = -7484069135812975169L;

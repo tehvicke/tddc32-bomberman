@@ -17,6 +17,11 @@ import javax.swing.JTextField;
 import bman.backend.JClient;
 import bman.backend.JServer;
 
+/**
+ * Handles the menu GUI and presents the user with choices for starting or joining game.
+ * @author Viktor, Petter
+ *
+ */
 public class JGUIMainMenu extends JPanel  {
 
 	/**

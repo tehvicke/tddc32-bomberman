@@ -42,6 +42,5 @@ public abstract class JMapObject {
 	 * can be overridden if needed.
 	 */
 	public void destroy() {
-		
 	}
 }

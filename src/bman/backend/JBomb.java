@@ -171,7 +171,8 @@ public class JBomb extends JMapObject implements Runnable {
 		explode();
 
 	}
-
+	
+	@Override
 	public void destroy() {
 		/* Makes the bomb explode if destroyed */
 		 fuse.interrupt();

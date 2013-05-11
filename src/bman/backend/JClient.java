@@ -14,7 +14,7 @@ import bman.networking.UDPEventInterface.Type;
 /**
  * This is the client and handles all the calculations. The reason for having
  * the calculations on client side is for minimizing the network utilization. 
- * It’s run in its separate thread and uses a UDPClient to get and send 
+ * It's run in its separate thread and uses a UDPClient to get and send 
  * instructions to the server
  * @author viktordahl
  *
@@ -27,8 +27,6 @@ public class JClient implements Runnable{
 	private JHuman player;
 	private JPlayer player_2;
 	private int id;
-	
-	private ArrayList<Integer> players = new ArrayList<Integer>();
 	
 	/**
 	 * Constructor with IP argument

@@ -1,5 +1,7 @@
 package bman.networking;
 
+import bman.networking.UDPEventInterface;
+
 public interface UDPServerInterface extends Runnable {
 	
 	/**
