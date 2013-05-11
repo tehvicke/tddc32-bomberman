@@ -143,7 +143,6 @@ public class JGUIGame extends JPanel implements ActionListener {
 		}
 
 		/*Draws the objects on the map */
-		//g2d.drawImage(player.getImage(),player.getX(),player.getY(),this);
 		for (int i = 0; i < JGameMap.mapsize; i++) {
 			for (int j = 0; j < JGameMap.mapsize ; j++) {
 				try {
@@ -166,19 +165,7 @@ public class JGUIGame extends JPanel implements ActionListener {
 
 	}
 
-	public class KAdapter extends KeyAdapter {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			player.keypress(e);
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				player.keypress(e);
-			}
-		}
-	}
+	
 
 	
 	/**

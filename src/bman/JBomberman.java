@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 import bman.backend.JClient;
 import bman.backend.JServer;
+import bman.frontend.gui.JGUIMainMenu;
+import bman.frontend.gui.JGUIScreen;
 
 /**
  * The main application class. This is where the main function is and where
@@ -39,7 +41,7 @@ public class JBomberman {
 		System.out.println("Enter percentage of destroyable blocks (less than 40 % recommended: ");
 		Scanner vicks = new Scanner(System.in);
 		int percent = Integer.parseInt(vicks.nextLine());
-		
+		vicks.close();
 		JServer server = new JServer(players, percent);
 		JClient client = new JClient("localhost");
 		Thread serverThread = new Thread(server);
@@ -71,10 +73,10 @@ public class JBomberman {
 			hostGame(1);
 			break;
 		case 5:
-			hostGame(1);
+			JGUIScreen apa = new JGUIScreen(new JGUIMainMenu());
 			break;
 		default:
-			
+		scan.close();
 		}
 	}
 }

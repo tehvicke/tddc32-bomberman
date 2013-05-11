@@ -10,7 +10,7 @@ import bman.networking.UDPEventInterface;
 import bman.networking.UDPEventInterface.Type;
 
 public class JClient implements Runnable{
-	private String playername;
+	
 	private UDPClient client;
 	private String serverIP;
 	private JGameMap gameMap;
@@ -100,6 +100,7 @@ public class JClient implements Runnable{
 	 * @param y
 	 */
 	private void addPlayer(int id, int x, int y) {
+		System.out.println("x:" + x + " y:" + y);
 		if (id == this.id) {
 			gameMap.addPlayer(player, id, x, y);
 		} else {
