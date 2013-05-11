@@ -160,7 +160,7 @@ public class JHuman extends JPlayer{
 	 * @param dx x coord
 	 * @param dy y coord
 	 */
-	public void move(int dx, int dy) {
+	private void move(int dx, int dy) {
 		if (dx > 0) {
 			sprite.move(Direction.RIGHT);
 			lastMove[0] = 1;
@@ -182,9 +182,9 @@ public class JHuman extends JPlayer{
 	}
 
 	/**
-	 * Pubts a bomb in front of the player
+	 * Pubs a bomb in front of the player
 	 */
-	public void putBomb() {
+	private void putBomb() {
 		int[] loc = map.find(this.hashCode());
 		client.putBomb(loc[0]+lastMove[0], loc[1]+lastMove[1]);
 	}
