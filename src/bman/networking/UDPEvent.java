@@ -2,7 +2,7 @@ package bman.networking;
 
 import java.io.Serializable;
 
-public class UDPEvent implements UDPEventInterface, Serializable {
+public class UDPEvent implements UDPEventInterface {
 
 	private static final long serialVersionUID = -7484069135812975169L;
 	
@@ -43,14 +43,17 @@ public class UDPEvent implements UDPEventInterface, Serializable {
 		this.arguments = args;
 	}
 	
+	@Override
 	public int getOriginID() {
 		return this.origin;
 	}
 	
+	@Override
 	public Type getType() {
 		return this.type;
 	}
 	
+	@Override
 	public String[] getArguments() {
 		if (this.arguments != null && this.arguments.length > 0) {
 			return this.arguments;
@@ -58,7 +61,8 @@ public class UDPEvent implements UDPEventInterface, Serializable {
 		return null;
 	}
 	
+	@Override
 	public String toString() {
-		return this.type + " O: " + this.origin;
+		return this.type + " Origin: " + this.origin;
 	}
 }

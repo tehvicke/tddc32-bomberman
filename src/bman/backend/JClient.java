@@ -136,7 +136,7 @@ public class JClient implements Runnable{
 		if (id == this.id) {
 			gameMap.addPlayer(player, id, x, y);
 		} else {
-			player_2 = new JPlayer(JGUIGame.player2,gameMap,this);
+			player_2 = new JPlayer(JGUIGame.player2);
 			gameMap.addPlayer(player_2, id, x, y);
 		}
 
@@ -160,7 +160,7 @@ public class JClient implements Runnable{
 	 * @param dy relative y position to be moved
 	 */
 	protected void sendMove(int dx, int dy) {
-		if (!gameMap.validMove(this.id, dx, dy)) {
+		if (!gameMap.validMove(client.hashCode(), dx, dy)) {
 			return;
 		}
 		int [] loc = gameMap.find(player.hashCode());
