@@ -30,7 +30,7 @@ import bman.backend.JHuman;
 public class JGUIGame extends JPanel implements ActionListener {
 
 	/* *
-	 * VARIABLES
+	 * VARIABLES	
 	 */
 	private static final long serialVersionUID = -5735185698246996895L;
 

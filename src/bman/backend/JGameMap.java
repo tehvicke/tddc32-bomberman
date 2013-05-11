@@ -35,7 +35,7 @@ public class JGameMap {
 	public void addMapRow(String row, int rowIndex) {
 		if (row.length() > mapsize) {
 			return;
-		}
+		}	
 
 		for (int i = 0; i < row.length(); i++) {
 			if (row.charAt(i) == 'd') {
@@ -222,7 +222,7 @@ public class JGameMap {
 	public void remove(int x, int y) {
 		gameMap[x][y] = null;
 	}
-
+	
 
 	/**
 	 *  Check if a move is valid, 
@@ -248,6 +248,9 @@ public class JGameMap {
 				gameMap[loc[0]+dx][loc[1]+dy] == null
 			) {
 			return true;
+		}
+		else if (gameMap[loc[0]+dx][loc[1]+dy] instanceof JFire) {
+			gameMap[loc[0]][loc[1]].destroy();
 		}
 		return false;
 	}

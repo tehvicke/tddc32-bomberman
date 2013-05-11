@@ -19,7 +19,7 @@ public class JGUIMapObject {
 	}
 
 	/**
-	 * Members
+	 * Members		
 	 */
 	Image[] sprites;
 	/* The sprite currently active */

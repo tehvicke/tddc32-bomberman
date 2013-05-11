@@ -1,10 +1,13 @@
 package bman.frontend.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class JGUIScreen extends JFrame {
@@ -65,6 +68,19 @@ public class JGUIScreen extends JFrame {
 		this.add(gm);
 		this.validate();
 		this.repaint();
+	}
+	
+	public void displayMessage(String message) {
+		this.removeContent();
+		JPanel panel = new JPanel();
+		JLabel info = new JLabel(message);
+		info.setFont(new Font("Serif", Font.BOLD, 50));
+		panel.add(info);
+		panel.setVisible(true);
+		panel.setBackground(Color.white);
+		this.add(panel);
+		validate();
+		repaint();
 	}
 
 	/**

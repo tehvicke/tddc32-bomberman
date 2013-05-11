@@ -18,7 +18,7 @@ public interface UDPClientInterface {
 	 */
 	public static int clientPort = 3457;
 	
-	/**
+	/**	
 	 * Connects to the server
 	 */
 	public void establishConnection();

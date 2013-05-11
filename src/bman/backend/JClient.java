@@ -47,7 +47,7 @@ public class JClient implements Runnable{
 	 * Function which handles Events broadcasted from the server
 	 * @param event event to be handled
 	 */
-	public void UDPEventHandler(UDPEvent event) {
+	private void eventHandler(UDPEvent event) {
 		if (JBomberman.debug) {
 			System.err.println("Event handled: " + event.toString());
 		}
@@ -76,10 +76,10 @@ public class JClient implements Runnable{
 			
 		} else if (event.type == UDPEventInterface.Type.player_die) {
 			if (event.getOriginID() == client.hashCode()) {
-				System.err.println("Du dog! :(");
+				guiScreen.displayMessage("YOU LOOSE");
 			}
 		} else if (event.type == UDPEventInterface.Type.player_win) {
-			System.out.println("Du vann!");
+			guiScreen.displayMessage("YOU WIN");
 		}
 	}
 	
@@ -207,7 +207,7 @@ public class JClient implements Runnable{
 		 				* This would have been changed but there wasn't time.
 		 				*/
 			if (client.eventExists()) {
-				UDPEventHandler(client.getEvent());
+				eventHandler(client.getEvent());
 			}
 			try {
 				Thread.sleep(1);

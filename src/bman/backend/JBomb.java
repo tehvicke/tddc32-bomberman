@@ -53,7 +53,7 @@ public class JBomb extends JMapObject implements Runnable {
 		lightFuse();
 		destroyable = true;
 	}
-	/**
+	/**	
 	 * Starts the fuse on the bomb (starts the countdown timer for explosion)
 	 */
 	private void lightFuse() {
