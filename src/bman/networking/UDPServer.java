@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Random;
 
 import bman.backend.JGameMap;
 
@@ -263,10 +264,57 @@ public class UDPServer implements UDPServerInterface {
 		        "sssssssssssssss"
 				};
 		
+
+
+		
+		
+		
 //		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout2));
 
-		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, new String[] {"random", Integer.toString(this.percentFilled)}));
+		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, randomizedMap(this.percentFilled)));
 		eventListener(); /* Start the event listener */
+	}
+	
+	/**
+	 * This randomizes where the destroyable blocks are in the game map.
+	 * 
+	 * @param percentFilled The amount of destroyable blocks in the map as percent.
+	 * No more than 40 % recommended
+	 * @return The map layout in a String array format
+	 */
+	public String[] randomizedMap(int percentFilled) {
+		Random gen = new Random();
+//		StringBuilder temp = new StringBuilder[JGameMap.mapsize];
+		String[] layout = new String[JGameMap.mapsize];
+		for (int row = 0; row < JGameMap.mapsize; row++) {
+			StringBuilder stringRow = new StringBuilder();
+			for (int col = 0; col < JGameMap.mapsize; col++) {
+				int number = gen.nextInt(100);
+//				layout[col];
+				if (
+						(row == 0) || // top row solid blocks
+						(col == 0) || // left row solid blocks
+						(col == JGameMap.mapsize - 1) || // right row solid blocks
+						(row == JGameMap.mapsize - 1) || // bottom row solid blocks
+						(row % 2 == 0 && col % 2 == 0) // middle solid blocks
+						) {
+//					addObject(new JSolidBlock(), col, row);
+//					layout[col].append("s");
+					stringRow.append("s");
+				} else if (number < percentFilled) {
+//						addObject(new JDestroyableBlock(), col, row);
+//					layout[col].append("d");
+					stringRow.append("d");
+				} else {
+//					layout[col].append(" ");
+					stringRow.append(" ");
+				}
+//				layout[col] = layout[col].substring(1, JGameMap.mapsize-1);
+			}
+			System.out.println(stringRow.toString());
+			layout[row] = stringRow.toString();
+		}
+		return layout;
 	}
 	
 	/**

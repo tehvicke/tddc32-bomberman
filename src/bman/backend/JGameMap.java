@@ -45,33 +45,6 @@ public class JGameMap {
 		}
 	}
 	
-	/**
-	 * This randomizes where the destroyable blocks are in the game map.
-	 * 
-	 * @param percentFilled The amount of destoryable blocks in the map as percent.
-	 * No more than 40 % recommended.
-	 */
-	public void randomizedMap(int percentFilled) {
-		Random gen = new Random();
-		for (int col = 0; col < mapsize; col++) {
-			for (int row = 0; row < mapsize; row++) {
-				if (
-						(row == 0) || // top row solid blocks
-						(col == 0) || // left row solid blocks
-						(col == mapsize - 1) || // right row solid blocks
-						(row == mapsize - 1) || // bottom row solid blocks
-						(row % 2 == 0 && col % 2 == 0) // middle solid blocks
-						) {
-					addObject(new JSolidBlock(), col, row);
-				} else {
-					int number = gen.nextInt(100);
-					if (number < percentFilled) {
-						addObject(new JDestroyableBlock(), col, row);
-					}
-				}
-			}
- 		}
-		}
 
 	/**
 	 * Adds a player to gameMap
