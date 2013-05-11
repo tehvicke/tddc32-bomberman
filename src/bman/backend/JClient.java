@@ -65,6 +65,7 @@ public class JClient implements Runnable{
 					System.exit(0);
 				}
 			}
+			System.out.println("Player coords: " + x_rand + " " + y_rand);
 		}
 		else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
@@ -77,6 +78,7 @@ public class JClient implements Runnable{
 		else if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
+			System.out.println("coords received (" + event.getOriginID() + ": " + arg[0] + " " + arg[1]);
 		}
 
 
