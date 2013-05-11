@@ -229,6 +229,19 @@ public class JGameMap {
 	}
 	
 	/**
+	 * Returns wether or not a position in the gameMap is empty and thus moveable to
+	 * @param x x coord of the position
+	 * @param y y coord of the position
+	 * @return true if empty
+	 */
+	public boolean validMove(int x, int y) {
+		if (gameMap[x][y] == null) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Removes object at specified position
 	 * @param x x coord of the object
 	 * @param y y coord of the object

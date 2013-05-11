@@ -19,7 +19,10 @@ public class JClient implements Runnable{
 	private JPlayer player_2;
 	private int id;
 	private int player2ID = 0;
-
+	/**
+	 * Constructor with IP argument
+	 * @param ip IP address of the server.
+	 */
 	public JClient(String ip) {
 		this.serverIP = ip;
 		client = new UDPClient(ip);
@@ -28,16 +31,14 @@ public class JClient implements Runnable{
 
 	}
 
-	public String getName() {
-		return playername;
-	}
+
 	/**
 	 * Function which handles Events broadcasted from the server
 	 * @param event event to be handled
 	 */
 	public void UDPEventHandler(UDPEvent event) {
 		System.err.println("Event handled: " + event.toString());
-		
+
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
 			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
@@ -46,14 +47,14 @@ public class JClient implements Runnable{
 			startGame();
 
 			/* Positionen */
-			
+
 			Random gen = new Random();
 			int maxTries = 1000;
 			while(true) {
 				int x_rand = gen.nextInt(JGameMap.mapsize);
 				int y_rand = gen.nextInt(JGameMap.mapsize);
 				if (this.gameMap.at(x_rand, y_rand) == null) {
-//					addObject(player, x_rand, y_rand);
+					//					addObject(player, x_rand, y_rand);
 					String[] args = {Integer.toString(5), Integer.toString(5)};
 					client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 					break;
@@ -113,8 +114,10 @@ public class JClient implements Runnable{
 
 
 	protected void putBomb(int x, int y) {
-		String[] arg = {Integer.toString(x),Integer.toString(y)};
-		client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
+		if (gameMap.validMove(x, y)) {
+			String[] arg = {Integer.toString(x),Integer.toString(y)};
+			client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
+		}
 	}
 
 	/**
@@ -129,7 +132,7 @@ public class JClient implements Runnable{
 		int [] loc = gameMap.find(player.hashCode());
 		String[] arg = {Integer.toString(loc[0]+dx),Integer.toString(loc[1]+dy)};
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_move, this.id,arg));
-		
+
 	}
 
 	/**
@@ -138,7 +141,7 @@ public class JClient implements Runnable{
 	private void startGame() {
 		gameMap = new JGameMap();
 		player = new JHuman(JGUIGame.player1, gameMap,this);
-		guiScreen = new JGUIScreen(gameMap, player);
+		guiScreen = new JGUIScreen(new JGUIGame(gameMap, player));
 
 	}
 
@@ -149,11 +152,11 @@ public class JClient implements Runnable{
 	 * @param y y location to move to
 	 */
 	private void movePlayer(int id, int x, int y) {
-		
+
 		if (x < 0 || x > JGameMap.mapsize || y < 0 || y > JGameMap.mapsize || gameMap.at(x, y) != null) {
 			return;
 		}
-		
+
 		if (id == this.id) {
 			gameMap.remove(player);
 			gameMap.addObject(player, x, y);
@@ -170,8 +173,8 @@ public class JClient implements Runnable{
 		Thread clientThread = new Thread(client);
 		clientThread.start();
 		while(true) {  /* NOTE: This is done with busy wait (polling) and are thus CPU inefficient.
-		 				* This would have been changed but there wasn't time.
-		 				*/
+		 * This would have been changed but there wasn't time.
+		 */
 			if (client.eventExists()) {
 				UDPEventHandler(client.getEvent());
 			}

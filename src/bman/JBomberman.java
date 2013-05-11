@@ -23,13 +23,13 @@ public class JBomberman {
 	public static void joinGame() {
 		
 		System.out.println("Please give server IP: ");
-		Scanner vicks = new Scanner(System.in);
-		String ipaddr = vicks.nextLine();
+		//Scanner vicks = new Scanner(System.in);
+		//String ipaddr = vicks.nextLine();
 
-//		String ip = "192.168.0.101";
-		String ip = "192.168.0.197";
+ 	String ip = "192.168.0.101";
+	//	String ip = "192.168.0.197";
 
-		JClient client = new JClient(ipaddr);
+		JClient client = new JClient(ip);
 		Thread clientThread = new Thread(client);
 		clientThread.start();
 	}
