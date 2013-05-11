@@ -238,7 +238,14 @@ public class JGameMap {
 			loc = find(players[1].hashCode());
 		}
 
-		if (loc[0] != -1 && loc[0]+dx > 0 && loc[0]+dx < mapsize && loc[1]+dy > 0 && loc[1]+dy < mapsize && gameMap[loc[0]+dx][loc[1]+dy] == null) {
+		if (
+				loc[0] != -1 && 
+				loc[0]+dx > 0 && 
+				loc[0]+dx < mapsize && 
+				loc[1]+dy > 0 && 
+				loc[1]+dy < mapsize && 
+				gameMap[loc[0]+dx][loc[1]+dy] == null
+			) {
 			return true;
 		}
 		return false;

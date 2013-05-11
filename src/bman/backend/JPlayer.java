@@ -2,6 +2,8 @@ package bman.backend;
 
 import bman.frontend.gui.JGUIMapObject;
 import bman.frontend.gui.JGUIMapObject.Direction;
+import bman.networking.UDPEvent;
+import bman.networking.UDPEventInterface;
 
 public class JPlayer extends JMapObject {
 	private int playerid = 0;
@@ -64,8 +66,17 @@ public class JPlayer extends JMapObject {
 		client.sendMove(dx, dy);
 	}
 
+	
 	public void destroy() {
-		System.out.println("I died");
+		if (this instanceof JHuman) {
+			client.getUDPClient().sendEvent(
+					new UDPEvent(
+							UDPEventInterface.Type.player_die, 
+							client.getUDPClient().hashCode()));
+		} else {
+			System.err.println("Jag dog inte!!");
+		}
+		
 	}
 
 	public void turn(int dx, int dy) {
@@ -87,4 +98,5 @@ public class JPlayer extends JMapObject {
 			lastMove[1] = -1;
 		}
 	}
+	
 }
