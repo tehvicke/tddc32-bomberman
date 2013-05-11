@@ -46,7 +46,6 @@ public class JGameMap {
 		}
 	}
 
-
 	/**
 	 * Adds a player to gameMap and stores references to them in 
 	 * private variables for faster access.
@@ -67,8 +66,6 @@ public class JGameMap {
 			playerIDs[1] = id;
 		}
 	}
-
-
 
 	/**
 	 * Adds an JMapObject at the specified location in the gameMap, if the
@@ -103,7 +100,6 @@ public class JGameMap {
 			gameMap[fromx][fromy] = null;
 		}
 	}
-
 
 	/**
 	 * Returns the position of a MapObject, if not found returns -1,-1

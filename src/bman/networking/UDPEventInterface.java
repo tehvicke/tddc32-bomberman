@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 /**
  * This is how communication is done. Send it with an object of this class.
- * Is serializible for making it sendable.
+ * Is serializible for making it sendable through UDP. Contains info about
+ * the origin and everything the server and client need to act properly.
  * @author Viktor Dahl
  */
 public interface UDPEventInterface extends Serializable {
