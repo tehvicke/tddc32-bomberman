@@ -12,6 +12,13 @@ import java.util.ArrayList;
 
 import bman.JBomberman;
 
+/**
+ * Responsible for the connection to the server. Handles events in a queue
+ * so that all events will be taken care of. Has functions regarding the connection
+ * such as to establish connection with the server, send and wait for events.
+ * @author Viktor Dahl
+ *
+ */
 public class UDPClient implements UDPClientInterface, Runnable {
 
 	// Testing
@@ -42,6 +49,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	/**
 	 * Constructor for the UDP Client. Creates a unique hash for the player and
 	 * initializes it's DatagramSocket.
+	 * @param addr The IP address of the server
 	 */
 	public UDPClient(String addr) {
 		this.playerHash = this.hashCode();
@@ -50,12 +58,13 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		try {
 			clientSocket = new DatagramSocket(UDPClientInterface.clientPort);
 		} catch (SocketException e) {
-			e.printStackTrace();
+			System.err.println("Could not open a connection on port " + UDPClientInterface.clientPort + ". Exits...");
+			System.exit(0);
 		}
 	}
 
-	public void establishConnection(String ip) {
-		this.serverip = ip;
+	@Override
+	public void establishConnection() {
 		sendEvent(
 				new UDPEvent(
 						UDPEvent.Type.establish_connection, 
@@ -97,7 +106,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	}
 
 	@Override
-	public synchronized void eventListener() {
+	public void eventListener() {
 		if (JBomberman.debug) {
 			System.out.println("Klient: Client eventlistener startad.");
 		}
@@ -128,7 +137,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	
 	@Override
 	public void run() {
-		establishConnection(this.serverip);
+		establishConnection();
 		eventListener();
 	}
 	
@@ -137,9 +146,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		return !eventQueue.isEmpty();
 	}
 	
-	/**
-	 * Returns and removes the first event in the queue.
-	 */
+	@Override
 	public UDPEvent getEvent() {
 		if (!eventQueue.isEmpty()) {
 			if (JBomberman.debug) {

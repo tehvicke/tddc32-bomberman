@@ -1,9 +1,6 @@
 package bman.backend;
 
 import bman.frontend.gui.JGUIMapObject;
-import bman.frontend.gui.JGUIMapObject.Direction;
-import bman.networking.UDPEvent;
-import bman.networking.UDPEventInterface;
 
 /**
  * The player class. Stores basic information about the players in the game.
@@ -12,9 +9,15 @@ import bman.networking.UDPEventInterface;
  */
 public class JPlayer extends JMapObject {
 	
+	/**
+	 * The ID of the player
+	 */
 	private int playerid = 0;
 	
-
+	/**
+	 * 
+	 * @param sprite The sprite for the player
+	 */
 	public JPlayer(JGUIMapObject sprite) {
 		super(sprite);
 		super.destroyable = true;

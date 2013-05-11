@@ -3,7 +3,7 @@ package bman.networking;
 /**
  * The UDPClient is responsible for all communication from and to the client.
  * It listens for packets and decodes them and interpret them and act upon them.
- * @author viktordahl
+ * @author Viktor Dahl
  *
  */
 public interface UDPClientInterface {
@@ -19,10 +19,9 @@ public interface UDPClientInterface {
 	public static int clientPort = 3457;
 	
 	/**
-	 * Connects to a server
-	 * @param ip The IP address to connect to.
+	 * Connects to the server
 	 */
-	public void establishConnection(String ip);
+	public void establishConnection();
 	
 	/**
 	 * Sends an event to the server.
@@ -41,7 +40,7 @@ public interface UDPClientInterface {
 	public boolean eventExists();
 	
 	/**
-	 * 
+	 * Returns and removes the first event in the EventQueue
 	 * @return The current event.
 	 */
 	public UDPEvent getEvent();

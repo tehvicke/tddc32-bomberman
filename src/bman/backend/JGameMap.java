@@ -190,6 +190,7 @@ public class JGameMap {
 	 * @return true if empty
 	 */
 	public boolean validMove(int x, int y) {
+		System.out.println(x + " " + y);
 		if (gameMap[x][y] == null) {
 			return true;
 		}

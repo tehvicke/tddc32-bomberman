@@ -154,7 +154,7 @@ public class JClient implements Runnable{
 	 * @param dy relative y position to be moved
 	 */
 	protected void sendMove(int dx, int dy) {
-		if (!gameMap.validMove(this.id, dx, dy)) {
+		if (!gameMap.validMove(client.hashCode(), dx, dy)) {
 			return;
 		}
 		int [] loc = gameMap.find(player.hashCode());

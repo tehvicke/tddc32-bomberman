@@ -1,16 +1,17 @@
 package bman.networking;
 
+import java.io.Serializable;
+
 /**
  * This is how communication is done. Send it with an object of this class.
- * @author viktordahl
- *
+ * Is serializible for making it sendable.
+ * @author Viktor Dahl
  */
-public interface UDPEventInterface {
+public interface UDPEventInterface extends Serializable {
 	
 	/**
 	 * The type of event.
 	 * @author viktordahl
-	 *
 	 */
 	public enum Type {
 		// Administrative
@@ -20,7 +21,6 @@ public interface UDPEventInterface {
 		game_end,
 		game_map,
 		kick,
-		
 
 		// Player stuff
 		player_join,
