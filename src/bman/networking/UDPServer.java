@@ -26,12 +26,8 @@ public class UDPServer implements UDPServerInterface {
 	private int events_received = 0;
 	private int broadcasts_sent = 0;
 	private boolean testmode = false;
-
-	/**
-	 * Whether the listener shall be active or not. Default: Always active.
-	 */
-	private boolean listen = true;
-
+	
+	private int playersAlive;
 	/**
 	 * The number of clients to accept.
 	 */
@@ -197,6 +193,24 @@ public class UDPServer implements UDPServerInterface {
 				oosi.close();
 				UDPEvent event = (UDPEvent) oosi.readObject();
 
+				
+				if (event.type == UDPEventInterface.Type.player_die) {
+					playersAlive--;
+					this.getClient(event.getOriginID()).setAlive(false);
+					
+					if (playersAlive == 1 && clients.length - playersAlive > 0) {
+						Client client;
+						for (Client cli : clients) {
+							if (cli.isAlive()) {
+								sendEvent(new UDPEvent(UDPEventInterface.Type.player_win, 0), cli.hash);
+							}
+						}
+					}
+				} else if (event.type == UDPEventInterface.Type.player_join) {
+					playersAlive++;
+				}
+
+				System.out.println("players alive " + playersAlive);
 				/* Send the event to all clients. It shall not send all events so some critera will be added */
 				broadcastEvent(event);
 
@@ -263,12 +277,13 @@ public class UDPServer implements UDPServerInterface {
 	}
 
 	/**
-	 * Private class that stores hash and ip address
+	 * Private class that stores info about clients
 	 * @author viktordahl
 	 */
 	private class Client {
 		private InetAddress addr;
 		private int hash;
+		private boolean alive = true;
 
 		/**
 		 * Constructor for the client class.
@@ -279,6 +294,22 @@ public class UDPServer implements UDPServerInterface {
 			System.out.println("Server: Klient skapad. Hash: " + hash + " Addr: " + addr.getHostAddress());
 			this.hash = hash;
 			this.addr = addr;
+		}
+		
+		/**
+		 * 
+		 * @return If the client is alive
+		 */
+		public boolean isAlive() {
+			return this.alive;
+		}
+		
+		/**
+		 * 
+		 * @param al Whether the client is alive or not
+		 */
+		public void setAlive(boolean al) {
+			alive = al;
 		}
 	}
 }
