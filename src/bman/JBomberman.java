@@ -70,6 +70,9 @@ public class JBomberman {
 		case 4:
 			hostGame(1);
 			break;
+		case 5:
+			hostGame(1);
+			break;
 		default:
 			
 		}
