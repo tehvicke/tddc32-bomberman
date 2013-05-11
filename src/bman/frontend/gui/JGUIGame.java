@@ -143,7 +143,6 @@ public class JGUIGame extends JPanel implements ActionListener {
 		}
 
 		/*Draws the objects on the map */
-		//g2d.drawImage(player.getImage(),player.getX(),player.getY(),this);
 		for (int i = 0; i < JGameMap.mapsize; i++) {
 			for (int j = 0; j < JGameMap.mapsize ; j++) {
 				try {
@@ -161,32 +160,15 @@ public class JGUIGame extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		//player.move();
 		repaint();
-
 	}
 
-	public class KAdapter extends KeyAdapter {
-		@Override
-		public void keyPressed(KeyEvent e) {
-			player.keypress(e);
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				player.keypress(e);
-			}
-		}
-	}
-
-	
 	/**
 	 * The key listener class.
 	 * @author viktordahl
 	 *
 	 */
-	private final class KeyPressed extends AbstractAction {
+	private class KeyPressed extends AbstractAction {
         /**
 		 * ID
 		 */
@@ -195,12 +177,12 @@ public class JGUIGame extends JPanel implements ActionListener {
 		/**
 		 * The key that is being handled.
 		 */
-		int key;
+		private int key;
 		
 		/**
 		 * Whether shift is pressed or not.
 		 */
-        boolean shift = false;
+        private boolean shift = false;
         
         /**
          * 

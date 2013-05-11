@@ -142,7 +142,9 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	 */
 	public UDPEvent getEvent() {
 		if (!eventQueue.isEmpty()) {
-			System.err.println("Removed " + this.eventQueue.get(0).toString());
+			if (JBomberman.debug) {
+				System.err.println("Removed " + this.eventQueue.get(0).toString() + " from the EventQueue");
+			}
 			return this.eventQueue.remove(0);
 		}
 		return null;

@@ -10,6 +10,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Random;
 
+import bman.JBomberman;
 import bman.backend.JGameMap;
 
 /**
@@ -25,17 +26,17 @@ public class UDPServer implements UDPServerInterface {
 	private int events_received = 0;
 	private int broadcasts_sent = 0;
 	private boolean testmode = false;
-	
+
 	/**
 	 * Whether the listener shall be active or not. Default: Always active.
 	 */
 	private boolean listen = true;
-	
+
 	/**
 	 * The number of clients to accept.
 	 */
 	private int numberOfClients;
-	
+
 	/**
 	 * The percent of the map filled with destroyable blocks.
 	 */
@@ -66,7 +67,7 @@ public class UDPServer implements UDPServerInterface {
 			System.err.println("Problem UDPServer constructor.");
 		}
 	}
-	
+
 	/**
 	 * Constructor for the server with two arguments
 	 * @param numberOfClients The number of clients the server shall wait for,
@@ -96,7 +97,7 @@ public class UDPServer implements UDPServerInterface {
 			try {
 				/* Waits for packet. The server locks here until a package is received. */
 				serverSocket.receive(receivePacket);
-				
+
 				/* Deserializes string of bytes to an object */
 				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData());
 				ObjectInputStream oosi = new ObjectInputStream(baosi);
@@ -127,9 +128,9 @@ public class UDPServer implements UDPServerInterface {
 			return;
 		}
 		for (Client cli : clients) {
-			if (true || event.getOriginID() != cli.hash) { // Ta bort true om det inte ska skickas till origin.
-				sendEvent(event, cli.hash);
-//				System.out.println("Server: " + event.getType() + " sent to " + cli.hash);
+			sendEvent(event, cli.hash);
+			if (JBomberman.debug) {
+				System.out.println("Server: " + event.getType() + " sent to " + cli.hash);
 			}
 		}
 		broadcasts_sent++;
@@ -148,23 +149,18 @@ public class UDPServer implements UDPServerInterface {
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(event);
 			oos.flush();
-			
-			sendData = baos.toByteArray(); // Serialize
+			sendData = baos.toByteArray(); // Serializes
+
 			DatagramPacket sendPacket = 
 					new DatagramPacket(
 							sendData, 
 							sendData.length, 
 							getClient(client).addr, 
 							3457);  					   /* Sends to 3457 as is where the clients listens.
-															* This for allowing a server to be run on a 
-															* client computer.
-														    */
+							 * This for allowing a server to be run on a 
+							 * client computer.
+							 */
 			this.serverSocket.send(sendPacket);
-//			System.out.println(
-//					"Server: Sent event of type: " + 
-//					event.getType() + 
-//					". Hash code: " + event.hashCode() + 
-//					". Origin: " + event.getOriginID());	
 			events_sent++;
 		} catch (Exception e) {
 			System.err.println("Couldn't send event of type: " + event.getType() + ". Hash code: " + event.hashCode());
@@ -186,13 +182,12 @@ public class UDPServer implements UDPServerInterface {
 
 	@Override
 	public void eventListener() {
-//		int count = 0;
-		while(listen) {
+		while(true) {
 			try {
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-				
-				/* The server locks here until it recieves something. */
+
+				/* The server locks here until it receives something. */
 				serverSocket.receive(receivePacket); 
 
 				/* Here the stream of bytes are decoded into an event object. */
@@ -201,14 +196,13 @@ public class UDPServer implements UDPServerInterface {
 				baosi.close(); /* May or may not be required to close the streams... */
 				oosi.close();
 				UDPEvent event = (UDPEvent) oosi.readObject();
-//				System.out.println("Server: " + event.getType() + " recieved from " + event.getOriginID());
-
-				/* Sends the event to the game map to update it and make calculations etc. */
 
 				/* Send the event to all clients. It shall not send all events so some critera will be added */
 				broadcastEvent(event);
-				System.out.println("Server: Skickade: " + events_sent + " Mottagna: " + events_received++  + " BC: " + broadcasts_sent);
-//				System.out.println("Server: " + count++);
+
+				if (JBomberman.debug) {
+					System.out.println("Server: Skickade: " + events_sent + " Mottagna: " + events_received++  + " BC: " + broadcasts_sent);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -221,60 +215,20 @@ public class UDPServer implements UDPServerInterface {
 	@Override
 	public void run() {
 		System.out.println("Server: Server thread started.");
-		waitForClients(); /* Wait for all clients to join */
-		System.out.println("Server: Game start");
-		
+		/* Wait for all clients to join */
+		waitForClients();
+		System.out.println("Server: Game starts");		
+
 		/* Broadcast start game event */
 		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));
-		
-		
-		String[] mapLayout = {
-				"sssssssssssssss",
-				"s             d",
-				"s             s",
-				"s             s",
-		        "s             s",
-		        "s             s",
-		        "s             s",
-		        "s             s",
-		        "s ddd    d d  s",
-		        "s d d    d d  s",
-		        "s d d    ddd  s",
-		        "s             s",
-		        "s             s",
-		        "s             s",
-		        "sssssssssssssss"
-			};
-		
-		String[] mapLayout2 = {
-				"sssssssssssssss",
-				"s       d     s",
-				"s s s s s s s s",
-				"sdd   d       s",
-		        "sds s s s s s s",
-		        "sdd   d       s",
-		        "s s s s s s s s",
-		        "s     d       s",
-		        "s sds sds s s s",
-		        "s     d d     s",
-		        "s s s s s s s s",
-		        "s     d       s",
-		        "s s s s s s s s",
-		        "s             s",
-		        "sssssssssssssss"
-				};
-		
 
-
-		
-		
-		
-//		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, mapLayout2));
-
+		/* Sends the map layout */
 		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, randomizedMap(this.percentFilled)));
-		eventListener(); /* Start the event listener */
+
+		/* Start the event listener */
+		eventListener(); 
 	}
-	
+
 	/**
 	 * This randomizes where the destroyable blocks are in the game map.
 	 * 
@@ -284,13 +238,11 @@ public class UDPServer implements UDPServerInterface {
 	 */
 	public String[] randomizedMap(int percentFilled) {
 		Random gen = new Random();
-//		StringBuilder temp = new StringBuilder[JGameMap.mapsize];
 		String[] layout = new String[JGameMap.mapsize];
 		for (int row = 0; row < JGameMap.mapsize; row++) {
 			StringBuilder stringRow = new StringBuilder();
 			for (int col = 0; col < JGameMap.mapsize; col++) {
 				int number = gen.nextInt(100);
-//				layout[col];
 				if (
 						(row == 0) || // top row solid blocks
 						(col == 0) || // left row solid blocks
@@ -298,25 +250,18 @@ public class UDPServer implements UDPServerInterface {
 						(row == JGameMap.mapsize - 1) || // bottom row solid blocks
 						(row % 2 == 0 && col % 2 == 0) // middle solid blocks
 						) {
-//					addObject(new JSolidBlock(), col, row);
-//					layout[col].append("s");
 					stringRow.append("s");
 				} else if (number < percentFilled) {
-//						addObject(new JDestroyableBlock(), col, row);
-//					layout[col].append("d");
 					stringRow.append("d");
 				} else {
-//					layout[col].append(" ");
 					stringRow.append(" ");
 				}
-//				layout[col] = layout[col].substring(1, JGameMap.mapsize-1);
 			}
-			System.out.println(stringRow.toString());
 			layout[row] = stringRow.toString();
 		}
 		return layout;
 	}
-	
+
 	/**
 	 * Private class that stores hash and ip address
 	 * @author viktordahl
@@ -324,7 +269,7 @@ public class UDPServer implements UDPServerInterface {
 	private class Client {
 		private InetAddress addr;
 		private int hash;
-		
+
 		/**
 		 * Constructor for the client class.
 		 * @param hash The client hash.

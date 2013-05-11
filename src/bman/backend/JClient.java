@@ -1,7 +1,9 @@
 package bman.backend;
 
+import java.util.ArrayList;
 import java.util.Random;
 
+import bman.JBomberman;
 import bman.frontend.gui.JGUIGame;
 import bman.frontend.gui.JGUIScreen;
 import bman.networking.UDPClient;
@@ -19,6 +21,9 @@ public class JClient implements Runnable{
 	private JPlayer player_2;
 	private int id;
 	private int player2ID = 0;
+	
+	private ArrayList<Integer> players = new ArrayList<Integer>();
+	
 	/**
 	 * Constructor with IP argument
 	 * @param ip IP address of the server.
@@ -37,7 +42,9 @@ public class JClient implements Runnable{
 	 * @param event event to be handled
 	 */
 	public void UDPEventHandler(UDPEvent event) {
-		System.err.println("Event handled: " + event.toString());
+		if (JBomberman.debug) {
+			System.err.println("Event handled: " + event.toString());
+		}
 
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
@@ -45,27 +52,6 @@ public class JClient implements Runnable{
 		}
 		else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
-
-
-			Random gen = new Random();
-			int maxTries = 1000;
-			while(true) {
-				int x_rand = gen.nextInt(JGameMap.mapsize);
-				int y_rand = gen.nextInt(JGameMap.mapsize);
-				if (this.gameMap.at(x_rand, y_rand) == null) {
-					//					addObject(player, x_rand, y_rand);
-					String[] args = {Integer.toString(x_rand), Integer.toString(y_rand)};
-					client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
-					System.out.println("Player coords: " + x_rand + " " + y_rand);
-					break;
-				}
-				if (maxTries-- < 0) {
-					System.err.println("Nowhere to put player " + player.getID() + ". Exits game.");
-					client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, client.hashCode()));
-					System.exit(0);
-				}
-			}
-			
 		}
 		else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
@@ -73,24 +59,68 @@ public class JClient implements Runnable{
 
 		else if (event.type == UDPEventInterface.Type.bomb_set) {
 			String [] args = event.getArguments();
-			gameMap.addObject(new JBomb(JGUIGame.bomb,gameMap), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+			gameMap.addObject(new JBomb(JGUIGame.bomb, gameMap), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
 		}
 		else if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
-			System.out.println("coords received (" + event.getOriginID() + ": " + arg[0] + " " + arg[1]);
 		}
 
-
 		if (event.type == UDPEventInterface.Type.game_map) {
-			System.out.println("LOL");
 			String[] args = event.getArguments();
 
 			for (int i = 0; i < 15; i++) {
 				gameMap.addMapRow(args[i], i);
 				System.out.println(args[i] + ", " + i);
 			}
+			System.err.println("Map generated.");
+			
+			randomizePlayerPosition();
 
+		}
+	}
+	
+	/**
+	 * Adds the player on a random place on the map. Tries 1000 times and if no
+	 * free place is found it's assumed 
+	 */
+	private void randomizePlayerPosition() {
+		
+		/* 
+		 * Check if there's a free space for the player on the grid. 
+		 * This function can be more advanced to calculate a place where
+		 * the player can lay a bomb without committing suicide. 
+		 */
+		int count = 0;
+		for (int i = 0; i < JGameMap.mapsize; i++) {
+			for (int j = 0; j < JGameMap.mapsize; j++) {
+				if (this.gameMap.at(i, j) == null) {
+					count++;
+				}
+			}
+		}
+		if (count == 0) {
+			System.err.println("Nowhere to put player " + player.getID() + ". Exits game.");
+			client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, client.hashCode()));
+			System.exit(0);
+		}
+		
+		
+		/* Random position */
+		Random gen = new Random();
+		int x_rand;
+		int y_rand;
+		while(true) {
+			x_rand = gen.nextInt(JGameMap.mapsize);
+			y_rand = gen.nextInt(JGameMap.mapsize);
+			if (this.gameMap.at(x_rand, y_rand) == null) {
+				String[] argss = {Integer.toString(x_rand), Integer.toString(y_rand)};
+				client.sendEvent(new UDPEvent(Type.player_join, this.id, argss));
+				break;
+			}
+		}
+		if (JBomberman.debug) {
+			System.out.println("Klient: Player " + this.id + " added at (" + x_rand + ", " + y_rand + ").");
 		}
 	}
 	/**

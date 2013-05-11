@@ -26,7 +26,7 @@ public class JBomb extends JMapObject implements Runnable {
 	}
 
 	/**
-	 * Donstructor for an own bomb, which is not used for 2 players but added for possible scalability in the future
+	 * Constructor for an own bomb, which is not used for 2 players but added for possible scalability in the future
 	 * @param sprite JGUIMapObject to be associated with the JBomb (the visual representation)
 	 * @param map JGameMap which will contain the bomb
 	 * @param owner the JPlayer who put the bomb
@@ -46,7 +46,6 @@ public class JBomb extends JMapObject implements Runnable {
 		fuse.start();
 	}
 
-
 	/**
 	 * 
 	 * @param x
@@ -62,10 +61,7 @@ public class JBomb extends JMapObject implements Runnable {
 			} else if (temp == null) {
 				retur = true;
 			}
-
-
 			map.destroy(x, y);
-
 			map.addObject(JBomb.fire, x, y);
 			return retur;
 		} catch(ArrayIndexOutOfBoundsException e) {
