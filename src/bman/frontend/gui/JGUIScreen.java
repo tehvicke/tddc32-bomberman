@@ -70,6 +70,10 @@ public class JGUIScreen extends JFrame {
 		this.repaint();
 	}
 	
+	/**
+	 * Removes current content and displays a message
+	 * @param message message to be displayed.
+	 */
 	public void displayMessage(String message) {
 		this.removeContent();
 		JPanel panel = new JPanel();
