@@ -55,8 +55,8 @@ public class JClient implements Runnable{
 				if (this.gameMap.at(x_rand, y_rand) == null) {
 					//					addObject(player, x_rand, y_rand);
 					String[] args = {Integer.toString(x_rand), Integer.toString(y_rand)};
-
 					client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
+					System.out.println("Player coords: " + x_rand + " " + y_rand);
 					break;
 				}
 				if (maxTries-- < 0) {
@@ -65,6 +65,7 @@ public class JClient implements Runnable{
 					System.exit(0);
 				}
 			}
+			
 		}
 		else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
@@ -77,6 +78,7 @@ public class JClient implements Runnable{
 		else if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
+			System.out.println("coords received (" + event.getOriginID() + ": " + arg[0] + " " + arg[1]);
 		}
 
 
