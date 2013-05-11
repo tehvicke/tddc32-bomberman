@@ -19,7 +19,10 @@ public class JClient implements Runnable{
 	private JPlayer player_2;
 	private int id;
 	private int player2ID = 0;
-
+	/**
+	 * Constructor with IP argument
+	 * @param ip IP address of the server.
+	 */
 	public JClient(String ip) {
 		this.serverIP = ip;
 		client = new UDPClient(ip);
@@ -28,9 +31,7 @@ public class JClient implements Runnable{
 
 	}
 
-	public String getName() {
-		return playername;
-	}
+
 	/**
 	 * Function which handles Events broadcasted from the server
 	 * @param event event to be handled
@@ -45,6 +46,7 @@ public class JClient implements Runnable{
 		else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
 
+
 			Random gen = new Random();
 			int maxTries = 1000;
 			while(true) {
@@ -53,6 +55,7 @@ public class JClient implements Runnable{
 				if (this.gameMap.at(x_rand, y_rand) == null) {
 					//					addObject(player, x_rand, y_rand);
 					String[] args = {Integer.toString(x_rand), Integer.toString(y_rand)};
+
 					client.sendEvent(new UDPEvent(Type.player_join, this.id, args));
 					break;
 				}
@@ -107,8 +110,10 @@ public class JClient implements Runnable{
 
 
 	protected void putBomb(int x, int y) {
-		String[] arg = {Integer.toString(x),Integer.toString(y)};
-		client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
+		if (gameMap.validMove(x, y)) {
+			String[] arg = {Integer.toString(x),Integer.toString(y)};
+			client.sendEvent(new UDPEvent(Type.bomb_set, this.id,arg));
+		}
 	}
 
 	/**
@@ -132,7 +137,7 @@ public class JClient implements Runnable{
 	private void startGame() {
 		gameMap = new JGameMap();
 		player = new JHuman(JGUIGame.player1, gameMap,this);
-		guiScreen = new JGUIScreen(gameMap, player);
+		guiScreen = new JGUIScreen(new JGUIGame(gameMap, player));
 
 	}
 

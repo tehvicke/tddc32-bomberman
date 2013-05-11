@@ -8,7 +8,7 @@ public class JBomb extends JMapObject implements Runnable {
 	private int explosionRaidus = 3;
 	private JGameMap map;
 	private JPlayer owner;
-	public static int timer = 1000;
+	public static int timer = 1500;
 
 
 	Thread fuse;
