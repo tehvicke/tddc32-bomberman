@@ -136,7 +136,7 @@ public class JClient implements Runnable{
 		if (id == this.id) {
 			gameMap.addPlayer(player, id, x, y);
 		} else {
-			player_2 = new JPlayer(JGUIGame.player2,gameMap,this);
+			player_2 = new JPlayer(JGUIGame.player2);
 			gameMap.addPlayer(player_2, id, x, y);
 		}
 

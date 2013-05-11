@@ -3,6 +3,9 @@ package bman.backend;
 import java.awt.event.KeyEvent;
 
 import bman.frontend.gui.JGUIMapObject;
+import bman.frontend.gui.JGUIMapObject.Direction;
+import bman.networking.UDPEvent;
+import bman.networking.UDPEventInterface;
 
 /**
  * The Local Player
@@ -13,11 +16,19 @@ public class JHuman extends JPlayer{
 	//private enum keyMapping{};
 	private boolean shiftPressed = false;
 
+	private int [] lastMove = {0,0};
+	private JGameMap map;
+	private JClient client;
 
 
-	public JHuman(JGUIMapObject obj, JGameMap map,JClient cclient) {
-		super(obj,map,cclient);
-		
+	/**
+	 * 
+	 * @param sprite
+	 * @param map
+	 * @param client
+	 */
+	public JHuman(JGUIMapObject sprite,JGameMap map, JClient client) {
+		super(sprite);
 	}
 
 	/**
@@ -52,9 +63,9 @@ public class JHuman extends JPlayer{
 
 		if (dx != 0 || dy != 0) {
 			if (shiftPressed) {
-				super.turn(dx, dy);
+				this.turn(dx, dy);
 			} else {
-				super.move(dx, dy);
+				this.move(dx, dy);
 			}
 		}
 
@@ -78,7 +89,7 @@ public class JHuman extends JPlayer{
 			dy = 1;
 		}
 		if (dx != 0 || dy != 0) {
-				super.move(dx, dy);
+				this.move(dx, dy);
 		}
 	}
 	public void turnKey(int key) {
@@ -94,9 +105,80 @@ public class JHuman extends JPlayer{
 			dy = 1;
 		}
 		if (dx != 0 || dy != 0) {
-				super.turn(dx, dy);
+				this.turn(dx, dy);
 		}
 	}
+	
+	/**
+	 * Allows the player to turn without moving, allowing him to lay bombs
+	 * in different directions.
+	 * @param dx x coord
+	 * @param dy y coord
+	 */
+	private void turn(int dx, int dy) {
+		if (dx > 0) {
+			sprite.move(Direction.RIGHT);
+			lastMove[0] = 1;
+			lastMove[1] = 0;
+		} else if (dx < 0) {
+			sprite.move(Direction.LEFT);
+			lastMove[0] = -1;
+			lastMove[1] = 0;
+		} else if (dy > 0) {
+			sprite.move(Direction.DOWN);
+			lastMove[0] = 0;
+			lastMove[1] = 1;
+		} else {
+			sprite.move(Direction.UP);
+			lastMove[0] = 0;
+			lastMove[1] = -1;
+		}
+	}
+	
+	/**
+	 * Moves the object and changes the sprite with appropriate direction, Lastmove så bomben kan läggas
+	 * @param dx
+	 * @param dy
+	 */
+	public void move(int dx, int dy) {
+		if (dx > 0) {
+			sprite.move(Direction.RIGHT);
+			lastMove[0] = 1;
+			lastMove[1] = 0;
+		} else if (dx < 0) {
+			sprite.move(Direction.LEFT);
+			lastMove[0] = -1;
+			lastMove[1] = 0;
+		} else if (dy > 0) {
+			sprite.move(Direction.DOWN);
+			lastMove[0] = 0;
+			lastMove[1] = 1;
+		} else {
+			sprite.move(Direction.UP);
+			lastMove[0] = 0;
+			lastMove[1] = -1;
+		}
+		client.sendMove(dx, dy);
+	}
 
+	/**
+	 * Pubts a bomb next to the player
+	 */
+	public void putBomb() {
+		int[] loc = map.find(this.hashCode());
+		client.putBomb(loc[0]+lastMove[0], loc[1]+lastMove[1]);
+	}
+
+	@Override
+	public void destroy() {
+		if (this instanceof JHuman) {
+			client.getUDPClient().sendEvent(
+					new UDPEvent(
+							UDPEventInterface.Type.player_die, 
+							client.getUDPClient().hashCode()));
+		} else {
+			System.err.println("Jag dog inte!!");
+		}	
+	}
 
 }
