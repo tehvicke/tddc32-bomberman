@@ -45,28 +45,21 @@ public class JClient implements Runnable{
 		if (JBomberman.debug) {
 			System.err.println("Event handled: " + event.toString());
 		}
-
+		
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
 			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
-		}
-		else if (event.type == UDPEventInterface.Type.game_start) {
+		} else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
-		}
-		else if (event.type == UDPEventInterface.Type.game_end) {
+		} else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
-		}
-
-		else if (event.type == UDPEventInterface.Type.bomb_set) {
+		} else if (event.type == UDPEventInterface.Type.bomb_set) {
 			String [] args = event.getArguments();
 			gameMap.addObject(new JBomb(JGUIGame.bomb, gameMap), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
-		}
-		else if (event.type == UDPEventInterface.Type.player_join) {
+		} else if (event.type == UDPEventInterface.Type.player_join) {
 			String[] arg = event.getArguments();
 			addPlayer(event.getOriginID(),Integer.parseInt(arg[0]),Integer.parseInt(arg[1]));
-		}
-
-		if (event.type == UDPEventInterface.Type.game_map) {
+		} else if (event.type == UDPEventInterface.Type.game_map) {
 			String[] args = event.getArguments();
 
 			for (int i = 0; i < 15; i++) {
@@ -76,7 +69,12 @@ public class JClient implements Runnable{
 			System.err.println("Map generated.");
 			
 			randomizePlayerPosition();
-
+		} else if (event.type == UDPEventInterface.Type.player_die) {
+			System.out.println("player die from " + event.getOriginID());
+			
+			if (event.getOriginID() == client.hashCode()) {
+				// Player dies, print "You lost!"
+			}
 		}
 	}
 	
@@ -210,6 +208,14 @@ public class JClient implements Runnable{
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * 
+	 * @return The UDP Client
+	 */
+	public UDPClient getUDPClient() {
+		return client;
 	}
 }
 
