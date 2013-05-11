@@ -4,8 +4,6 @@ import bman.frontend.gui.JGUIGame;
 
 
 public class JSolidBlock extends JMapObject{
-	
-	
 
 	/**
 	 * 

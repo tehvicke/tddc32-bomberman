@@ -13,16 +13,22 @@ import bman.networking.UDPEvent;
 import bman.networking.UDPEventInterface;
 import bman.networking.UDPEventInterface.Type;
 
+/**
+ * This is the client and handles all the calculations. The reason for having
+ * the calculations on client side is for minimizing the network utilization. 
+ * It’s run in its separate thread and uses a UDPClient to get and send 
+ * instructions to the server
+ * @author viktordahl
+ *
+ */
 public class JClient implements Runnable{
 	
 	private UDPClient client;
-	private String serverIP;
 	private JGameMap gameMap;
 	private JGUIScreen guiScreen;
 	private JHuman player;
 	private JPlayer player_2;
 	private int id;
-	private int player2ID = 0;
 	
 	private ArrayList<Integer> players = new ArrayList<Integer>();
 	
@@ -32,7 +38,6 @@ public class JClient implements Runnable{
 	 */
 	public JClient(String ip,JGUIScreen guiScreen) {
 		this.guiScreen = guiScreen;
-		this.serverIP = ip;
 		client = new UDPClient(ip);
 		id = client.hashCode();
 		System.out.println(this);
@@ -131,7 +136,6 @@ public class JClient implements Runnable{
 		if (id == this.id) {
 			gameMap.addPlayer(player, id, x, y);
 		} else {
-			player2ID = id;
 			player_2 = new JPlayer(JGUIGame.player2,gameMap,this);
 			gameMap.addPlayer(player_2, id, x, y);
 		}
@@ -196,8 +200,8 @@ public class JClient implements Runnable{
 		Thread clientThread = new Thread(client);
 		clientThread.start();
 		while(true) {  /* NOTE: This is done with busy wait (polling) and are thus CPU inefficient.
-		 * This would have been changed but there wasn't time.
-		 */
+		 				* This would have been changed but there wasn't time.
+		 				*/
 			if (client.eventExists()) {
 				UDPEventHandler(client.getEvent());
 			}

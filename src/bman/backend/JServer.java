@@ -4,8 +4,9 @@ import bman.networking.UDPServer;
 import bman.networking.UDPServerInterface;
 
 /**
- * This one is only starting the UDPServer. It doesn't server a purpose
- * other than design consistency.
+ * This class represents the server and the only thing it does is to start an UDPServer.
+ * The reason it exists is mainly for design purpose, as it doesn’t serve any purpose
+ * but to start the UDPServer. Additional functionality can be added if wanted.
  * @author viktordahl
  *
  */

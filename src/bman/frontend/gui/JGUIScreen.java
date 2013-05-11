@@ -65,7 +65,7 @@ public class JGUIScreen extends JFrame {
 	public void addContent(JPanel gm) {
 		this.content = gm;
 		this.add(gm);
-		this.revalidate();
+		this.validate();
 		this.repaint();
 	}
 
