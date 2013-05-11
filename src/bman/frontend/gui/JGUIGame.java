@@ -31,18 +31,18 @@ public class JGUIGame extends JPanel implements ActionListener {
 	 * CONSTANTS
 	 *****************************************************************************************************/
 
-	public static final String player_front = "./sprites/white_front.png";
-	public static final String player_back = "./sprites/white_back.png";
-	public static final String player_left = "";
-	public static final String player_right = "";
+	private static final String player_front = "./sprites/white_front.png";
+	private static final String player_back = "./sprites/white_back.png";
+	private static final String player_left = "./sprites/white_left.png";
+	private static final String player_right = "./sprites/white_right.png";
 
-	public static final String p2_front = "";
-	public static final String p2_back= "";
-	public static final String p2_left = "";
-	public static final String p2_right = "";
+	private static final String p2_front = "./sprites/black_front.png";
+	private static final String p2_back= "./sprites/black_back.png";;
+	private static final String p2_left = "./sprites/black_left.png";;
+	private static final String p2_right = "./sprites/black_right.png";;
 
-	public static final String solidBlock = "./sprites/solid_block.png"; 
-	public static final String destroyableBlock = "./sprites/destroyable_block.png";
+	private static final String solidBlock = "./sprites/solid_block.png"; 
+	private static final String destroyableBlock = "./sprites/destroyable_block.png";
 
 	public static final String bomb_fire = "./sprites/bomb_fire.png";
 	public static final String bomb_nofire = "./sprites/solid_block.png";;
@@ -62,8 +62,8 @@ public class JGUIGame extends JPanel implements ActionListener {
 	public static JGUIMapObject solidBlockGUI = new JGUIMapObject(solidBlock);
 	public static JGUIMapObject destroyableBlockGUI = new JGUIMapObject(destroyableBlock);
 	public static JGUIMapObject bomb = new JGUIMapObject(bomb_fire);
-	public static JGUIMapObject player1 = new JGUIMapObject(superman);
-	public static JGUIMapObject player2 = new JGUIMapObject(player_front);
+	public static JGUIMapObject player1 = new JGUIMapObject(player_front,player_back,player_left,player_right);
+	public static JGUIMapObject player2 = new JGUIMapObject(p2_front,p2_back,p2_left,p2_right);
 	public static JGUIMapObject fire = new JGUIMapObject(explosion);
 
 	/*

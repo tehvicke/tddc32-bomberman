@@ -23,18 +23,12 @@ public class JGUIMainMenu extends JPanel  {
 	 * ID
 	 */
 	private static final long serialVersionUID = -4776987440183048444L;
-	JLabel banan;
-	private static Image logo = Toolkit.getDefaultToolkit().getImage("./sprites/logo.png");
 	
+	private static Image logo = Toolkit.getDefaultToolkit().getImage("./sprites/logo.png");
+	private static Image background = Toolkit.getDefaultToolkit().getImage("./sprites/background.png");
 	private static String[] options = {"Join Game","Host Game","Exit Game"};
 	private JButton[] buttons;
 	
-
-	private static int xOffset = 50;
-	private static int menuStartHeight = 250;
-	private static int buttonSpacing = 50;
-	
-
 
 	private JPanel joinPanel;
 	private JPanel hostPanel;
@@ -56,9 +50,11 @@ public class JGUIMainMenu extends JPanel  {
 	public JGUIMainMenu(JGUIScreen parentFrame) {
 		//Init of Main Menu
 		this.parentFrame=parentFrame;
+		this.setBackground(Color.white);
 		setSize(JGUIScreen.w_width, JGUIScreen.w_height);
 		this.setVisible(true);
 		this.setLayout(null);
+		this.setOpaque(false);
 		int topMargin = 250;
 		buttonListener bl = new buttonListener();
 		
@@ -69,7 +65,7 @@ public class JGUIMainMenu extends JPanel  {
 		//Init menuPanel
 		menuPanel = new JPanel();
 		menuPanel.setBounds(0,topMargin, JGUIScreen.w_width/3,JGUIScreen.w_height-topMargin);
-		menuPanel.setBackground(Color.green);
+		menuPanel.setBackground(Color.white);
 		menuPanel.setLayout(new BoxLayout(menuPanel,BoxLayout.Y_AXIS));
 
 		this.add(menuPanel);
@@ -83,7 +79,7 @@ public class JGUIMainMenu extends JPanel  {
 		joinPanel = new JPanel();
 		joinPanel.setVisible(false);
 		joinPanel.setBounds(JGUIScreen.w_width/3,topMargin, 2*JGUIScreen.w_width/3,JGUIScreen.w_height-topMargin);
-		joinPanel.setBackground(Color.red);
+		joinPanel.setBackground(Color.white);
 		
 		//Content of joinPanel
 		JLabel ip = new JLabel("IP Address:");
@@ -102,6 +98,7 @@ public class JGUIMainMenu extends JPanel  {
 		hostPanel = new JPanel();
 		hostPanel.setVisible(false);
 		hostPanel.setBounds(JGUIScreen.w_width/3,topMargin, 2*JGUIScreen.w_width/3,JGUIScreen.w_height-topMargin);
+		hostPanel.setBackground(Color.white);
 		
 		//hostPanel content
 		JLabel fillDesc = new JLabel("Map block fill % (<40 recommended):");
@@ -122,9 +119,14 @@ public class JGUIMainMenu extends JPanel  {
 
 
 	public void paint(Graphics g) {
-		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.drawImage(logo, xOffset, 100, this);
+		g2d.drawImage(background,0,0,this);
+		super.paint(g);
+		
+		
+		//g2d.drawImage(logo, 220, 100, this);
+		
+		
 
 	}
 
@@ -178,7 +180,7 @@ public class JGUIMainMenu extends JPanel  {
 		public void actionPerformed(ActionEvent arg0) {
 			String fillSt = fill.getText();
     		int fillperc = Integer.parseInt(fillSt);
-			server = new JServer(2, fillperc);
+			server = new JServer(1, fillperc);
 			client = new JClient("localhost",parentFrame);
 			Thread serverThread = new Thread(server);
 			Thread clientThread = new Thread(client);

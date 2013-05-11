@@ -3,8 +3,6 @@ package bman.backend;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JPanel;
-
 import bman.JBomberman;
 import bman.frontend.gui.JGUIGame;
 import bman.frontend.gui.JGUIScreen;
