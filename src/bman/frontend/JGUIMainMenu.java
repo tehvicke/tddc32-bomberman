@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
 import bman.JBomberman;
 import bman.backend.JClient;
 import bman.backend.JServer;
@@ -35,7 +34,6 @@ public class JGUIMainMenu extends JPanel  {
 	private static Image background = Toolkit.getDefaultToolkit().getImage("./sprites/background.png");
 	private static String[] options = {"Join Game","Host Game","Exit Game"};
 	
-	
 	//Panels and buttons which make up the JMainMenu
 	private JPanel joinPanel;
 	private JPanel hostPanel;
@@ -54,8 +52,6 @@ public class JGUIMainMenu extends JPanel  {
 	//Reference to the JGUIScreen which holds the mainMenu
 	private JGUIScreen parentFrame;
 	
-
-
 	/**
 	 * Constructs a JGUIMainMenu object.
 	 * @param parentFrame, JGUISCreen or other JFrame which contains the menu
@@ -69,10 +65,8 @@ public class JGUIMainMenu extends JPanel  {
 		this.setLayout(null);
 		this.setOpaque(false);
 		
-		
 		//Listener used by left side buttons
 		buttonListener bl = new buttonListener();
-		
 				
 		//Init of menuPanel
 		int topMargin = 250;
@@ -80,7 +74,6 @@ public class JGUIMainMenu extends JPanel  {
 		menuPanel.setBounds(0,topMargin, JGUIScreen.w_width/3,JGUIScreen.w_height-topMargin);
 		menuPanel.setBackground(Color.white);
 		menuPanel.setLayout(new BoxLayout(menuPanel,BoxLayout.Y_AXIS));
-
 		
 		buttons = new JButton[options.length];
 		for (int i  = 0; i < options.length; i++ ) {
@@ -88,7 +81,7 @@ public class JGUIMainMenu extends JPanel  {
 			buttons[i].addActionListener(bl);
 			menuPanel.add(buttons[i]);
 		}
-		
+
 		//Join Game Panel
 		joinPanel = new JPanel();
 		joinPanel.setVisible(false);
@@ -105,7 +98,6 @@ public class JGUIMainMenu extends JPanel  {
 		joinPanel.add(ip);
 		joinPanel.add(ipField);
 		joinPanel.add(connect);
-		
 		
 		//Host Panel
 		hostPanel = new JPanel();
@@ -131,10 +123,6 @@ public class JGUIMainMenu extends JPanel  {
 		this.add(joinPanel);
 		this.add(hostPanel);
 	}
-	
-	
-	
-
 	/**
 	 * Paints the menu with background
 	 */
@@ -153,11 +141,9 @@ public class JGUIMainMenu extends JPanel  {
 	 *
 	 */
 	private class buttonListener implements ActionListener {
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if((JButton) e.getSource() == buttons[0]) {
-				
 				joinPanel.setVisible(!joinPanel.isVisible());
 				hostPanel.setVisible(false);
 			} else if ((JButton) e.getSource() == buttons[1]) {
@@ -168,9 +154,7 @@ public class JGUIMainMenu extends JPanel  {
 				JBomberman.running = false;
 				System.exit(0);
 			}
-			
 		}
-		
 	}
 	/**
 	 * Listener which handles game joining
@@ -178,7 +162,6 @@ public class JGUIMainMenu extends JPanel  {
 	 *
 	 */
 	private class connectListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			//Reads IP from UI component
@@ -198,28 +181,21 @@ public class JGUIMainMenu extends JPanel  {
 	 *
 	 */
 	private class createListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			//Reads input
 			String fillSt = fill.getText();
     		int fillperc = Integer.parseInt(fillSt);
 
-			server = new JServer(1, fillperc);
+			server = new JServer(2, fillperc);
 			client = new JClient("localhost",parentFrame);
 			Thread serverThread = new Thread(server);
 			Thread clientThread = new Thread(client);
 			serverThread.start();
 			clientThread.start();
 			waitMsg.setVisible(true);
-			
 		}
-		
 	}
-
-
-
-
 }
 
 
