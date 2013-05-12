@@ -171,7 +171,6 @@ public class JGUIMainMenu extends JPanel  {
 			Thread clientThread = new Thread(client);
 			clientThread.start();
 		}
-		
 	}
 	
 	/**
