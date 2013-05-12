@@ -8,7 +8,9 @@ import bman.frontend.gui.JGUIGame;
  *
  */
 public class JDestroyableBlock extends JMapObject {
-
+	/**
+	 * Constructs a destroyable block.
+	 */
 	public JDestroyableBlock() {
 		super(JGUIGame.destroyableBlockGUI);
 		destroyable = true;

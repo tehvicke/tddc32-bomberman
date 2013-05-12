@@ -1,14 +1,14 @@
 package bman.backend;
 
 import java.awt.event.KeyEvent;
-
 import bman.frontend.gui.JGUIMapObject;
 import bman.frontend.gui.JGUIMapObject.Direction;
 import bman.networking.UDPEvent;
 import bman.networking.UDPEventInterface;
 
 /**
- * The Local Player
+ * The player controlled by the user. Is responsible for everything the user
+ * can control such as movement and laying bombs.
  * @author Petter
  *
  */
@@ -16,23 +16,36 @@ public class JHuman extends JPlayer{
 	//private enum keyMapping{};
 	private boolean shiftPressed = false;
 
+	/**
+	 * The last position of the player
+	 */
 	private int [] lastMove = {0,0};
+	
+	/**
+	 * The current gamemap
+	 */
 	private JGameMap map;
+	
+	/**
+	 * The client associated with the player
+	 */
 	private JClient client;
 
 
 	/**
 	 * 
-	 * @param sprite
-	 * @param map
-	 * @param client
+	 * @param spriteThe sprite of the object
+	 * @param map The current gamemap
+	 * @param client The client class
 	 */
 	public JHuman(JGUIMapObject sprite,JGameMap map, JClient client) {
 		super(sprite);
+		this.map = map;
+		this.client = client;
 	}
 
 	/**
-	 * Sent from listener in JGUIGAMEMAP, tells the player to move
+	 * Sent from listener in JGUIGameMap, tells the player to move
 	 * @param e
 	 */
 	public void keypress(KeyEvent e) {
@@ -59,8 +72,6 @@ public class JHuman extends JPlayer{
 			}
 			System.out.println(shiftPressed);
 		}
-
-
 		if (dx != 0 || dy != 0) {
 			if (shiftPressed) {
 				this.turn(dx, dy);
@@ -68,10 +79,13 @@ public class JHuman extends JPlayer{
 				this.move(dx, dy);
 			}
 		}
-
 	}
 
 
+	/**
+	 * Decides what to from which key is pressed.
+	 * @param key The key pressed.
+	 */
 	public void moveKey(int key) {
 		if (key == KeyEvent.VK_SPACE) {
 			putBomb();
@@ -89,9 +103,14 @@ public class JHuman extends JPlayer{
 			dy = 1;
 		}
 		if (dx != 0 || dy != 0) {
-				this.move(dx, dy);
+			this.move(dx, dy);
 		}
 	}
+	
+	/**
+	 * Decides what to from which key is pressed.
+	 * @param key The key pressed.
+	 */
 	public void turnKey(int key) {
 		int dx = 0;
 		int dy = 0;
@@ -105,10 +124,10 @@ public class JHuman extends JPlayer{
 			dy = 1;
 		}
 		if (dx != 0 || dy != 0) {
-				this.turn(dx, dy);
+			this.turn(dx, dy);
 		}
 	}
-	
+
 	/**
 	 * Allows the player to turn without moving, allowing him to lay bombs
 	 * in different directions.
@@ -134,13 +153,14 @@ public class JHuman extends JPlayer{
 			lastMove[1] = -1;
 		}
 	}
-	
+
 	/**
-	 * Moves the object and changes the sprite with appropriate direction, Lastmove så bomben kan läggas
-	 * @param dx
-	 * @param dy
+	 * Moves the object and changes the sprite with appropriate direction,
+	 * Saves the last place so direction can be calculated for the bomb laying.
+	 * @param dx x coord
+	 * @param dy y coord
 	 */
-	public void move(int dx, int dy) {
+	private void move(int dx, int dy) {
 		if (dx > 0) {
 			sprite.move(Direction.RIGHT);
 			lastMove[0] = 1;
@@ -162,23 +182,19 @@ public class JHuman extends JPlayer{
 	}
 
 	/**
-	 * Pubts a bomb next to the player
+	 * Pubs a bomb in front of the player
 	 */
-	public void putBomb() {
+	private void putBomb() {
 		int[] loc = map.find(this.hashCode());
 		client.putBomb(loc[0]+lastMove[0], loc[1]+lastMove[1]);
 	}
 
 	@Override
 	public void destroy() {
-		if (this instanceof JHuman) {
-			client.getUDPClient().sendEvent(
-					new UDPEvent(
-							UDPEventInterface.Type.player_die, 
-							client.getUDPClient().hashCode()));
-		} else {
-			System.err.println("Jag dog inte!!");
-		}	
+		client.getUDPClient().sendEvent(
+				new UDPEvent(
+						UDPEventInterface.Type.player_die, 
+						client.getUDPClient().hashCode()));
 	}
 
 }

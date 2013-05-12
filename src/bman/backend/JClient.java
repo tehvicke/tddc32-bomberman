@@ -14,7 +14,7 @@ import bman.networking.UDPEventInterface.Type;
 /**
  * This is the client and handles all the calculations. The reason for having
  * the calculations on client side is for minimizing the network utilization. 
- * It’s run in its separate thread and uses a UDPClient to get and send 
+ * It's run in its separate thread and uses a UDPClient to get and send 
  * instructions to the server
  * @author viktordahl
  *
@@ -27,8 +27,6 @@ public class JClient implements Runnable{
 	private JHuman player;
 	private JPlayer player_2;
 	private int id;
-	
-	private ArrayList<Integer> players = new ArrayList<Integer>();
 	
 	/**
 	 * Constructor with IP argument
@@ -47,7 +45,7 @@ public class JClient implements Runnable{
 	 * Function which handles Events broadcasted from the server
 	 * @param event event to be handled
 	 */
-	public void UDPEventHandler(UDPEvent event) {
+	private void eventHandler(UDPEvent event) {
 		if (JBomberman.debug) {
 			System.err.println("Event handled: " + event.toString());
 		}
@@ -55,8 +53,10 @@ public class JClient implements Runnable{
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
 			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+			
 		} else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
+			
 		} else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
 		} else if (event.type == UDPEventInterface.Type.bomb_set) {
@@ -74,10 +74,10 @@ public class JClient implements Runnable{
 			
 		} else if (event.type == UDPEventInterface.Type.player_die) {
 			if (event.getOriginID() == client.hashCode()) {
-				System.err.println("Du dog! :(");
+				guiScreen.displayMessage("YOU LOOSE");
 			}
 		} else if (event.type == UDPEventInterface.Type.player_win) {
-			System.out.println("Du vann!");
+			guiScreen.displayMessage("YOU WIN");
 		}
 	}
 	
@@ -125,7 +125,11 @@ public class JClient implements Runnable{
 	}
 	/**
 	 * Creates a player with id at specified location
+<<<<<<< HEAD
 	 * @param id ID of the player
+=======
+	 * @param id the ID of the player
+>>>>>>> a0d41a04ac8ed85f9ea95ce2e8171dbd901bb76a
 	 * @param x x coord
 	 * @param y y coord
 	 */
@@ -141,9 +145,9 @@ public class JClient implements Runnable{
 	}
 
 	/**
-	 * Lays the bomb in front of the player.
-	 * @param x x coord of player
-	 * @param y y coord of player
+	 * Puts a bomb at the specified location
+	 * @param x x coord
+	 * @param y y coord
 	 */
 	protected void putBomb(int x, int y) {
 		if (gameMap.validMove(x, y)) {
@@ -158,7 +162,7 @@ public class JClient implements Runnable{
 	 * @param dy relative y position to be moved
 	 */
 	protected void sendMove(int dx, int dy) {
-		if (!gameMap.validMove(this.id, dx, dy)) {
+		if (!gameMap.validMove(client.hashCode(), dx, dy)) {
 			return;
 		}
 		int [] loc = gameMap.find(player.hashCode());
@@ -205,19 +209,18 @@ public class JClient implements Runnable{
 		 				* This would have been changed but there wasn't time.
 		 				*/
 			if (client.eventExists()) {
-				UDPEventHandler(client.getEvent());
+				eventHandler(client.getEvent());
 			}
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 	
 	/**
-	 * 
+	 * Returns the client
 	 * @return The UDP Client
 	 */
 	public UDPClient getUDPClient() {

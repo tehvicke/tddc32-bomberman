@@ -7,7 +7,7 @@ import bman.frontend.gui.JGUIScreen;
 
 /**
  * The main application class. This is where the main function is and where
- * the different parts are being run from.
+ * the main menu are being run from.
  * @author viktordahl,Petter
  *
  */
@@ -24,7 +24,6 @@ public class JBomberman {
 	 * The main screen component.
 	 */
 	private static JGUIScreen scr;
-	
 	public static void main(String[] args) {
 		 SwingUtilities.invokeLater(new Runnable() {
 	            @Override

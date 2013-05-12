@@ -5,21 +5,24 @@ import java.awt.Toolkit;
 
 
 /**
- * Class containing the graphical representation of a JMapObject
+ * The graphical representation of a JMapObject,
+ * contains Images for movement in different directions
+ * and functions for switching between these.
  * @author petter
  *
  */
 public class JGUIMapObject {
 	
-	
+	//Enum for determining appropriate sprite to use
 	public enum Direction {
 		DOWN,UP,LEFT,RIGHT;
 	}
 
 	/**
-	 * Members
+	 * Members		
 	 */
 	Image[] sprites;
+	/* The sprite currently active */
 	Image active;
 
 

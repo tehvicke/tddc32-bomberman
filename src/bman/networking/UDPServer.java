@@ -14,10 +14,11 @@ import bman.JBomberman;
 import bman.backend.JGameMap;
 
 /**
- * The UDP Server class. Handles everything that has to do with connection
- * and such.
+ * This class represents the server and the only thing it does is to
+ * start an UDPServer. The reason it exists is mainly for design purpose, 
+ * as it doesn’t serve any purpose but to start the UDPServer. Additional 
+ * functionality can be added if wanted.
  * @author viktordahl
- *
  */
 public class UDPServer implements UDPServerInterface {
 
@@ -25,8 +26,10 @@ public class UDPServer implements UDPServerInterface {
 	private int events_sent = 0;
 	private int events_received = 0;
 	private int broadcasts_sent = 0;
-	private boolean testmode = false;
 	
+	/**
+	 * The number of players currently alive.
+	 */
 	private int playersAlive;
 	/**
 	 * The number of clients to accept.
@@ -132,9 +135,10 @@ public class UDPServer implements UDPServerInterface {
 		broadcasts_sent++;
 	}
 
+	@Override
 	public void sendEvent(UDPEventInterface event, int client) {
 		if (getClient(client) == null) {
-			System.err.println("Server: Klient " + client + " finns inte. Skickar ej event.");
+			System.err.println("Server: Client " + client + " doesn't exist. Doesn't send event.");
 			return;
 		}
 		try {
@@ -153,9 +157,9 @@ public class UDPServer implements UDPServerInterface {
 							sendData.length, 
 							getClient(client).addr, 
 							3457);  					   /* Sends to 3457 as is where the clients listens.
-							 * This for allowing a server to be run on a 
-							 * client computer.
-							 */
+							 								* This for allowing a server to be run on a 
+							 								* client computer.
+							 								*/
 			this.serverSocket.send(sendPacket);
 			events_sent++;
 		} catch (Exception e) {
@@ -199,7 +203,6 @@ public class UDPServer implements UDPServerInterface {
 					this.getClient(event.getOriginID()).setAlive(false);
 					
 					if (playersAlive == 1 && clients.length - playersAlive > 0) {
-						Client client;
 						for (Client cli : clients) {
 							if (cli.isAlive()) {
 								sendEvent(new UDPEvent(UDPEventInterface.Type.player_win, 0), cli.hash);
@@ -209,12 +212,12 @@ public class UDPServer implements UDPServerInterface {
 				} else if (event.type == UDPEventInterface.Type.player_join) {
 					playersAlive++;
 				}
-
-				System.out.println("players alive " + playersAlive);
+				
 				/* Send the event to all clients. It shall not send all events so some critera will be added */
 				broadcastEvent(event);
 
 				if (JBomberman.debug) {
+					System.out.println("Server: Players alive: " + playersAlive);
 					System.out.println("Server: Skickade: " + events_sent + " Mottagna: " + events_received++  + " BC: " + broadcasts_sent);
 				}
 			} catch (Exception e) {

@@ -3,15 +3,20 @@ package bman.backend;
 
 
 /**
- * The GameMap
+ * The class containing the matrix on which the game is played.
+ * The class is responsible for the position of every object in the game,
+ * and implements functions for finding, moving, removing etc. MapObjects.
  * @author Petter
  * 
  */
 public class JGameMap {
 	public static final int mapsize = 15;
+	
 	private JMapObject[][] gameMap;
+	
+	//References to the players
 	private JPlayer[] players;
-	int[] playerIDs = {-1,-1};
+	private int[] playerIDs = {-1,-1};
 
 
 	/**
@@ -30,7 +35,7 @@ public class JGameMap {
 	public void addMapRow(String row, int rowIndex) {
 		if (row.length() > mapsize) {
 			return;
-		}
+		}	
 
 		for (int i = 0; i < row.length(); i++) {
 			if (row.charAt(i) == 'd') {
@@ -41,10 +46,10 @@ public class JGameMap {
 		}
 	}
 
-
 	/**
-	 * Adds a player to gameMap
-	 * @param player player mapobject to be added
+	 * Adds a player to gameMap and stores references to them in 
+	 * private variables for faster access.
+	 * @param player player object to be added
 	 * @param id id of the player
 	 * @param x start x position
 	 * @param y start y position
@@ -62,10 +67,9 @@ public class JGameMap {
 		}
 	}
 
-
-
 	/**
-	 * Adds an JMapObject at the specified location in the gameMap
+	 * Adds an JMapObject at the specified location in the gameMap, if the
+	 * location is occupied it does nothing.
 	 * @param obj object to be added
 	 * @param x x coordinate
 	 * @param y y coordinate
@@ -79,9 +83,10 @@ public class JGameMap {
 		}
 	}
 
-	/** Moves an object in the gameMap.
+	/** Moves an object in the gameMap, if invalid coordinates or
+	 *  nonempty target location does nothing.
 	 * 
-	 * @param fromx x coord to move from2
+	 * @param fromx x coord to move from
 	 * @param fromy y coord to move from
 	 * @param tox   x coord to move to
 	 * @param toy   y coord to move to
@@ -95,13 +100,6 @@ public class JGameMap {
 			gameMap[fromx][fromy] = null;
 		}
 	}
-	/**
-	 * Removes an object at a given coord
-	 * @param x x coord
-	 * @param y y coord
-	 * @throws ArrayIndexOutOfBoundsException 
-	 */
-
 
 	/**
 	 * Returns the position of a MapObject, if not found returns -1,-1
@@ -132,13 +130,14 @@ public class JGameMap {
 		if (loc[0] != -1)
 			moveObject(loc[0], loc[1], loc[0]+dx, loc[1]+dy);
 	}
+	
 	/**
-	 * 
-	 * @param dx
-	 * @param dy
-	 * @param id
+	 * Moves a player object in the gameMap
+	 * @param dx relative movement in x
+	 * @param dy relative movement in y
+	 * @param id id of the player to move
 	 */
-	public void absoluteMove(int dx, int dy, int id) {
+	public void movePlayer(int dx, int dy, int id) {
 		int [] loc;
 		if (id == playerIDs[0]) {
 			loc = find(players[0].hashCode());
@@ -163,7 +162,7 @@ public class JGameMap {
 	}
 
 	/**
-	 * Removes specified object from gamemap
+	 * Removes specified object from the gameMap, does nothing if the object is not found.
 	 * @param obj JMapObject to be removed
 	 */
 	public void remove(JMapObject obj) {
@@ -190,6 +189,7 @@ public class JGameMap {
 	 * @return true if empty
 	 */
 	public boolean validMove(int x, int y) {
+		System.out.println(x + " " + y);
 		if (gameMap[x][y] == null) {
 			return true;
 		}
@@ -198,7 +198,7 @@ public class JGameMap {
 
 	/**
 	 * Removes object at specified position and calls the objects
-	 * destroy() function.
+	 * destroy() function, used by bombs when exploding.
 	 * @param x x coord of the object
 	 * @param y y coord of the object
 	 */
@@ -211,14 +211,14 @@ public class JGameMap {
 	
 	/**
 	 * Removes an object from the grid. Similar to destroy(x, y) but without calling
-	 * the objects destroy() function.
+	 * the objects destroy() function. Mainly used for player movement.
 	 * @param x x coord
 	 * @param y y coord
 	 */
 	public void remove(int x, int y) {
 		gameMap[x][y] = null;
 	}
-
+	
 
 	/**
 	 *  Check if a move is valid, 
@@ -245,9 +245,10 @@ public class JGameMap {
 			) {
 			return true;
 		}
+		else if (gameMap[loc[0]+dx][loc[1]+dy] instanceof JFire) {
+			gameMap[loc[0]][loc[1]].destroy();
+		}
 		return false;
 	}
-
-
 
 }

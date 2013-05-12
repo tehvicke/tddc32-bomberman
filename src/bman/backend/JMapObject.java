@@ -4,7 +4,8 @@ import java.awt.Image;
 
 import bman.frontend.gui.JGUIMapObject;
 /**
- * Any object which takes up room in the map
+ * Any object which takes up room in the map and has a Graphical representation
+ * in the form of a JGUIMapObject. JMapObjects can be destroyable or not.
  * @author Petter
  *
  */
@@ -13,7 +14,7 @@ public abstract class JMapObject {
 	protected boolean destroyable = false;
 	
 	/**
-	 * Constructor, may be subject to change
+	 * Constructor, may be subject to chan	ge
 	 * @param sprite the JGUIMapObject representing the mapobject
 	 */
 	public JMapObject(JGUIMapObject sprite) {
@@ -38,9 +39,8 @@ public abstract class JMapObject {
 	
 	/**
 	 * A function for destroying an object. Default is to do nothing but it
-	 * can be overridden if wanted.
+	 * can be overridden if needed.
 	 */
 	public void destroy() {
-		
 	}
 }

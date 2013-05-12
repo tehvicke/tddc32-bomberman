@@ -1,10 +1,13 @@
 package bman.frontend.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class JGUIScreen extends JFrame {
@@ -19,7 +22,7 @@ public class JGUIScreen extends JFrame {
 		}
 
 	}
-	private boolean isActive = false;
+
 	/**
 	 * Variables
 	 */
@@ -27,9 +30,7 @@ public class JGUIScreen extends JFrame {
 	protected static int w_height = 450;
 	private static final long serialVersionUID = 7135568752644883047L;
 
-	/**
-	 * Members
-	 */
+	//JPanel which is shown in the UI
 	JPanel content;
 	/**
 	 * Default constructor
@@ -55,18 +56,40 @@ public class JGUIScreen extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
 		setResizable(false);
-		setTitle("Bomberdude");
+		setTitle("BomberDude");
 	}
 	
 	/**
+<<<<<<< HEAD
 	 * Adds content to the JGUIScreen
 	 * @param gm JPanel to be added
+=======
+	 * Adds a JPanel object to the JGUIScreen
+	 * @param JPanel to be added
+>>>>>>> a0d41a04ac8ed85f9ea95ce2e8171dbd901bb76a
 	 */
 	public void addContent(JPanel gm) {
 		this.content = gm;
 		this.add(gm);
 		this.validate();
 		this.repaint();
+	}
+	
+	/**
+	 * Removes current content and displays a message
+	 * @param message message to be displayed.
+	 */
+	public void displayMessage(String message) {
+		this.removeContent();
+		JPanel panel = new JPanel();
+		JLabel info = new JLabel(message);
+		info.setFont(new Font("Serif", Font.BOLD, 50));
+		panel.add(info);
+		panel.setVisible(true);
+		panel.setBackground(Color.white);
+		this.add(panel);
+		validate();
+		repaint();
 	}
 
 	/**
@@ -80,9 +103,6 @@ public class JGUIScreen extends JFrame {
 	}
 	
 
-	public void setActive() {
-
-	}
 
 
 }

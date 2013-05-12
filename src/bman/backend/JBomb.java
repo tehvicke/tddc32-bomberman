@@ -18,7 +18,8 @@ public class JBomb extends JMapObject implements Runnable {
 	 */
 	protected static JFire fire = new JFire();
 	
-	
+	/* The Radius of the explosion, the gameMap containing the bomb 
+	 * and the Thread containing the bomb */
 	private int explosionRadius = 3;
 	private JGameMap map;
 	private JPlayer owner;
@@ -52,7 +53,7 @@ public class JBomb extends JMapObject implements Runnable {
 		lightFuse();
 		destroyable = true;
 	}
-	/**
+	/**	
 	 * Starts the fuse on the bomb (starts the countdown timer for explosion)
 	 */
 	private void lightFuse() {
@@ -61,10 +62,10 @@ public class JBomb extends JMapObject implements Runnable {
 	}
 
 	/**
-	 * The expolsion for each JFire object. 
-	 * @param x x coord where the fire shall be
-	 * @param y y coord where the fire shall be
-	 * @return true if the fire shall spread in this direction, false otherwise.
+	 * Explodes the object at given location in the gameMap
+	 * @param x x coord of the object.
+	 * @param y y coord of the object
+	 * @return True if target was empty
 	 */
 	private boolean explode(int x, int y) {
 		boolean retur = false;
@@ -92,9 +93,8 @@ public class JBomb extends JMapObject implements Runnable {
 	}
 	
 	/**
-	 * The main explosion function. Invokes the explode(x, y)-function in each direction
-	 * for allowing the fire to "spread". Verifies the directions to spread with the
-	 * booleans left, right up and down.
+	 * Explodes the bomb, destroying nearby block and spreading fire in a radius
+	 * around the bombs location.
 	 */
 	public void explode() {
 		int[] loc = map.find(this.hashCode());
@@ -124,7 +124,6 @@ public class JBomb extends JMapObject implements Runnable {
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		map.remove(loc[0], loc[1]);
@@ -159,6 +158,7 @@ public class JBomb extends JMapObject implements Runnable {
 		}
 	}
 	
+	/* Waits a certain time before exploding */
 	@Override
 	public void run() {
 		try {
@@ -168,10 +168,11 @@ public class JBomb extends JMapObject implements Runnable {
 			//e.printStackTrace();
 		}
 		explode();
-
 	}
-
+	
+	@Override
 	public void destroy() {
+		/* Makes the bomb explode if destroyed */
 		 fuse.interrupt();
 		}
 	}
