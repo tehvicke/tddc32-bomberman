@@ -35,7 +35,10 @@ public class UDPServer implements UDPServerInterface {
 	 * The number of clients to accept.
 	 */
 	private int numberOfClients;
-
+	/**
+	 * The number of clients currently connected.
+	 */
+	private int clientsConnected = 0;
 	/**
 	 * The percent of the map filled with destroyable blocks.
 	 */
@@ -122,14 +125,21 @@ public class UDPServer implements UDPServerInterface {
 
 	@Override
 	public void broadcastEvent(UDPEventInterface event) {
-		if (clients == null && clients[0] == null) {
+		if ((clients == null && clients[0] == null) || clientsConnected == 0) {
 			System.err.println("Server: No clients are connected.");
 			return;
 		}
 		for (Client cli : clients) {
-			sendEvent(event, cli.hash);
-			if (JBomberman.debug) {
-				System.out.println("Server: " + event.getType() + " sent to " + cli.hash);
+			if (cli == null) {
+				continue;
+			}
+			try {
+				sendEvent(event, cli.hash);
+				if (JBomberman.debug) {
+					System.out.println("Server: Broadcast. " + event.getType() + " sent to " + cli.hash);
+				}
+			} catch (NullPointerException e) {
+				System.err.println("Error sending " + event.getType() + " to " + cli);
 			}
 		}
 		broadcasts_sent++;
@@ -182,8 +192,10 @@ public class UDPServer implements UDPServerInterface {
 
 	@Override
 	public void eventListener() {
+		boolean broadcast = true;
 		while(JBomberman.running) {
 			try {
+				broadcast = true;
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
@@ -201,7 +213,6 @@ public class UDPServer implements UDPServerInterface {
 				if (event.type == UDPEventInterface.Type.player_die) {
 					playersAlive--;
 					this.getClient(event.getOriginID()).setAlive(false);
-					
 					if (playersAlive == 1 && clients.length - playersAlive > 0) {
 						for (Client cli : clients) {
 							if (cli.isAlive()) {
@@ -213,10 +224,21 @@ public class UDPServer implements UDPServerInterface {
 					playersAlive++;
 				} else if (event.type == UDPEventInterface.Type.is_alive) {
 					sendEvent(new UDPEvent(UDPEventInterface.Type.is_alive, 0), event.getOriginID());
+					broadcast = false;
+				} else if (event.type == UDPEventInterface.Type.establish_connection) {
+					clients[clientsConnected++] = new Client(event.getOriginID(), receivePacket.getAddress());
+					broadcast = false;
+					System.out.println(clients);
+					if (clientsConnected == numberOfClients) {
+						broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));
+						/* Sends the map layout */
+						broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, randomizedMap(this.percentFilled)));
+					}
 				}
-				
-				/* Send the event to all clients. It shall not send all events so some critera will be added */
-				broadcastEvent(event);
+				/* Send the event to all clients if wanted. Default is true s*/
+				if (broadcast) {
+					broadcastEvent(event);
+				}
 
 				if (JBomberman.debug) {
 					System.out.println("Server: Players alive: " + playersAlive);
@@ -234,18 +256,9 @@ public class UDPServer implements UDPServerInterface {
 	@Override
 	public void run() {
 		System.out.println("Server: Server thread started.");
-		/* Wait for all clients to join */
-		waitForClients();
-		System.out.println("Server: Game starts");		
-
-		/* Broadcast start game event */
-		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));
-
-		/* Sends the map layout */
-		broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_map, 0, randomizedMap(this.percentFilled)));
-
-		/* Start the event listener */
-		eventListener(); 
+		System.out.println("Server: Event listener started");		
+		eventListener();
+		
 		
 		if (JBomberman.debug) {
 			System.err.println("UDPServer Thread exiting");
