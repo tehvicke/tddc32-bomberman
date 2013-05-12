@@ -3,8 +3,8 @@ package bman.backend;
 import java.util.Random;
 
 import bman.JBomberman;
-import bman.frontend.gui.JGUIGame;
-import bman.frontend.gui.JGUIScreen;
+import bman.frontend.JGUIGame;
+import bman.frontend.JGUIScreen;
 import bman.networking.UDPClient;
 import bman.networking.UDPEvent;
 import bman.networking.UDPEventInterface;

@@ -1,6 +1,6 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIGame;
+import bman.frontend.JGUIGame;
 
 /**
  * The solid block class. Are the solid blocks that cannot be destroyed.

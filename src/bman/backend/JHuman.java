@@ -1,8 +1,9 @@
 package bman.backend;
 
 import java.awt.event.KeyEvent;
-import bman.frontend.gui.JGUIMapObject;
-import bman.frontend.gui.JGUIMapObject.Direction;
+
+import bman.frontend.JGUIMapObject;
+import bman.frontend.JGUIMapObject.Direction;
 import bman.networking.UDPEvent;
 import bman.networking.UDPEventInterface;
 

@@ -2,8 +2,8 @@ package bman;
 
 import javax.swing.SwingUtilities;
 
-import bman.frontend.gui.JGUIMainMenu;
-import bman.frontend.gui.JGUIScreen;
+import bman.frontend.JGUIMainMenu;
+import bman.frontend.JGUIScreen;
 
 /**
  * The main application class. This is where the main function is and where

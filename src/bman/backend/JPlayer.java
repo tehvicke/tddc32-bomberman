@@ -1,6 +1,6 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIMapObject;
+import bman.frontend.JGUIMapObject;
 
 /**
  * The player class. Stores basic information about the players in the game.

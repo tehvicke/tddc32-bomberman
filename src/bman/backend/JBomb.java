@@ -1,6 +1,6 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIMapObject;
+import bman.frontend.JGUIMapObject;
 
 /**
  * The bomb class. Handles things like explode etc. The explosion is run in a separate thread.
