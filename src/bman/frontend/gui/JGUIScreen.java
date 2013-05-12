@@ -10,13 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import bman.JBomberman;
+
 public class JGUIScreen extends JFrame {
 
 	private class exitListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			System.out.println("TROLOLOLOLLOLOLOLO");
+			JBomberman.running = false;
 			System.exit(0);
 
 		}

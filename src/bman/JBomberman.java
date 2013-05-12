@@ -11,12 +11,17 @@ import bman.frontend.gui.JGUIScreen;
  */
 public class JBomberman {
 	
+
+	
 	/**
 	 * Set to true for debug mode that prints lots of information.
 	 * This is not the proper nor best way of having a debug mode but
 	 * it has to do for now.
 	 */
 	public static boolean debug = true;
+	
+	/* Tells Threads to shut down */
+	public static volatile boolean running = true;
 
 	public static void main(String[] args) {
 		JGUIScreen scr = new JGUIScreen();

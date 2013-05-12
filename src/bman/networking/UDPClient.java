@@ -110,7 +110,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		if (JBomberman.debug) {
 			System.out.println("Klient: Client eventlistener startad.");
 		}
-		while(true) {
+		while(JBomberman.running) {
 			try {
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);

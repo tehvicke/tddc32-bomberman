@@ -201,7 +201,7 @@ public class JClient implements Runnable{
 	public void run() {
 		Thread clientThread = new Thread(client);
 		clientThread.start();
-		while(true) {  /* NOTE: This is done with busy wait (polling) and are thus CPU inefficient.
+		while(JBomberman.running) {  /* NOTE: This is done with busy wait (polling) and are thus CPU inefficient.
 		 				* This would have been changed but there wasn't time.
 		 				*/
 			if (client.eventExists()) {
