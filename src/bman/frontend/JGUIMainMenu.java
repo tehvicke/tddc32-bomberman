@@ -14,8 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import sun.net.util.IPAddressUtil;
-
 import bman.JBomberman;
 import bman.backend.JClient;
 import bman.backend.JServer;

@@ -6,7 +6,7 @@ package bman.networking;
  * @author Viktor Dahl
  *
  */
-public interface UDPClientInterface {
+public interface UDPClientInterface extends Runnable {
 	
 	/**
 	 * The port of the server

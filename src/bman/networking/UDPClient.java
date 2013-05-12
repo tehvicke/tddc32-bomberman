@@ -20,7 +20,7 @@ import bman.JBomberman;
  * @author Viktor Dahl
  *
  */
-public class UDPClient implements UDPClientInterface, Runnable {
+public class UDPClient implements UDPClientInterface {
 
 	// Testing
 	int events_sent = 0;

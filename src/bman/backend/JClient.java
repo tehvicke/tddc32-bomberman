@@ -7,6 +7,7 @@ import bman.frontend.JGUIGame;
 import bman.frontend.JGUIMapObject;
 import bman.frontend.JGUIScreen;
 import bman.networking.UDPClient;
+import bman.networking.UDPClientInterface;
 import bman.networking.UDPEvent;
 import bman.networking.UDPEventInterface;
 import bman.networking.UDPEventInterface.Type;
@@ -21,7 +22,7 @@ import bman.networking.UDPEventInterface.Type;
  */
 public class JClient implements Runnable{
 	
-	private UDPClient client;
+	private UDPClientInterface client;
 	private JGameMap gameMap;
 	private JGUIScreen guiScreen;
 	private JHuman player;
@@ -227,7 +228,7 @@ public class JClient implements Runnable{
 	 * Returns the client
 	 * @return The UDP Client
 	 */
-	public UDPClient getUDPClient() {
+	public UDPClientInterface getUDPClient() {
 		return client;
 	}
 
