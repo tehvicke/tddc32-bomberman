@@ -112,12 +112,14 @@ public class JGUIMainMenu extends JPanel  {
 		
 		//hostPanel content
 		JLabel fillDesc = new JLabel("Map block fill % (<40 recommended):");
-		fill = new JTextField("25");
+		fill = new JTextField(3);
+		fill.setText("25");
 		JButton start = new JButton("Start Server");
 		start.addActionListener(new createListener());
 		waitMsg.setForeground(Color.red);
 		waitMsg.setVisible(false);
-		numPlayers = new JTextField("2");
+		numPlayers = new JTextField(3);
+		numPlayers.setText("2");
 		JLabel players = new JLabel("Number of players (1-2):");
 		
 		hostPanel.add(players);

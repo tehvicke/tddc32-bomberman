@@ -142,7 +142,7 @@ public class UDPClient implements UDPClientInterface {
 				}
 			} catch (SocketTimeoutException e) {
 				if (!isAlive) {
-					System.out.println("Server svarar ej!!");
+					System.err.println("Server not answering, exiting");
 					JBomberman.running = false;
 					break;
 				}
@@ -150,7 +150,7 @@ public class UDPClient implements UDPClientInterface {
 				isAlive = false;
 			}
 			catch (Exception e) {
-				System.err.println("LOLOLOLOLOL");
+				
 				e.printStackTrace();
 			}
 		}

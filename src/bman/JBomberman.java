@@ -18,7 +18,7 @@ public class JBomberman {
 	 * This is not the proper nor best way of having a debug mode but
 	 * it has to do for now.
 	 */
-	public static boolean debug = true;
+	public static boolean debug = false;
 
 	/**
 	 * Running indicator for threads
