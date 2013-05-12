@@ -39,7 +39,6 @@ public class JClient implements Runnable{
 		System.out.println(this);
 
 	}
-	
 
 
 	/**
@@ -85,10 +84,17 @@ public class JClient implements Runnable{
 		}
 		
 	}
-	
+
+	/**
+	 * Turns the appropriate player
+	 * @param id id of the player to be turned
+	 * @param dirOrdinal turning direction,ordinal of JGUIMapObject.Direction
+	 */
 	private void turnPlayer(int id, int dirOrdinal ) {
 		if (id == this.id) {
 			player.turn(JGUIMapObject.Direction.values()[dirOrdinal]);
+		} else {
+			player_2.turn(JGUIMapObject.Direction.values()[dirOrdinal]);
 		}
 	}
 	
@@ -96,7 +102,7 @@ public class JClient implements Runnable{
 		String[] arg = {Integer.toString(dirOrdinal)};
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_turn, this.id,arg));
 	}
-	
+
 	/**
 	 * Adds the player on a random place on the map. Exits game if no place is found.
 	 */
@@ -210,13 +216,11 @@ public class JClient implements Runnable{
 			gameMap.remove(player);
 			gameMap.addObject(player, x, y);
 			player.turn(JGUIMapObject.Direction.values()[dir]);
-			
 		} else {
 			gameMap.remove(player_2);
 			gameMap.addObject(player_2, x, y);
 			player_2.turn(JGUIMapObject.Direction.values()[dir]);
 		}
-		
 	}
 	
 	/**

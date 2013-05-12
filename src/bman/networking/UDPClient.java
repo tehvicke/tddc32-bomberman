@@ -115,7 +115,6 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		try {
 			clientSocket.setSoTimeout(1000);
 		} catch (SocketException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		boolean isAlive = true;
@@ -154,7 +153,6 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	@Override

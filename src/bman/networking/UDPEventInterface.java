@@ -31,6 +31,7 @@ public interface UDPEventInterface extends Serializable {
 		player_leave,
 		player_win,
 		player_turn,
+		
 		// Other
 		bomb_set,
 		bomb_explode,
