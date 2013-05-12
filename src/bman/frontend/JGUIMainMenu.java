@@ -220,7 +220,7 @@ public class JGUIMainMenu extends JPanel  {
     		}
     		if (fillperc < 0 || fillperc > 99) {
     			if (!ok) {
-    			waitMsg.setText(waitMsg.getText() + "and Invalid Fill %");
+    			waitMsg.setText(waitMsg.getText() + " and Invalid Fill %");
     			} else {
     				waitMsg.setText("Invalid Fill %");
     			}
