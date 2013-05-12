@@ -39,6 +39,7 @@ public class JClient implements Runnable{
 		System.out.println(this);
 
 	}
+	
 
 
 	/**
@@ -78,8 +79,22 @@ public class JClient implements Runnable{
 			}
 		} else if (event.type == UDPEventInterface.Type.player_win || event.type == UDPEventInterface.Type.player_leave ) {
 			guiScreen.displayMessage("YOU WIN");
+		} else if (event.type == UDPEventInterface.Type.player_turn) {
+			String[] arg = event.getArguments();
+			turnPlayer(event.getOriginID(),Integer.parseInt(arg[0]));
 		}
 		
+	}
+	
+	private void turnPlayer(int id, int dirOrdinal ) {
+		if (id == this.id) {
+			player.turn(JGUIMapObject.Direction.values()[dirOrdinal]);
+		}
+	}
+	
+	public void sendTurn(int dirOrdinal) {
+		String[] arg = {Integer.toString(dirOrdinal)};
+		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_turn, this.id,arg));
 	}
 	
 	/**
@@ -194,12 +209,14 @@ public class JClient implements Runnable{
 		if (id == this.id) {
 			gameMap.remove(player);
 			gameMap.addObject(player, x, y);
+			player.turn(JGUIMapObject.Direction.values()[dir]);
 			
 		} else {
 			gameMap.remove(player_2);
-			gameMap.addObject(player_2, x, y);			
+			gameMap.addObject(player_2, x, y);
+			player_2.turn(JGUIMapObject.Direction.values()[dir]);
 		}
-		player.turn(JGUIMapObject.Direction.values()[dir]);
+		
 	}
 	
 	/**
