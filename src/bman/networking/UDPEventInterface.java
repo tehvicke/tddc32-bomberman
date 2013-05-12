@@ -22,6 +22,7 @@ public interface UDPEventInterface extends Serializable {
 		game_end,
 		game_map,
 		kick,
+		is_alive,
 
 		// Player stuff
 		player_join,

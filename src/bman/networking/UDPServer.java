@@ -211,6 +211,8 @@ public class UDPServer implements UDPServerInterface {
 					}
 				} else if (event.type == UDPEventInterface.Type.player_join) {
 					playersAlive++;
+				} else if (event.type == UDPEventInterface.Type.is_alive) {
+					sendEvent(new UDPEvent(UDPEventInterface.Type.is_alive, 0), event.getOriginID());
 				}
 				
 				/* Send the event to all clients. It shall not send all events so some critera will be added */

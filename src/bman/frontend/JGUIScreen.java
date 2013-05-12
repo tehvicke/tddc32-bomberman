@@ -35,7 +35,7 @@ public class JGUIScreen extends JFrame {
 			System.err.println("Window Closed Action");
 			}
 			
-			System.exit(0);
+//			System.exit(0);
 			
 		}
 

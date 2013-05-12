@@ -8,6 +8,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import bman.JBomberman;
@@ -110,6 +111,15 @@ public class UDPClient implements UDPClientInterface, Runnable {
 		if (JBomberman.debug) {
 			System.out.println("Klient: Client eventlistener startad.");
 		}
+		
+		try {
+			clientSocket.setSoTimeout(1000);
+		} catch (SocketException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		boolean isAlive = true;
+		
 		while(JBomberman.running) {
 			try {
 				byte[] receiveData = new byte[1024];
@@ -123,17 +133,27 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				if (JBomberman.debug) {
 					System.out.println("Klient: " + event.type + " recieved from " + event.getOriginID());
 				}
-				
+				if (event.type == UDPEventInterface.Type.is_alive) {
+					isAlive = true;
+				}
 				this.eventQueue.add(event);
 				
 				if (JBomberman.debug) {
 				System.out.println("Klient: Skickade: " + events_sent + " Mottaget: " + events_received++ + " EventQueue: " + eventQueue.size());
 				}
-			} catch (Exception e) {
+			} catch (SocketTimeoutException e) {
+				if (!isAlive) {
+					System.out.println("Server svarar ej!!");
+				}
+				this.sendEvent(new UDPEvent(UDPEventInterface.Type.is_alive, this.playerHash));
+				isAlive = false;
+			}
+			catch (Exception e) {
 				System.err.println("LOLOLOLOLOL");
 				e.printStackTrace();
 			}
 		}
+		System.out.println("HOPLLA HOPPLSA");
 	}
 	
 	@Override
