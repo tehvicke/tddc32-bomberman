@@ -219,7 +219,7 @@ public class JClient implements Runnable{
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				
 			}
 		}
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, this.id));

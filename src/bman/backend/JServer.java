@@ -1,5 +1,6 @@
 package bman.backend;
 
+import bman.JBomberman;
 import bman.networking.UDPServer;
 import bman.networking.UDPServerInterface;
 
@@ -40,6 +41,9 @@ public class JServer implements Runnable {
 	public void run() {
 		Thread serverThread = new Thread(server);
 		serverThread.start(); /* Starts the server in a different thread */
-		
+		if (JBomberman.debug) {
+			//Should Exit early
+			System.err.println("Game Server Thread Exiting");
+		}
 	}
 }
