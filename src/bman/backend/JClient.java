@@ -85,14 +85,20 @@ public class JClient implements Runnable{
 		
 	}
 
-	
+	/**
+	 * Turns the appropriate player
+	 * @param id id of the player to be turned
+	 * @param dirOrdinal turning direction,ordinal of JGUIMapObject.Direction
+	 */
 	private void turnPlayer(int id, int dirOrdinal ) {
 		if (id == this.id) {
 			player.turn(JGUIMapObject.Direction.values()[dirOrdinal]);
+		} else {
+			player_2.turn(JGUIMapObject.Direction.values()[dirOrdinal]);
 		}
 	}
 	
-	public void sendTurn(int dirOrdinal) {
+	protected void sendTurn(int dirOrdinal) {
 		String[] arg = {Integer.toString(dirOrdinal)};
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_turn, this.id,arg));
 	}
