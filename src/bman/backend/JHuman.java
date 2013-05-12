@@ -162,24 +162,29 @@ public class JHuman extends JPlayer{
 	 * @param dy y coord
 	 */
 	private void move(int dx, int dy) {
+		Direction dir = Direction.DOWN;
 		if (dx > 0) {
-			sprite.move(Direction.RIGHT);
+			dir = Direction.RIGHT;
+			sprite.move(dir);
 			lastMove[0] = 1;
 			lastMove[1] = 0;
 		} else if (dx < 0) {
-			sprite.move(Direction.LEFT);
+			dir = Direction.LEFT;
+			sprite.move(dir);
 			lastMove[0] = -1;
 			lastMove[1] = 0;
 		} else if (dy > 0) {
-			sprite.move(Direction.DOWN);
+			dir = Direction.DOWN;
+			sprite.move(dir);
 			lastMove[0] = 0;
 			lastMove[1] = 1;
 		} else {
-			sprite.move(Direction.UP);
+			dir = Direction.UP;
+			sprite.move(dir);
 			lastMove[0] = 0;
 			lastMove[1] = -1;
 		}
-		client.sendMove(dx, dy);
+		client.sendMove(dx, dy,dir.ordinal());
 	}
 
 	/**

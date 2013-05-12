@@ -156,12 +156,12 @@ public class JGUIMainMenu extends JPanel  {
 		public void actionPerformed(ActionEvent e) {
 			if((JButton) e.getSource() == buttons[0]) {
 				
-				joinPanel.setVisible(true);
+				joinPanel.setVisible(!joinPanel.isVisible());
 				hostPanel.setVisible(false);
 			} else if ((JButton) e.getSource() == buttons[1]) {
 				
 				joinPanel.setVisible(false);
-				hostPanel.setVisible(true);
+				hostPanel.setVisible(!hostPanel.isVisible());
 			} else {
 				//NEEDS TO BE DONE PROPERLY
 				System.exit(0);

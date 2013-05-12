@@ -4,6 +4,7 @@ import java.util.Random;
 
 import bman.JBomberman;
 import bman.frontend.JGUIGame;
+import bman.frontend.JGUIMapObject;
 import bman.frontend.JGUIScreen;
 import bman.networking.UDPClient;
 import bman.networking.UDPEvent;
@@ -51,7 +52,7 @@ public class JClient implements Runnable{
 		
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
-			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]));
+			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]),Integer.parseInt(args[2]));
 			
 		} else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
@@ -157,12 +158,12 @@ public class JClient implements Runnable{
 	 * @param dx relative x position to be moved
 	 * @param dy relative y position to be moved
 	 */
-	protected void sendMove(int dx, int dy) {
+	protected void sendMove(int dx, int dy, int dir) {
 		if (!gameMap.validMove(client.hashCode(), dx, dy)) {
 			return;
 		}
 		int [] loc = gameMap.find(player.hashCode());
-		String[] arg = {Integer.toString(loc[0]+dx),Integer.toString(loc[1]+dy)};
+		String[] arg = {Integer.toString(loc[0]+dx),Integer.toString(loc[1]+dy),Integer.toString(dir)};
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_move, this.id,arg));
 
 	}
@@ -183,8 +184,9 @@ public class JClient implements Runnable{
 	 * @param id player to be moved
 	 * @param x x location to move to
 	 * @param y y location to move to
+	 * @param dir ordinal of JGUIMapObject.turn enum
 	 */
-	private void movePlayer(int id, int x, int y) {
+	private void movePlayer(int id, int x, int y, int dir) {
 		if (x < 0 || x > JGameMap.mapsize || y < 0 || y > JGameMap.mapsize || gameMap.at(x, y) != null) {
 			return;
 		}
@@ -192,10 +194,12 @@ public class JClient implements Runnable{
 		if (id == this.id) {
 			gameMap.remove(player);
 			gameMap.addObject(player, x, y);
+			
 		} else {
 			gameMap.remove(player_2);
-			gameMap.addObject(player_2, x, y);
+			gameMap.addObject(player_2, x, y);			
 		}
+		player.turn(JGUIMapObject.Direction.values()[dir]);
 	}
 	
 	/**
@@ -225,7 +229,6 @@ public class JClient implements Runnable{
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, this.id));
 		while(clientThread.isAlive()) {
 			clientThread.interrupt();
-			System.err.println("lol");
 		}
 		if (JBomberman.debug) {
 			System.err.println("Game Client Thread exiting");

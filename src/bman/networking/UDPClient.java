@@ -153,7 +153,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("HOPLLA HOPPLSA");
+		
 	}
 	
 	@Override
