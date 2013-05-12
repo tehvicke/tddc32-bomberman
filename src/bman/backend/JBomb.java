@@ -22,8 +22,11 @@ public class JBomb extends JMapObject implements Runnable {
 	 * and the Thread containing the bomb */
 	private int explosionRadius = 3;
 	private JGameMap map;
-	private JPlayer owner;
 	private Thread fuse;
+	
+	@SuppressWarnings("unused")
+	private JPlayer owner;
+	
 	
 	
 
@@ -94,7 +97,7 @@ public class JBomb extends JMapObject implements Runnable {
 	
 	/**
 	 * Explodes the bomb, destroying nearby block and spreading fire in a radius
-	 * around the bombs location
+	 * around the bombs location.
 	 */
 	public void explode() {
 		int[] loc = map.find(this.hashCode());
@@ -124,7 +127,6 @@ public class JBomb extends JMapObject implements Runnable {
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		map.remove(loc[0], loc[1]);
@@ -169,7 +171,6 @@ public class JBomb extends JMapObject implements Runnable {
 			//e.printStackTrace();
 		}
 		explode();
-
 	}
 	
 	@Override

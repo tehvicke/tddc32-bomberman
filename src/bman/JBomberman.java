@@ -1,5 +1,7 @@
 package bman;
 
+import javax.swing.SwingUtilities;
+
 import bman.frontend.gui.JGUIMainMenu;
 import bman.frontend.gui.JGUIScreen;
 
@@ -20,14 +22,28 @@ public class JBomberman {
 	 */
 	public static boolean debug = true;
 	
-	/* Tells Threads to shut down */
+
+	/**
+	 * Running indicator for threads
+	 */
 	public static volatile boolean running = true;
 
-	public static void main(String[] args) {
-		JGUIScreen scr = new JGUIScreen();
-		scr.addContent(new JGUIMainMenu(scr));
-	}
 
+	/**
+	 * The main screen component.
+	 */
+	private static JGUIScreen scr;
+
+	public static void main(String[] args) {
+		 SwingUtilities.invokeLater(new Runnable() {
+	            @Override
+	            public void run() 
+	            {
+	            	scr = new JGUIScreen();
+	        		scr.addContent(new JGUIMainMenu(scr));
+	            }
+	        });	
+	}
 }
 
 

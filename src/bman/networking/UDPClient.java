@@ -139,6 +139,9 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	public void run() {
 		establishConnection();
 		eventListener();
+		if (JBomberman.debug) {
+			System.err.println("UDPClient Thread Exiting");
+		}
 	}
 	
 	@Override

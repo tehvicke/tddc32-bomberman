@@ -182,7 +182,7 @@ public class UDPServer implements UDPServerInterface {
 
 	@Override
 	public void eventListener() {
-		while(true) {
+		while(JBomberman.running) {
 			try {
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
@@ -244,6 +244,10 @@ public class UDPServer implements UDPServerInterface {
 
 		/* Start the event listener */
 		eventListener(); 
+		
+		if (JBomberman.debug) {
+			System.err.println("Server Thread exiting");
+		}
 	}
 
 	/**

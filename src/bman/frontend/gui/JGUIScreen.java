@@ -3,8 +3,8 @@ package bman.frontend.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,15 +14,55 @@ import bman.JBomberman;
 
 public class JGUIScreen extends JFrame {
 
-	private class exitListener implements ActionListener {
+	private class winListener implements WindowListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			JBomberman.running = false;
-			System.exit(0);
-
+		public void windowActivated(WindowEvent arg0) {
+			
+			
 		}
 
+		@Override
+		public void windowClosed(WindowEvent arg0) {
+			
+			
+		}
+
+		@Override
+		public void windowClosing(WindowEvent arg0) {
+			JBomberman.running = false;
+			if (JBomberman.debug) {
+			System.err.println("Window Closed Action");
+			}
+			
+			System.exit(0);
+			
+		}
+
+		@Override
+		public void windowDeactivated(WindowEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowDeiconified(WindowEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowIconified(WindowEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void windowOpened(WindowEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 	/**
@@ -59,6 +99,7 @@ public class JGUIScreen extends JFrame {
 		this.setVisible(true);
 		setResizable(false);
 		setTitle("BomberDude");
+		this.addWindowListener(new winListener());
 	}
 	
 	/**

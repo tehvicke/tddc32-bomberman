@@ -1,6 +1,5 @@
 package bman.backend;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import bman.JBomberman;
@@ -76,9 +75,10 @@ public class JClient implements Runnable{
 			if (event.getOriginID() == client.hashCode()) {
 				guiScreen.displayMessage("YOU LOOSE");
 			}
-		} else if (event.type == UDPEventInterface.Type.player_win) {
+		} else if (event.type == UDPEventInterface.Type.player_win || event.type == UDPEventInterface.Type.player_leave ) {
 			guiScreen.displayMessage("YOU WIN");
 		}
+		
 	}
 	
 	/**
@@ -176,6 +176,7 @@ public class JClient implements Runnable{
 		guiScreen.removeContent();
 		guiScreen.addContent(new JGUIGame(gameMap, player));
 	}
+	
 
 	/**
 	 * function for moving a player, sends absolute coordinates instead of relative to keep clients synced
@@ -196,6 +197,14 @@ public class JClient implements Runnable{
 			gameMap.addObject(player_2, x, y);
 		}
 	}
+	
+	/**
+	 * Returns the client
+	 * @return The UDP Client
+	 */
+	public UDPClient getUDPClient() {
+		return client;
+	}
 
 	@Override
 	public void run() {
@@ -210,18 +219,13 @@ public class JClient implements Runnable{
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	/**
-	 * Returns the client
-	 * @return The UDP Client
-	 */
-	public UDPClient getUDPClient() {
-		return client;
+		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, this.id));
+		if (JBomberman.debug) {
+			System.err.println("Game Client Thread exiting");
+		}
 	}
 }
 
