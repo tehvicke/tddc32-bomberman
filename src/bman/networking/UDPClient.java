@@ -130,6 +130,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				System.out.println("Klient: Skickade: " + events_sent + " Mottaget: " + events_received++ + " EventQueue: " + eventQueue.size());
 				}
 			} catch (Exception e) {
+				System.err.println("LOLOLOLOLOL");
 				e.printStackTrace();
 			}
 		}
