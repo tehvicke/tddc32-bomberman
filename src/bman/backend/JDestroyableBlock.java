@@ -1,6 +1,6 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIGame;
+import bman.frontend.JGUIGame;
 
 /**
  * The destroyable block class. Are blocks that can be destroyed by the bomb.

@@ -1,6 +1,6 @@
 package bman.backend;
 
-import bman.frontend.gui.JGUIGame;
+import bman.frontend.JGUIGame;
 
 /**
  * the Fire class, Fire appears when bombs explode.

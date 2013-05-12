@@ -1,4 +1,4 @@
-package bman.frontend.gui;
+package bman.frontend;
 
 import java.awt.Image;
 import java.awt.Toolkit;

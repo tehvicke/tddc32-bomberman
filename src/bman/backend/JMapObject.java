@@ -2,7 +2,7 @@ package bman.backend;
 
 import java.awt.Image;
 
-import bman.frontend.gui.JGUIMapObject;
+import bman.frontend.JGUIMapObject;
 /**
  * Any object which takes up room in the map and has a Graphical representation
  * in the form of a JGUIMapObject. JMapObjects can be destroyable or not.
