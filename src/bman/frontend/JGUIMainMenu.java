@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import sun.net.util.IPAddressUtil;
+
 import bman.JBomberman;
 import bman.backend.JClient;
 import bman.backend.JServer;
@@ -175,13 +177,12 @@ public class JGUIMainMenu extends JPanel  {
 			boolean ok= true;
 			//Reads IP from UI component
 			String ip = ipField.getText();
-			for (int i = 0; i < ip.length(); i++) {
-				if (ip.charAt(i) != '.' && (ip.charAt(i) > '9' || ip.charAt(i) < '0')) {
+			if (!IPAddressUtil.isIPv4LiteralAddress(ip)) {
 					IPMsg.setText("Invalid IP");
 					IPMsg.setVisible(true);
 					ok = false;
 				}
-			}
+			
 			// Create client
 			if (ok) {
 			client = new JClient(ip,parentFrame);
