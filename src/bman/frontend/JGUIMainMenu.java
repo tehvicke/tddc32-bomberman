@@ -235,6 +235,8 @@ public class JGUIMainMenu extends JPanel  {
 			serverThread.start();
 			clientThread.start();
 			waitMsg.setText("Waiting for connections...");
+			buttons[0].setEnabled(false);
+			((JButton)arg0.getSource()).setEnabled(false);
     		}
 			waitMsg.setVisible(true);
 		}
