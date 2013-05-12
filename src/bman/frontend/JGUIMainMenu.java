@@ -47,7 +47,9 @@ public class JGUIMainMenu extends JPanel  {
 	//Components for joinPanel & hostPanel
 	private JTextField ipField;
 	private JTextField fill;
-	private JLabel waitMsg = new JLabel("Waiting for Connections..");
+	private JLabel waitMsg = new JLabel("");
+	private JLabel IPMsg = new JLabel("");
+	private JTextField numPlayers;
 	
 	//Reference to the JGUIScreen which holds the mainMenu
 	private JGUIScreen parentFrame;
@@ -91,13 +93,15 @@ public class JGUIMainMenu extends JPanel  {
 		//Content of joinPanel
 		JLabel ip = new JLabel("IP Address:");
 		ipField = new JTextField("xxx.xxx.xxx.xxx");
-	
+		IPMsg.setForeground(Color.red);
+		IPMsg.setVisible(false);
 		JButton connect = new JButton("Connect");
 		connect.addActionListener(new connectListener());
 		
 		joinPanel.add(ip);
 		joinPanel.add(ipField);
 		joinPanel.add(connect);
+		joinPanel.add(IPMsg);
 		
 		//Host Panel
 		hostPanel = new JPanel();
@@ -112,7 +116,11 @@ public class JGUIMainMenu extends JPanel  {
 		start.addActionListener(new createListener());
 		waitMsg.setForeground(Color.red);
 		waitMsg.setVisible(false);
+		numPlayers = new JTextField("2");
+		JLabel players = new JLabel("Number of players (1-2):");
 		
+		hostPanel.add(players);
+		hostPanel.add(numPlayers);
 		hostPanel.add(fillDesc);
 		hostPanel.add(fill);
 		hostPanel.add(start);
@@ -164,12 +172,22 @@ public class JGUIMainMenu extends JPanel  {
 	private class connectListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			boolean ok= true;
 			//Reads IP from UI component
 			String ip = ipField.getText();
+			for (int i = 0; i < ip.length(); i++) {
+				if (ip.charAt(i) != '.' && (ip.charAt(i) > '9' || ip.charAt(i) < '0')) {
+					IPMsg.setText("Invalid IP");
+					IPMsg.setVisible(true);
+					ok = false;
+				}
+			}
 			// Create client
+			if (ok) {
 			client = new JClient(ip,parentFrame);
 			Thread clientThread = new Thread(client);
 			clientThread.start();
+			}
 		}
 	}
 	
@@ -183,14 +201,39 @@ public class JGUIMainMenu extends JPanel  {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			//Reads input
+			boolean ok = true;
+			waitMsg.setText("");
 			String fillSt = fill.getText();
-    		int fillperc = Integer.parseInt(fillSt);
-			server = new JServer(2, fillperc);
+			int fillperc = -1;
+    		int playerNum = -1;
+    		String players = numPlayers.getText();
+    		try {
+    			fillperc = Integer.parseInt(fillSt);
+        		playerNum = Integer.parseInt(players);
+    		} catch (Exception e) {
+    			ok = false;
+    		}
+    		if (playerNum <1 || playerNum > 2) {
+    			waitMsg.setText(waitMsg.getText() + "Invalid Player number");
+    			ok = false;
+    		}
+    		if (fillperc < 0 || fillperc > 99) {
+    			if (!ok) {
+    			waitMsg.setText(waitMsg.getText() + "and Invalid Fill %");
+    			} else {
+    				waitMsg.setText("Invalid Fill %");
+    			}
+    			ok = false;
+    		}
+    		if (ok) {
+			server = new JServer(playerNum, fillperc);
 			client = new JClient("localhost",parentFrame);
 			Thread serverThread = new Thread(server);
 			Thread clientThread = new Thread(client);
 			serverThread.start();
 			clientThread.start();
+			waitMsg.setText("Waiting for connections...");
+    		}
 			waitMsg.setVisible(true);
 		}
 	}

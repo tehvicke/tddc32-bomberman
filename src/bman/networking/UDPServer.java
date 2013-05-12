@@ -2,7 +2,6 @@ package bman.networking;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
@@ -85,41 +84,6 @@ public class UDPServer implements UDPServerInterface {
 			serverSocket = new DatagramSocket(UDPServerInterface.port);
 		} catch (Exception e) {
 			System.err.println("Problem UDPServer constructor.");
-		}
-	}
-
-	@Override
-	public void waitForClients() {
-		int clientsConnected = 0;
-		/* Loops until all clients are connected. */
-		while(clientsConnected < this.numberOfClients) {
-			byte[] receiveData = new byte[1024];
-			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			UDPEvent event;
-			try {
-				/* Waits for packet. The server locks here until a package is received. */
-				serverSocket.receive(receivePacket);
-
-				/* Deserializes string of bytes to an object */
-				ByteArrayInputStream baosi = new ByteArrayInputStream(receivePacket.getData());
-				ObjectInputStream oosi = new ObjectInputStream(baosi);
-				baosi.close();
-				oosi.close();
-				event = (UDPEvent) oosi.readObject();
-			} catch (IOException e) {
-				e.printStackTrace();
-				continue;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				continue;
-			}
-
-			/* Adds the client hash if the event type is correct */
-			if (event.type == UDPEvent.Type.establish_connection) {
-				clients[clientsConnected++] = new Client(event.getOriginID(), receivePacket.getAddress());
-			} else {
-				System.err.println("Wrong type of event. " + event.type);
-			}
 		}
 	}
 

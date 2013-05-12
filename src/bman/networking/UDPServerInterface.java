@@ -9,11 +9,7 @@ public interface UDPServerInterface extends Runnable {
 	 */
 	public static int port = 3456;
 	
-	/**
-	 * Waits for events of the type "establish_connection". Creates a Client-object
-	 * that stores the client hash and ip address.
-	 */
-	public void waitForClients();
+	
 	
 	/**
 	 * Sends an event to all active clients.
