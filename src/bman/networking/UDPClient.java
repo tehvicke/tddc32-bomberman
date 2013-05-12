@@ -144,6 +144,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 			} catch (SocketTimeoutException e) {
 				if (!isAlive) {
 					System.out.println("Server svarar ej!!");
+					break;
 				}
 				this.sendEvent(new UDPEvent(UDPEventInterface.Type.is_alive, this.playerHash));
 				isAlive = false;
