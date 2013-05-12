@@ -109,7 +109,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 	@Override
 	public void eventListener() {
 		if (JBomberman.debug) {
-			System.out.println("Klient: Client eventlistener startad.");
+			System.out.println("Klient: Client eventlistener started.");
 		}
 		
 		try {
@@ -138,7 +138,7 @@ public class UDPClient implements UDPClientInterface, Runnable {
 				this.eventQueue.add(event);
 				
 				if (JBomberman.debug) {
-				System.out.println("Klient: Skickade: " + events_sent + " Mottaget: " + events_received++ + " EventQueue: " + eventQueue.size());
+				System.out.println("Client sent: " + events_sent + " Received: " + events_received++ + " EventQueue: " + eventQueue.size());
 				}
 			} catch (SocketTimeoutException e) {
 				if (!isAlive) {

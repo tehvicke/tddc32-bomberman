@@ -20,14 +20,14 @@ import bman.networking.UDPEventInterface.Type;
  *
  */
 public class JClient implements Runnable{
-	
+
 	private UDPClient client;
 	private JGameMap gameMap;
 	private JGUIScreen guiScreen;
 	private JHuman player;
 	private JPlayer player_2;
 	private int id;
-	
+
 	/**
 	 * Constructor with IP argument
 	 * @param ip IP address of the server.
@@ -36,7 +36,9 @@ public class JClient implements Runnable{
 		this.guiScreen = guiScreen;
 		client = new UDPClient(ip);
 		id = client.hashCode();
-		System.out.println(this);
+		if (JBomberman.debug) {
+			System.out.println(this);
+		}
 
 	}
 
@@ -49,14 +51,14 @@ public class JClient implements Runnable{
 		if (JBomberman.debug) {
 			System.err.println("Event handled: " + event.toString());
 		}
-		
+
 		if (event.type == UDPEventInterface.Type.player_move) {
 			String [] args = event.getArguments();
 			movePlayer(event.getOriginID(), Integer.parseInt(args[0]),Integer.parseInt(args[1]),Integer.parseInt(args[2]));
-			
+
 		} else if (event.type == UDPEventInterface.Type.game_start) {
 			startGame();
-			
+
 		} else if (event.type == UDPEventInterface.Type.game_end) {
 			//endGame();
 		} else if (event.type == UDPEventInterface.Type.bomb_set) {
@@ -71,7 +73,7 @@ public class JClient implements Runnable{
 				gameMap.addMapRow(args[i], i);
 			}
 			randomizePlayerPosition();
-			
+
 		} else if (event.type == UDPEventInterface.Type.player_die) {
 			if (event.getOriginID() == client.hashCode()) {
 				guiScreen.displayMessage("YOU LOOSE");
@@ -82,7 +84,7 @@ public class JClient implements Runnable{
 			String[] arg = event.getArguments();
 			turnPlayer(event.getOriginID(),Integer.parseInt(arg[0]));
 		}
-		
+
 	}
 
 	/**
@@ -97,7 +99,7 @@ public class JClient implements Runnable{
 			player_2.turn(JGUIMapObject.Direction.values()[dirOrdinal]);
 		}
 	}
-	
+
 	protected void sendTurn(int dirOrdinal) {
 		String[] arg = {Integer.toString(dirOrdinal)};
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_turn, this.id,arg));
@@ -107,7 +109,7 @@ public class JClient implements Runnable{
 	 * Adds the player on a random place on the map. Exits game if no place is found.
 	 */
 	private void randomizePlayerPosition() {
-		
+
 		/* 
 		 * Check if there's a free space for the player on the grid. 
 		 * This function can be more advanced to calculate a place where
@@ -126,8 +128,8 @@ public class JClient implements Runnable{
 			client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, client.hashCode()));
 			System.exit(0);
 		}
-		
-		
+
+
 		/* Random position */
 		Random gen = new Random();
 		int x_rand;
@@ -152,7 +154,9 @@ public class JClient implements Runnable{
 	 * @param y y coord
 	 */
 	private void addPlayer(int id, int x, int y) {
-		System.out.println("x:" + x + " y:" + y);
+		if (JBomberman.debug) {
+			System.out.println("JClient: Player with id: " +id +" added at x:" + x + " y:" + y);
+		}
 		if (id == this.id) {
 			gameMap.addPlayer(player, id, x, y);
 		} else {
@@ -198,7 +202,7 @@ public class JClient implements Runnable{
 		guiScreen.removeContent();
 		guiScreen.addContent(new JGUIGame(gameMap, player));
 	}
-	
+
 
 	/**
 	 * function for moving a player, sends absolute coordinates instead of relative to keep clients synced
@@ -211,7 +215,7 @@ public class JClient implements Runnable{
 		if (x < 0 || x > JGameMap.mapsize || y < 0 || y > JGameMap.mapsize || gameMap.at(x, y) != null) {
 			return;
 		}
-		
+
 		if (id == this.id) {
 			gameMap.remove(player);
 			gameMap.addObject(player, x, y);
@@ -222,7 +226,7 @@ public class JClient implements Runnable{
 			player_2.turn(JGUIMapObject.Direction.values()[dir]);
 		}
 	}
-	
+
 	/**
 	 * Returns the client
 	 * @return The UDP Client
@@ -236,19 +240,19 @@ public class JClient implements Runnable{
 		Thread clientThread = new Thread(client);
 		clientThread.start();
 		while(JBomberman.running) {  /* NOTE: This is done with busy wait (polling) and are thus CPU inefficient.
-		 				* This would have been changed but there wasn't time.
-		 				*/
+		 * This would have been changed but there wasn't time.
+		 */
 			if (client.eventExists()) {
 				eventHandler(client.getEvent());
 			}
 			try {
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
-				
+
 			}
 		}
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, this.id));
-		
+
 		if (JBomberman.debug) {
 			System.err.println("Game Client Thread exiting");
 		}

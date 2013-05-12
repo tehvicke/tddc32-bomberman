@@ -25,7 +25,7 @@ public class UDPServer implements UDPServerInterface {
 	private int events_sent = 0;
 	private int events_received = 0;
 	private int broadcasts_sent = 0;
-	
+
 	/**
 	 * The number of players currently alive.
 	 */
@@ -59,7 +59,9 @@ public class UDPServer implements UDPServerInterface {
 	 * including the server itself.
 	 */
 	public UDPServer(int numberOfClients) {
-		System.out.println(this);
+		if (JBomberman.debug) {
+			System.out.println(this);
+		}
 		this.numberOfClients = numberOfClients;
 		this.clients = new Client[numberOfClients];
 		try {
@@ -76,7 +78,9 @@ public class UDPServer implements UDPServerInterface {
 	 * @param percentFilled The percent of the map filled with destroyable blocks.
 	 */
 	public UDPServer(int numberOfClients, int percentFilled) {
-		System.out.println(this);
+		if (JBomberman.debug) {
+			System.out.println(this);
+		}
 		this.numberOfClients = numberOfClients;
 		this.percentFilled = percentFilled;
 		this.clients = new Client[numberOfClients];
@@ -131,9 +135,9 @@ public class UDPServer implements UDPServerInterface {
 							sendData.length, 
 							getClient(client).addr, 
 							3457);  					   /* Sends to 3457 as is where the clients listens.
-							 								* This for allowing a server to be run on a 
-							 								* client computer.
-							 								*/
+							 * This for allowing a server to be run on a 
+							 * client computer.
+							 */
 			this.serverSocket.send(sendPacket);
 			events_sent++;
 		} catch (Exception e) {
@@ -173,7 +177,7 @@ public class UDPServer implements UDPServerInterface {
 				oosi.close();
 				UDPEvent event = (UDPEvent) oosi.readObject();
 
-				
+
 				if (event.type == UDPEventInterface.Type.player_die) {
 					playersAlive--;
 					this.getClient(event.getOriginID()).setAlive(false);
@@ -192,7 +196,6 @@ public class UDPServer implements UDPServerInterface {
 				} else if (event.type == UDPEventInterface.Type.establish_connection) {
 					clients[clientsConnected++] = new Client(event.getOriginID(), receivePacket.getAddress());
 					broadcast = false;
-					System.out.println(clients);
 					if (clientsConnected == numberOfClients) {
 						broadcastEvent(new UDPEvent(UDPEventInterface.Type.game_start, 0));
 						/* Sends the map layout */
@@ -219,11 +222,13 @@ public class UDPServer implements UDPServerInterface {
 	 */
 	@Override
 	public void run() {
-		System.out.println("Server: Server thread started.");
-		System.out.println("Server: Event listener started");		
+		if (JBomberman.debug) {
+			System.out.println("Server: Server thread started.");
+			System.out.println("Server: Event listener started");		
+		}
 		eventListener();
-		
-		
+
+
 		if (JBomberman.debug) {
 			System.err.println("UDPServer Thread exiting");
 		}
@@ -277,11 +282,13 @@ public class UDPServer implements UDPServerInterface {
 		 * @param addr The IP address of the client.
 		 */
 		public Client(int hash, InetAddress addr) {
-			System.out.println("Server: Client Created. Hash: " + hash + " Addr: " + addr.getHostAddress());
+			if (JBomberman.debug) {
+				System.out.println("Server: Client Created. Hash: " + hash + " Addr: " + addr.getHostAddress());
+			}
 			this.hash = hash;
 			this.addr = addr;
 		}
-		
+
 		/**
 		 * 
 		 * @return If the client is alive
@@ -289,7 +296,7 @@ public class UDPServer implements UDPServerInterface {
 		public boolean isAlive() {
 			return this.alive;
 		}
-		
+
 		/**
 		 * 
 		 * @param al Whether the client is alive or not
