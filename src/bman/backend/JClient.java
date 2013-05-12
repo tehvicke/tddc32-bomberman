@@ -5,6 +5,7 @@ import java.util.Random;
 import bman.JBomberman;
 import bman.frontend.JGUIGame;
 import bman.frontend.JGUIMapObject;
+import bman.frontend.JGUIMapObject.Direction;
 import bman.frontend.JGUIScreen;
 import bman.networking.UDPClient;
 import bman.networking.UDPClientInterface;
@@ -180,18 +181,29 @@ public class JClient implements Runnable{
 	}
 
 	/**
-	 * Sends an UDPEvent containing absolute move information for a player to the server
+	 * Sends an UDPEvent containing absolute move information for a player to the server, if the move is
+	 * invalid the player will turn. 
 	 * @param dx relative x position to be moved
 	 * @param dy relative y position to be moved
 	 */
 	protected void sendMove(int dx, int dy, int dir) {
+	
+		//Turns if the move is invalid
 		if (!gameMap.validMove(client.hashCode(), dx, dy)) {
-			return;
+			if (dx > 0) {
+				turnPlayer(this.id, Direction.RIGHT.ordinal());
+			} else if (dx < 0) {
+				turnPlayer(this.id, Direction.LEFT.ordinal());
+			} else if (dy > 0) {
+				turnPlayer(this.id, Direction.DOWN.ordinal());
+			} else {
+				turnPlayer(this.id, Direction.UP.ordinal());
+			}
+		} else {
+			int [] loc = gameMap.find(player.hashCode());
+			String[] arg = {Integer.toString(loc[0]+dx),Integer.toString(loc[1]+dy),Integer.toString(dir)};
+			client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_move, this.id,arg));
 		}
-		int [] loc = gameMap.find(player.hashCode());
-		String[] arg = {Integer.toString(loc[0]+dx),Integer.toString(loc[1]+dy),Integer.toString(dir)};
-		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_move, this.id,arg));
-
 	}
 
 	/**
