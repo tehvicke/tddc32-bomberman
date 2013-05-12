@@ -61,10 +61,10 @@ public class JBomb extends JMapObject implements Runnable {
 	}
 
 	/**
-	 * 
-	 * @param x
-	 * @param y
-	 * @return
+	 * The expolsion for each JFire object. 
+	 * @param x x coord where the fire shall be
+	 * @param y y coord where the fire shall be
+	 * @return true if the fire shall spread in this direction, false otherwise.
 	 */
 	private boolean explode(int x, int y) {
 		boolean retur = false;
@@ -91,6 +91,11 @@ public class JBomb extends JMapObject implements Runnable {
 		}
 	}
 	
+	/**
+	 * The main explosion function. Invokes the explode(x, y)-function in each direction
+	 * for allowing the fire to "spread". Verifies the directions to spread with the
+	 * booleans left, right up and down.
+	 */
 	public void explode() {
 		int[] loc = map.find(this.hashCode());
 		Boolean left = true;

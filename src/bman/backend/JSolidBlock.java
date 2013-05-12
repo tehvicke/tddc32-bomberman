@@ -11,8 +11,6 @@ public class JSolidBlock extends JMapObject{
 
 	/**
 	 * 
-	 * @param x
-	 * @param y
 	 */
 	public JSolidBlock() {
 		super(JGUIGame.solidBlockGUI);

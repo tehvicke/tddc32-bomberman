@@ -125,9 +125,9 @@ public class JClient implements Runnable{
 	}
 	/**
 	 * Creates a player with id at specified location
-	 * @param id2
-	 * @param x
-	 * @param y
+	 * @param id ID of the player
+	 * @param x x coord
+	 * @param y y coord
 	 */
 	private void addPlayer(int id, int x, int y) {
 		System.out.println("x:" + x + " y:" + y);
@@ -140,7 +140,11 @@ public class JClient implements Runnable{
 
 	}
 
-
+	/**
+	 * Lays the bomb in front of the player.
+	 * @param x x coord of player
+	 * @param y y coord of player
+	 */
 	protected void putBomb(int x, int y) {
 		if (gameMap.validMove(x, y)) {
 			String[] arg = {Integer.toString(x),Integer.toString(y)};

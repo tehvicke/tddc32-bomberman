@@ -60,7 +60,7 @@ public class JGUIScreen extends JFrame {
 	
 	/**
 	 * Adds content to the JGUIScreen
-	 * @param JPanel to be added
+	 * @param gm JPanel to be added
 	 */
 	public void addContent(JPanel gm) {
 		this.content = gm;
