@@ -92,7 +92,7 @@ public class JClient implements Runnable{
 		}
 	}
 	
-	public void sendTurn(int dirOrdinal) {
+	protected void sendTurn(int dirOrdinal) {
 		String[] arg = {Integer.toString(dirOrdinal)};
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_turn, this.id,arg));
 	}
