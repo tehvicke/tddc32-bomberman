@@ -12,28 +12,32 @@ import bman.networking.UDPServerInterface;
  *
  */
 public class JServer implements Runnable {
-	
+
 	/**
 	 * The UDPServer that handles all communication between the clients.
 	 */
 	private UDPServerInterface server;
-	
+
 	/**
 	 * Initializes the JServer and initiates the UDP Server.
 	 * @param numberOfPlayers The number of players that should be in the game.
 	 */
 	public JServer(int numberOfPlayers) {
-		System.out.println(this);
+		if (JBomberman.debug) {
+			System.out.println(this);
+		}
 		server = new UDPServer(numberOfPlayers);
 	}
-	
+
 	/**
 	 * Initializes the JServer and initiates the UDP Server.
 	 * @param numberOfPlayers The number of players that should be in the game.
 	 * @param percentFilled The percent of the map filled with destroyable blocks.
 	 */
 	public JServer(int numberOfPlayers, int percentFilled) {
-		System.out.println(this);
+		if (JBomberman.debug) {
+			System.out.println(this);
+		}
 		server = new UDPServer(numberOfPlayers, percentFilled);
 	}
 

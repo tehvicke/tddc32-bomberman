@@ -71,7 +71,6 @@ public class JHuman extends JPlayer{
 			} else if (!shiftPressed){
 				shiftPressed = true;
 			}
-			System.out.println(shiftPressed);
 		}
 		if (dx != 0 || dy != 0) {
 			if (shiftPressed) {
