@@ -227,9 +227,7 @@ public class JClient implements Runnable{
 			}
 		}
 		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_leave, this.id));
-		while(clientThread.isAlive()) {
-			clientThread.interrupt();
-		}
+		
 		if (JBomberman.debug) {
 			System.err.println("Game Client Thread exiting");
 		}
