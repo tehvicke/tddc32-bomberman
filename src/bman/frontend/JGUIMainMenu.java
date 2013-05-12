@@ -203,7 +203,7 @@ public class JGUIMainMenu extends JPanel  {
 			String fillSt = fill.getText();
     		int fillperc = Integer.parseInt(fillSt);
     		
-			server = new JServer(1, fillperc);
+			server = new JServer(2, fillperc);
 			client = new JClient("localhost",parentFrame);
 			Thread serverThread = new Thread(server);
 			Thread clientThread = new Thread(client);

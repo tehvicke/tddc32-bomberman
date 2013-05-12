@@ -246,7 +246,7 @@ public class UDPServer implements UDPServerInterface {
 		eventListener(); 
 		
 		if (JBomberman.debug) {
-			System.err.println("Server Thread exiting");
+			System.err.println("UDPServer Thread exiting");
 		}
 	}
 
@@ -298,7 +298,7 @@ public class UDPServer implements UDPServerInterface {
 		 * @param addr The IP address of the client.
 		 */
 		public Client(int hash, InetAddress addr) {
-			System.out.println("Server: Klient skapad. Hash: " + hash + " Addr: " + addr.getHostAddress());
+			System.out.println("Server: Client Created. Hash: " + hash + " Addr: " + addr.getHostAddress());
 			this.hash = hash;
 			this.addr = addr;
 		}
