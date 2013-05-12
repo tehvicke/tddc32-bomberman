@@ -64,6 +64,7 @@ public class UDPServer implements UDPServerInterface {
 		}
 		this.numberOfClients = numberOfClients;
 		this.clients = new Client[numberOfClients];
+		System.out.println(clients);
 		try {
 			serverSocket = new DatagramSocket(UDPServerInterface.port);
 		} catch (Exception e) {
