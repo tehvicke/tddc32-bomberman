@@ -18,9 +18,9 @@ public class JHuman extends JPlayer{
 	private boolean shiftPressed = false;
 
 	/**
-	 * The last position of the player
+	 * The last movement direction of the player (the way the player is facing)
 	 */
-	private int [] lastMove = {0,0};
+	private int [] lastMove = {0,1};
 	
 	/**
 	 * The current gamemap

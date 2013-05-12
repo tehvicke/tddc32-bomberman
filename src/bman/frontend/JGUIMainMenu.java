@@ -18,6 +18,7 @@ import sun.net.util.IPAddressUtil;
 import bman.JBomberman;
 import bman.backend.JClient;
 import bman.backend.JServer;
+import bman.frontend.JGUIScreen;
 
 /**
  * Handles the menu GUI and presents the user with choices for starting or joining game.
@@ -114,12 +115,14 @@ public class JGUIMainMenu extends JPanel  {
 		JLabel fillDesc = new JLabel("Map block fill % (<40 recommended):");
 		fill = new JTextField(3);
 		fill.setText("25");
+		fill.setHorizontalAlignment(JTextField.RIGHT);
 		JButton start = new JButton("Start Server");
 		start.addActionListener(new createListener());
 		waitMsg.setForeground(Color.red);
 		waitMsg.setVisible(false);
 		numPlayers = new JTextField(3);
 		numPlayers.setText("2");
+		numPlayers.setHorizontalAlignment(JTextField.RIGHT);
 		JLabel players = new JLabel("Number of players (1-2):");
 		
 		hostPanel.add(players);
@@ -236,6 +239,7 @@ public class JGUIMainMenu extends JPanel  {
 			clientThread.start();
 			waitMsg.setText("Waiting for connections...");
 			buttons[0].setEnabled(false);
+			buttons[1].setEnabled(false);
 			((JButton)arg0.getSource()).setEnabled(false);
     		}
 			waitMsg.setVisible(true);
