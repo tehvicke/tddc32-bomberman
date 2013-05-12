@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
+import bman.JBomberman;
 import bman.backend.JClient;
 import bman.backend.JServer;
 
@@ -156,14 +158,14 @@ public class JGUIMainMenu extends JPanel  {
 		public void actionPerformed(ActionEvent e) {
 			if((JButton) e.getSource() == buttons[0]) {
 				
-				joinPanel.setVisible(true);
+				joinPanel.setVisible(!joinPanel.isVisible());
 				hostPanel.setVisible(false);
 			} else if ((JButton) e.getSource() == buttons[1]) {
 				
 				joinPanel.setVisible(false);
-				hostPanel.setVisible(true);
+				hostPanel.setVisible(!hostPanel.isVisible());
 			} else {
-				//NEEDS TO BE DONE PROPERLY
+				JBomberman.running = false;
 				System.exit(0);
 			}
 			
@@ -202,8 +204,8 @@ public class JGUIMainMenu extends JPanel  {
 			//Reads input
 			String fillSt = fill.getText();
     		int fillperc = Integer.parseInt(fillSt);
-    		
-			server = new JServer(2, fillperc);
+
+			server = new JServer(1, fillperc);
 			client = new JClient("localhost",parentFrame);
 			Thread serverThread = new Thread(server);
 			Thread clientThread = new Thread(client);

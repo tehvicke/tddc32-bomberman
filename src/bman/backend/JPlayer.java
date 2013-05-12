@@ -30,6 +30,14 @@ public class JPlayer extends JMapObject {
 	public void setID(int playerid){
 		this.playerid = playerid;
 	}
+	
+	/**
+	 * Turns the player in the appropriate direction
+	 * @param dir direction to be turned
+	 */
+	public void turn(JGUIMapObject.Direction dir) {
+		sprite.move(dir);
+	}
 
 	/**
 	 * 
