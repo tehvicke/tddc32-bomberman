@@ -39,6 +39,10 @@ public class JClient implements Runnable{
 		System.out.println(this);
 
 	}
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 
 
 	/**
@@ -78,10 +82,30 @@ public class JClient implements Runnable{
 			}
 		} else if (event.type == UDPEventInterface.Type.player_win || event.type == UDPEventInterface.Type.player_leave ) {
 			guiScreen.displayMessage("YOU WIN");
+<<<<<<< HEAD
+=======
+		} else if (event.type == UDPEventInterface.Type.player_turn) {
+			String[] arg = event.getArguments();
+			turnPlayer(event.getOriginID(),Integer.parseInt(arg[0]));
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 		}
 		
 	}
 	
+<<<<<<< HEAD
+=======
+	private void turnPlayer(int id, int dirOrdinal ) {
+		if (id == this.id) {
+			player.turn(JGUIMapObject.Direction.values()[dirOrdinal]);
+		}
+	}
+	
+	public void sendTurn(int dirOrdinal) {
+		String[] arg = {Integer.toString(dirOrdinal)};
+		client.sendEvent(new UDPEvent(UDPEventInterface.Type.player_turn, this.id,arg));
+	}
+	
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 	/**
 	 * Adds the player on a random place on the map. Exits game if no place is found.
 	 */
@@ -194,12 +218,23 @@ public class JClient implements Runnable{
 		if (id == this.id) {
 			gameMap.remove(player);
 			gameMap.addObject(player, x, y);
+<<<<<<< HEAD
 			
 		} else {
 			gameMap.remove(player_2);
 			gameMap.addObject(player_2, x, y);			
 		}
 		player.turn(JGUIMapObject.Direction.values()[dir]);
+=======
+			player.turn(JGUIMapObject.Direction.values()[dir]);
+			
+		} else {
+			gameMap.remove(player_2);
+			gameMap.addObject(player_2, x, y);
+			player_2.turn(JGUIMapObject.Direction.values()[dir]);
+		}
+		
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 	}
 	
 	/**

@@ -136,6 +136,7 @@ public class JHuman extends JPlayer{
 	 * @param dy y coord
 	 */
 	private void turn(int dx, int dy) {
+<<<<<<< HEAD
 		if (dx > 0) {
 			sprite.move(Direction.RIGHT);
 			lastMove[0] = 1;
@@ -153,6 +154,31 @@ public class JHuman extends JPlayer{
 			lastMove[0] = 0;
 			lastMove[1] = -1;
 		}
+=======
+		Direction dir = Direction.DOWN;
+		if (dx > 0) {
+			dir = Direction.RIGHT;
+			//sprite.move(Direction.RIGHT);
+			lastMove[0] = 1;
+			lastMove[1] = 0;
+		} else if (dx < 0) {
+			dir = Direction.LEFT;
+			//sprite.move(Direction.LEFT);
+			lastMove[0] = -1;
+			lastMove[1] = 0;
+		} else if (dy > 0) {
+			dir = Direction.DOWN;
+			//sprite.move(Direction.DOWN);
+			lastMove[0] = 0;
+			lastMove[1] = 1;
+		} else {
+			dir = Direction.UP;
+			//sprite.move(Direction.UP);
+			lastMove[0] = 0;
+			lastMove[1] = -1;
+		}
+		client.sendTurn(dir.ordinal());
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 	}
 
 	/**
@@ -165,22 +191,38 @@ public class JHuman extends JPlayer{
 		Direction dir = Direction.DOWN;
 		if (dx > 0) {
 			dir = Direction.RIGHT;
+<<<<<<< HEAD
 			sprite.move(dir);
+=======
+			//sprite.move(dir);
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 			lastMove[0] = 1;
 			lastMove[1] = 0;
 		} else if (dx < 0) {
 			dir = Direction.LEFT;
+<<<<<<< HEAD
 			sprite.move(dir);
+=======
+			//sprite.move(dir);
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 			lastMove[0] = -1;
 			lastMove[1] = 0;
 		} else if (dy > 0) {
 			dir = Direction.DOWN;
+<<<<<<< HEAD
 			sprite.move(dir);
+=======
+			//sprite.move(dir);
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 			lastMove[0] = 0;
 			lastMove[1] = 1;
 		} else {
 			dir = Direction.UP;
+<<<<<<< HEAD
 			sprite.move(dir);
+=======
+			//sprite.move(dir);
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 			lastMove[0] = 0;
 			lastMove[1] = -1;
 		}

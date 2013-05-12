@@ -1,0 +1,17 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# settings folder #
+.settings/*
+.classpath
+
+# Viktor
+src/bman/mainn.java
+.DS_Store
+
+# Petter 
+.src/testingPetter/

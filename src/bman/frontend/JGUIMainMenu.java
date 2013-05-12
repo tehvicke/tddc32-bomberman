@@ -14,6 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+<<<<<<< HEAD
+=======
+import bman.JBomberman;
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 import bman.backend.JClient;
 import bman.backend.JServer;
 
@@ -163,7 +167,11 @@ public class JGUIMainMenu extends JPanel  {
 				joinPanel.setVisible(false);
 				hostPanel.setVisible(!hostPanel.isVisible());
 			} else {
+<<<<<<< HEAD
 				//NEEDS TO BE DONE PROPERLY
+=======
+				JBomberman.running = false;
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 				System.exit(0);
 			}
 			
@@ -203,7 +211,11 @@ public class JGUIMainMenu extends JPanel  {
 			String fillSt = fill.getText();
     		int fillperc = Integer.parseInt(fillSt);
     		
+<<<<<<< HEAD
 			server = new JServer(2, fillperc);
+=======
+			server = new JServer(1, fillperc);
+>>>>>>> 00629ebd93fa5cc1641b89eb90e440f10f8a7088
 			client = new JClient("localhost",parentFrame);
 			Thread serverThread = new Thread(server);
 			Thread clientThread = new Thread(client);
